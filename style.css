@@ -1,21 +1,24 @@
 /* ─── THEME VARIABLES ───────────────────────────────────────────────── */
 :root {
-    --bg: #2f3640;
-    --card-bg: #2a2e38;
-    --text: #e4e6eb;
-    --accent: #f5a623;
-    --shadow-dark: rgba(0, 0, 0, 0.4);
-    --shadow-light: rgba(255, 255, 255, 0.07);
-    --radius: 12px;
+    --clr-bg: #2f3640; /* Dark background */
+    --clr-card-bg: #3d4551; /* Darker card background */
+    --clr-text: #e4e6eb; /* Lighter text */
+    --clr-accent: #f5a623; /* Golden accent (dark theme) */
+    --clr-shadow-dark: rgba(0, 0, 0, 0.6); /* Stronger dark shadow */
+    --clr-shadow-light: rgba(255, 255, 255, 0.1); /* Subtle light highlight */
+    --clr-radius: 12px;
+    --clr-transition: 0.3s ease;
+    --clr-font-head: 'Montserrat', sans-serif;
+    --clr-font-body: 'Open Sans', sans-serif;
 }
 
-:root.light { /* Corrected: Apply to :root */
-    --bg: #e0e5ec;
-    --card-bg: #f0f3f7;
-    --text: #2f3640;
-    --accent: #f5a623;
-    --shadow-dark: rgba(0, 0, 0, 0.1);
-    --shadow-light: rgba(255, 255, 255, 0.7);
+:root.light {
+    --clr-bg: #e0e5ec; /* Light background */
+    --clr-card-bg: #f0f3f7; /* Lighter card background */
+    --clr-text: #2f3640; /* Darker text */
+    --clr-accent: #1e88e5; /* Royal blue accent (light theme) */
+    --clr-shadow-dark: rgba(0, 0, 0, 0.1); /* Subtle dark shadow */
+    --clr-shadow-light: rgba(255, 255, 255, 0.7); /* Stronger light highlight */
 }
 
 /* ─── BASE LAYOUT ───────────────────────────────────────────────────── */
@@ -25,35 +28,32 @@
 
 body {
     margin: 0;
-    font-family: 'Open Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    transition: background 0.3s, color 0.3s;
+    font-family: var(--clr-font-body);
+    background-color: var(--clr-bg);
+    color: var(--clr-text);
+    transition: background-color var(--clr-transition), color var(--clr-transition);
 }
 
 .app {
     max-width: 700px;
     margin: 2rem auto;
     padding: 2rem;
-    background: var(--card-bg);
-    border-radius: 16px;
-    box-shadow:
-        8px 8px 20px var(--shadow-dark),
-        -8px -8px 20px var(--shadow-light);
+    background-color: var(--clr-bg); /* Match app background to body */
+    border-radius: var(--clr-radius);
     text-align: center;
-    transition: background 0.3s, box-shadow 0.3s; /* Added transition */
 }
 
 /* ─── TITLE ─────────────────────────────────────────────────────────── */
 .title {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--clr-font-head);
     font-size: clamp(2rem, 6vw, 2.8rem);
-    color: var(--accent);
+    color: var(--clr-accent);
     margin-bottom: 1.5rem;
+    transition: color var(--clr-transition);
 }
 
 .title span {
-    color: var(--accent);
+    color: var(--clr-accent);
 }
 
 /* ─── CONTROLS ──────────────────────────────────────────────────────── */
@@ -84,14 +84,15 @@ select {
     border: none;
     padding: 0.6rem 2.5rem 0.6rem 1rem;
     font-size: 1rem;
-    border-radius: var(--radius);
-    background: var(--card-bg);
-    color: var(--text);
-    box-shadow:
-        inset 5px 5px 10px var(--shadow-dark),
-        inset -5px -5px 10px var(--shadow-light);
+    border-radius: var(--clr-radius);
+    background-color: var(--clr-card-bg);
+    color: var(--clr-text);
     cursor: pointer;
-    transition: box-shadow 0.3s, background 0.3s, color 0.3s; /* Added transition */
+    transition: box-shadow var(--clr-transition), background-color var(--clr-transition), color var(--clr-transition);
+    /* Emboss Neomorphism for Select */
+    box-shadow:
+        inset 2px 2px 5px var(--clr-shadow-dark),
+        inset -2px -2px 5px var(--clr-shadow-light);
 }
 
 .select-wrapper::after {
@@ -102,45 +103,54 @@ select {
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--accent);
+    color: var(--clr-accent);
     pointer-events: none;
+    transition: color var(--clr-transition);
 }
 
 /* ─── BUTTONS ──────────────────────────────────────────────────────── */
 .icon-btn {
-    background: var(--card-bg);
+    background-color: var(--clr-card-bg);
     border: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.2s, background 0.3s, box-shadow 0.3s; /* Added transition */
+    transition: transform 0.2s, background-color var(--clr-transition), box-shadow var(--clr-transition), color var(--clr-transition);
+    /* Raised Neomorphism for Buttons */
+    box-shadow:
+        6px 6px 12px var(--clr-shadow-dark),
+        -6px -6px 12px var(--clr-shadow-light);
+    border-radius: var(--clr-radius);
+    color: var(--clr-accent);
 }
 
 .icon-btn:hover {
     transform: translateY(-2px);
+    box-shadow:
+        3px 3px 6px var(--clr-shadow-dark),
+        -3px -3px 6px var(--clr-shadow-light);
 }
 
 .icon-btn i {
-    color: var(--accent);
     font-size: 1.2rem;
 }
 
 /* round buttons */
 .icon-btn.round {
     border-radius: 50%;
-    width: 52px;
-    height: 52px;
-}
-
-/* soft‑cornered square buttons */
-.icon-btn.square {
-    border-radius: var(--radius);
     width: 48px;
     height: 48px;
 }
 
-/* Remove underline from social‐share links */
+/* soft‑cornered square buttons */
+.icon-btn.square {
+    border-radius: var(--clr-radius);
+    width: 40px;
+    height: 40px;
+}
+
+/* Remove underline from social‑share links */
 .social-links a.icon-btn,
 .social-links a.icon-btn:visited,
 .social-links a.icon-btn:hover,
@@ -155,26 +165,27 @@ select {
 
 /* ─── QUOTE CARD ───────────────────────────────────────────────────── */
 .quote-card {
-    background: var(--card-bg);
-    border-radius: 16px;
+    background-color: var(--clr-card-bg);
+    border-radius: var(--clr-radius);
     padding: 2rem;
     margin: 2rem 0;
+    transition: opacity 0.5s, background-color var(--clr-transition), box-shadow var(--clr-transition);
+    /* Emboss Neomorphism for Quote Card */
     box-shadow:
-        8px 8px 20px var(--shadow-dark),
-        -8px -8px 20px var(--shadow-light);
-    transition: opacity 0.5s, background 0.3s, box-shadow 0.3s; /* Added transition */
+        inset 5px 5px 10px var(--clr-shadow-dark),
+        inset -5px -5px 10px var(--clr-shadow-light);
 }
 
 .quote-card blockquote {
     position: relative;
     margin: 0;
     padding-left: 2.5rem;
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--clr-font-head);
     font-size: clamp(1.5rem, 4vw, 2rem);
     line-height: 1.4;
     font-weight: 600;
-    color: var(--text); /* Added color transition */
-    transition: color 0.3s;
+    color: var(--clr-text);
+    transition: color var(--clr-transition);
 }
 
 .quote-card blockquote::before {
@@ -183,15 +194,16 @@ select {
     left: 0;
     top: -0.3rem;
     font-size: 3rem;
-    color: var(--accent);
+    color: var(--clr-accent);
+    transition: color var(--clr-transition);
 }
 
 .quote-card figcaption {
     margin-top: 1rem;
     font-style: italic;
     opacity: 0.8;
-    color: var(--text); /* Added color transition */
-    transition: color 0.3s;
+    color: var(--clr-text);
+    transition: color var(--clr-transition);
 }
 
 /* ─── SHARE & COPY ─────────────────────────────────────────────────── */
@@ -203,8 +215,8 @@ select {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
-    color: var(--text); /* Added color transition */
-    transition: color 0.3s;
+    color: var(--clr-text);
+    transition: color var(--clr-transition);
 }
 
 .social-links {
@@ -218,14 +230,15 @@ select {
 footer {
     margin-top: 2rem;
     font-size: 0.9rem;
-    color: var(--text);
-    transition: color 0.3s; /* Added transition */
+    color: var(--clr-text);
+    transition: color var(--clr-transition);
 }
 
 footer a {
-    color: var(--accent);
+    color: var(--clr-accent);
     text-decoration: none;
     font-weight: 600;
+    transition: color var(--clr-transition);
 }
 
 /* ─── RESPONSIVE ───────────────────────────────────────────────────── */
