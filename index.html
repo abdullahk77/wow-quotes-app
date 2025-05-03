@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WOW Quotes - Daily Inspiration & Wisdom</title>
+    <meta name="description"
+        content="Discover inspiring and uplifting quotes daily with Words of Wisdom. Get daily doses of wisdom, share with friends and stay positive. Explore categories like Resilience, Mindfulness, Love and Motivation. Enjoy a modern design with easy sharing and dark/light themes.">
+    <meta name="keywords"
+        content="quotes app, inspirational quotes, motivational quotes, wisdom quotes, daily quotes, shareable quotes, positive quotes, resilience quotes, mindfulness quotes, love quotes, motivation quotes, daily inspiration">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="app">
+        <h1 class="title">WOW <span>Quotes</span></h1>
+
+        <div class="controls">
+            <div class="select-wrapper">
+                <label for="category">Choose category</label>
+                <select id="category"></select>
+            </div>
+            <button id="generate" class="icon-btn round" aria-label="Generate New Quote">
+                <i class="fas fa-arrows-rotate"></i>
+            </button>
+            <button id="themeToggle" class="icon-btn round" aria-label="Toggle Theme">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+
+        <div class="quote-card" aria-live="polite">
+            <blockquote id="quote">Loading…</blockquote>
+            <figcaption id="author">—</figcaption>
+        </div>
+
+        <div class="share-section">
+            <p class="share-label">Share or Save this Quote:</p>
+            <div class="social-links">
+                <a href="#" id="whatsapp" class="icon-btn square" aria-label="Share on WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="#" id="threads" class="icon-btn square" aria-label="Share on Threads">
+                    <i class="fab fa-threads"></i>
+                </a>
+                <a href="#" id="xshare" class="icon-btn square" aria-label="Share on X">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <button id="copy" class="icon-btn square" aria-label="Copy Quote">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            <small>
+                © 2025 WOW Quotes App. All rights reserved.<br>
+                <a href="https://quotes-app.wordsofwisdom.in/" target="_blank">Words of Wisdom Media</a>
+            </small>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
