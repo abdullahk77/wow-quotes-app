@@ -1,11 +1,7 @@
 [
   {
-    "name": "Resilience",
-    "file": "quotes_resilience.json"
-  },
-  {
-    "name": "Mindfulness",
-    "file": "quotes_mindfulness.json"
+    "name": "Inspiration",
+    "file": "quotes_inspiration.json"
   },
   {
     "name": "Gratitude",
@@ -20,20 +16,24 @@
     "file": "quotes_self_care.json"
   },
   {
-    "name": "Positive Thinking",
-    "file": "quotes_positive_thinking.json"
+    "name": "Mindfulness",
+    "file": "quotes_mindfulness.json"
   },
   {
-    "name": "Motivation",
-    "file": "quotes_motivation.json"
+    "name": "Positive Thinking",
+    "file": "quotes_positive_thinking.json"
   },
   {
     "name": "Sufi Wisdom",
     "file": "quotes_sufi_wisdom.json"
   },
   {
-    "name": "Inspiration",
-    "file": "quotes_inspiration.json"
+    "name": "Motivation",
+    "file": "quotes_motivation.json"
+  },
+  {
+    "name": "Resilience",
+    "file": "quotes_resilience.json"
   },
   {
     "name": "Life Lessons",
