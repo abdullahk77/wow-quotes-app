@@ -1,22 +1,246 @@
 [
   {
+    "quote": "As we express our gratitude, we must never forget that the highest appreciation is not to utter words, but to live by them.",
+    "by": "John F. Kennedy"
+  },
+  {
+    "quote": "Gratitude makes sense of our past, brings peace for today, and creates a vision for tomorrow.",
+    "by": "Melody Beattie"
+  },
+  {
+    "quote": "I am happy because I'm grateful. I choose to be grateful. That gratitude allows me to be happy.",
+    "by": "Denis Waitley"
+  },
+  {
+    "quote": "Joy is the simplest form of gratitude.",
+    "by": "Karl Barth"
+  },
+  {
+    "quote": "When I started counting my blessings, my whole life turned around.",
+    "by": "Willie Nelson"
+  },
+  {
+    "quote": "No one who achieves success does so without the help of others. The wise and confident acknowledge this help with gratitude.",
+    "by": "Alfred North Whitehead"
+  },
+  {
+    "quote": "We often take for granted the very things that most deserve our gratitude.",
+    "by": "Cynthia Ozick"
+  },
+  {
+    "quote": "Gratitude unlocks the fullness of life. It turns what we have into enough, and more.",
+    "by": "Melody Beattie"
+  },
+  {
+    "quote": "In daily life we must see that it is not happiness that makes us grateful, but gratefulness that makes us happy.",
+    "by": "David Steindl-Rast"
+  },
+  {
+    "quote": "Be grateful for what you already have while you pursue your goals. If you aren’t grateful for what you already have, what makes you think you would be happy with more?",
+    "by": "Unknown"
+  },
+  {
+    "quote": "Feeling gratitude and not expressing it is like wrapping a present and not giving it.",
+    "by": "William Arthur Ward"
+  },
+  {
+    "quote": "Silent gratitude isn't much use to anyone.",
+    "by": "G.B. Stern"
+  },
+  {
+    "quote": "Gratitude is the fairest blossom which springs from the soul.",
+    "by": "Henry Ward Beecher"
+  },
+  {
+    "quote": "Gratitude is riches. Complaint is poverty.",
+    "by": "Doris Day"
+  },
+  {
     "quote": "Gratitude turns what we have into enough.",
     "by": "Aesop"
   },
   {
-    "quote": "Be thankful for what you have; you'll end up having more.",
-    "by": "Oprah Winfrey"
+    "quote": "Reflect upon your present blessings, of which every man has plenty.",
+    "by": "Charles Dickens"
   },
   {
-    "quote": "The more grateful I am, the more beauty I see.",
-    "by": "Mary Davis"
+    "quote": "Acknowledging the good that you already have in your life is the foundation for all abundance.",
+    "by": "Eckhart Tolle"
   },
   {
-    "quote": "Let us be grateful to the people who make us happy.",
+    "quote": "The root of joy is gratefulness.",
+    "by": "David Steindl-Rast"
+  },
+  {
+    "quote": "Gratitude is not only the greatest of virtues, but the parent of all others.",
+    "by": "Cicero"
+  },
+  {
+    "quote": "Gratitude is the memory of the heart.",
+    "by": "Jean-Baptiste Massieu"
+  },
+  {
+    "quote": "Let us be grateful to the people who make us happy; they are the charming gardeners who make our souls blossom.",
     "by": "Marcel Proust"
   },
   {
-    "quote": "Gratitude is not only the greatest of virtues, but the parent of all the others.",
-    "by": "Cicero"
+    "quote": "Who does not thank for little will not thank for much.",
+    "by": "Estonian Proverb"
+  },
+  {
+    "quote": "Develop an attitude of gratitude, and give thanks for everything that happens to you.",
+    "by": "Brian Tracy"
+  },
+  {
+    "quote": "Gratitude changes the pangs of memory into a tranquil joy.",
+    "by": "Dietrich Bonhoeffer"
+  },
+  {
+    "quote": "When it comes to life, the critical thing is whether you take things for granted or take them with gratitude.",
+    "by": "G.K. Chesterton"
+  },
+  {
+    "quote": "Wear gratitude like a cloak, and it will feed every corner of your life.",
+    "by": "Rumi"
+  },
+  {
+    "quote": "A grateful heart is a magnet for miracles.",
+    "by": "Unknown"
+  },
+  {
+    "quote": "To speak gratitude is courteous and pleasant, to enact gratitude is generous and noble.",
+    "by": "Johann Wolfgang von Goethe"
+  },
+  {
+    "quote": "If the only prayer you said was thank you, that would be enough.",
+    "by": "Meister Eckhart"
+  },
+  {
+    "quote": "No duty is more urgent than returning thanks.",
+    "by": "James Allen"
+  },
+  {
+    "quote": "Gratitude is the healthiest of all human emotions.",
+    "by": "Zig Ziglar"
+  },
+  {
+    "quote": "Gratitude is the sweetest thing in a seeker's life.",
+    "by": "Sri Chinmoy"
+  },
+  {
+    "quote": "The way to develop the best that is in a person is by appreciation and encouragement.",
+    "by": "Charles Schwab"
+  },
+  {
+    "quote": "Gratitude opens the door to the power, the wisdom, the creativity of the universe.",
+    "by": "Deepak Chopra"
+  },
+  {
+    "quote": "Appreciation can make a day, even change a life.",
+    "by": "Margaret Cousins"
+  },
+  {
+    "quote": "Gratitude is when memory is stored in the heart and not in the mind.",
+    "by": "Lionel Hampton"
+  },
+  {
+    "quote": "Gratitude, according to legend, is a truffle that merely grows in the forest of the heart.",
+    "by": "Antoine de Saint-Exupéry"
+  },
+  {
+    "quote": "When you practice gratefulness, there is a sense of respect toward others.",
+    "by": "Dalai Lama"
+  },
+  {
+    "quote": "The struggle ends when gratitude begins.",
+    "by": "Neale Donald Walsch"
+  },
+  {
+    "quote": "Enjoy the little things, for one day you may look back and realize they were the big things.",
+    "by": "Robert Brault"
+  },
+  {
+    "quote": "Let gratitude be the pillow upon which you kneel to say your nightly prayer.",
+    "by": "Maya Angelou"
+  },
+  {
+    "quote": "Gratitude is the most exquisite form of courtesy.",
+    "by": "Jacques Maritain"
+  },
+  {
+    "quote": "Gratitude is the foundation of happiness.",
+    "by": "Kevin Horsley"
+  },
+  {
+    "quote": "Let us remember that, as much has been given us, much will be expected from us.",
+    "by": "Theodore Roosevelt"
+  },
+  {
+    "quote": "Saying ‘thank you’ tells us we matter.",
+    "by": "Denise Jacobs"
+  },
+  {
+    "quote": "No one is useless in this world who lightens the burden of it for anyone else.",
+    "by": "Charles Dickens"
+  },
+  {
+    "quote": "To be grateful is to recognize the love of God in everything.",
+    "by": "Thomas Merton"
+  },
+  {
+    "quote": "The essence of all beautiful art, all great art, is gratitude.",
+    "by": "Friedrich Nietzsche"
+  },
+  {
+    "quote": "Gratitude is a currency that we can mint for ourselves, and spend without fear of bankruptcy.",
+    "by": "Fred De Witt Van Amburgh"
+  },
+  {
+    "quote": "The roots of all goodness lie in the soil of appreciation for goodness.",
+    "by": "Dalai Lama"
+  },
+  {
+    "quote": "Gratitude is the sweetest honey ever known.",
+    "by": "Unknown"
+  },
+  {
+    "quote": "Gratitude is the shortest pathway to joy.",
+    "by": "Unknown"
+  },
+  {
+    "quote": "Gratitude is an opener of locked-up blessings.",
+    "by": "Marianne Williamson"
+  },
+  {
+    "quote": "We are shaped and fashioned by what we love.",
+    "by": "Johann Wolfgang von Goethe"
+  },
+  {
+    "quote": "Appreciation is a wonderful thing: it makes what is excellent in others belong to us as well.",
+    "by": "Voltaire"
+  },
+  {
+    "quote": "Gratitude is the most divine of universal virtues.",
+    "by": "Joseph Addison"
+  },
+  {
+    "quote": "The hardest arithmetic to master is that which enables us to count our blessings.",
+    "by": "Eric Hoffer"
+  },
+  {
+    "quote": "Gratitude is the wine for the soul.",
+    "by": "Thomas Carlyle"
+  },
+  {
+    "quote": "Gratitude is a powerful catalyst for happiness.",
+    "by": "Amy Collette"
+  },
+  {
+    "quote": "In ordinary life, we hardly realize that we receive a great deal more than we give.",
+    "by": "Dietrich Bonhoeffer"
+  },
+  {
+    "quote": "Gratitude is the best attitude.",
+    "by": "Unknown"
   }
 ]
