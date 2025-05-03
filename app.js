@@ -1,4 +1,3 @@
-
 // app.js
 document.addEventListener('DOMContentLoaded', () => {
     const catSelect = document.getElementById('category');
