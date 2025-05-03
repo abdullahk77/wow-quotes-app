@@ -1,22 +1,32 @@
 [
-  {
-    "quote": "Life is what happens when you're busy making other plans.",
-    "by": "John Lennon"
-  },
-  {
-    "quote": "Get busy living or get busy dying.",
-    "by": "Stephen King"
-  },
-  {
-    "quote": "You only live once, but if you do it right, once is enough.",
-    "by": "Mae West"
-  },
-  {
-    "quote": "In three words I can sum up everything I’ve learned about life: it goes on.",
-    "by": "Robert Frost"
-  },
-  {
-    "quote": "To live is the rarest thing in the world. Most people exist, that is all.",
-    "by": "Oscar Wilde"
-  }
+  { "quote": "Life is inherently risky. There is only one big risk you should avoid at all costs—and that is the risk of doing nothing.", "by": "Denis Waitley" },
+  { "quote": "Life is a succession of lessons which must be lived to be understood.", "by": "Ralph Waldo Emerson" },
+  { "quote": "In the long run, we shape our lives, and we shape ourselves. The process never ends until we die.", "by": "Eleanor Roosevelt" },
+  { "quote": "The only person you are destined to become is the person you decide to be.", "by": "Ralph Waldo Emerson" },
+  { "quote": "Life isn’t about finding yourself. Life is about creating yourself.", "by": "George Bernard Shaw" },
+  { "quote": "The biggest adventure you can take is to live the life of your dreams.", "by": "Oprah Winfrey" },
+  { "quote": "It is not the strongest of the species that survive, nor the most intelligent, but the one most responsive to change.", "by": "Charles Darwin" },
+  { "quote": "The more I want to get something done, the less I call it work.", "by": "Richard Bach" },
+  { "quote": "We do not remember days; we remember moments.", "by": "Cesare Pavese" },
+  { "quote": "The best way to predict your future is to create it.", "by": "Peter Drucker" },
+  { "quote": "You must be the change you wish to see in the world.", "by": "Mahatma Gandhi" },
+  { "quote": "Don’t judge each day by the harvest you reap but by the seeds that you plant.", "by": "Robert Louis Stevenson" },
+  { "quote": "He who has a why to live can bear almost any how.", "by": "Friedrich Nietzsche" },
+  { "quote": "It does not matter how slowly you go so long as you do not stop.", "by": "Confucius" },
+  { "quote": "When we are no longer able to change a situation, we are challenged to change ourselves.", "by": "Viktor E. Frankl" },
+  { "quote": "Don’t let yesterday take up too much of today.", "by": "Will Rogers" },
+  { "quote": "The real voyage of discovery consists not in seeking new landscapes, but in having new eyes.", "by": "Marcel Proust" },
+  { "quote": "You can’t cross the sea merely by standing and staring at the water.", "by": "Rabindranath Tagore" },
+  { "quote": "The only limit to our realization of tomorrow will be our doubts of today.", "by": "Franklin D. Roosevelt" },
+  { "quote": "Success is not in what you have, but who you are.", "by": "Bo Bennett" },
+  { "quote": "Don’t watch the clock; do what it does. Keep going.", "by": "Sam Levenson" },
+  { "quote": "Everything you’ve ever wanted is on the other side of fear.", "by": "George Addair" },
+  { "quote": "Challenges are what make life interesting; overcoming them is what makes life meaningful.", "by": "Joshua J. Marine" },
+  { "quote": "Act as if what you do makes a difference. It does.", "by": "William James" },
+  { "quote": "Choose a job you love, and you will never have to work a day in your life.", "by": "Confucius" },
+  { "quote": "Happiness is not something ready made. It comes from your own actions.", "by": "Dalai Lama" },
+  { "quote": "Set your goals high, and don’t stop till you get there.", "by": "Bo Jackson" },
+  { "quote": "The only journey is the one within.", "by": "Rainer Maria Rilke" },
+  { "quote": "Don’t count the days; make the days count.", "by": "Muhammad Ali" },
+  { "quote": "The purpose of life is a life of purpose.", "by": "Robert Byrne" }
 ]
