@@ -108,6 +108,10 @@ select {
     transition: color var(--clr-transition);
 }
 
+.by:empty {
+  display: none;
+}
+
 /* ─── BUTTONS ──────────────────────────────────────────────────────── */
 .icon-btn {
     background-color: var(--clr-card-bg);
