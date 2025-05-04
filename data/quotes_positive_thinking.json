@@ -1,19 +1,127 @@
 [
   {
-    "quote": "Keep your face always toward the sunshine—and shadows will fall behind you.",
-    "by": "Walt Whitman"
-  },
-  {
     "quote": "Once you replace negative thoughts with positive ones, you'll start having positive results.",
     "by": "Willie Nelson"
   },
   {
-    "quote": "Positive thinking will let you do everything better than negative thinking will.",
-    "by": "Zig Ziglar"
+    "quote": "Positive thinking must be followed by positive doing.",
+    "by": "John C. Maxwell"
   },
   {
-    "quote": "To carry a positive action, we must develop here a positive vision.",
+    "quote": "In order to carry a positive action, we must develop here a positive vision.",
     "by": "Dalai Lama"
+  },
+  {
+    "quote": "The way to happiness: keep your heart free from hate, your mind from worry. Live simply, expect little, give much.",
+    "by": "Norman Vincent Peale"
+  },
+  {
+    "quote": "Dwell on the beauty of life. Watch the stars and see yourself running with them.",
+    "by": "Marcus Aurelius"
+  },
+  {
+    "quote": "Perpetual optimism is a force multiplier.",
+    "by": "Colin Powell"
+  },
+  {
+    "quote": "Pessimism leads to weakness; optimism to power.",
+    "by": "William James"
+  },
+  {
+    "quote": "Say something positive, and you’ll see something positive.",
+    "by": "Jim Thompson"
+  },
+  {
+    "quote": "Choose to be optimistic; it feels better.",
+    "by": "Dalai Lama"
+  },
+  {
+    "quote": "Be thankful for what you have; you'll end up having more.",
+    "by": "Oprah Winfrey"
+  },
+  {
+    "quote": "If you concentrate on what you don’t have, you will never, ever have enough.",
+    "by": "Oprah Winfrey"
+  },
+  {
+    "quote": "Magic is believing in yourself, if you can do that, you can make anything happen.",
+    "by": "Johann Wolfgang von Goethe"
+  },
+  {
+    "quote": "Stop stressing. Stop worrying. Give rest to the problems weighing you down.",
+    "by": "Germany Kent"
+  },
+  {
+    "quote": "Dwell in possibility.",
+    "by": "Emily Dickinson"
+  },
+  {
+    "quote": "When you’re positive, good things happen.",
+    "by": "Deep Roy"
+  },
+  {
+    "quote": "Live life to the fullest, and focus on the positive.",
+    "by": "Matt Cameron"
+  },
+  {
+    "quote": "The future belongs to those who believe in the beauty of their dreams.",
+    "by": "Eleanor Roosevelt"
+  },
+  {
+    "quote": "You are the architect of your own happiness.",
+    "by": "Anonymous"
+  },
+  {
+    "quote": "Don’t wait. The time will never be just right.",
+    "by": "Napoleon Hill"
+  },
+  {
+    "quote": "Dream it. Wish it. Do it.",
+    "by": "Anonymous"
+  },
+  {
+    "quote": "Opportunities don’t happen. You create them.",
+    "by": "Chris Grosser"
+  },
+  {
+    "quote": "If something is important enough, even if the odds are against you, you should still do it.",
+    "by": "Elon Musk"
+  },
+  {
+    "quote": "What you think, you become.",
+    "by": "Buddha"
+  },
+  {
+    "quote": "Your mind is a powerful thing. When you fill it with positive thoughts, your life will start to change.",
+    "by": "Unknown"
+  },
+  {
+    "quote": "The only limit to our realization of tomorrow will be our doubts of today.",
+    "by": "Franklin D. Roosevelt"
+  },
+  {
+    "quote": "Be so happy that, when others look at you, they become happy too.",
+    "by": "Anonymous"
+  },
+  {
+    "quote": "Every day may not be good, but there is something good in every day.",
+    "by": "Alice Morse Earle"
+  },
+  {
+    "quote": "Think of all the beauty still left around you and be happy.",
+    "by": "Anne Frank"
+  },
+  {
+    "quote": "Keep your face always toward the sunshine—and shadows will fall behind you.",
+    "by": "Walt Whitman"
+  },
+  {
+    "quote": "When you focus on the good, the good gets better.",
+    "by": "Unknown"
+  },
+  {
+    "quote": "Positive thinking will let you do everything better than negative thinking will.",
+    "by": "Zig Ziglar"
   },
   {
     "quote": "You’re braver than you believe, and stronger than you seem, and smarter than you think.",
@@ -22,10 +130,6 @@
   {
     "quote": "A positive attitude causes a chain reaction of positive thoughts, events and outcomes.",
     "by": "Wade Boggs"
-  },
-  {
-    "quote": "Perpetual optimism is a force multiplier.",
-    "by": "Colin Powell"
   },
   {
     "quote": "The more you praise and celebrate your life, the more there is in life to celebrate.",
@@ -52,15 +156,251 @@
     "by": "Theodore Roosevelt"
   },
   {
-    "quote": "Positive thinking must be followed by positive doing.",
-    "by": "John C. Maxwell"
-  },
-  {
     "quote": "When you can’t find the sunshine, be the sunshine.",
     "by": "Unknown"
   },
   {
     "quote": "One small positive thought in the morning can change your whole day.",
     "by": "Dalai Lama"
+  },
+  {
+    "quote": "Happiness is an inside job.",
+    "by": "William Arthur Ward"
+  },
+  {
+    "quote": "The only place where your dream becomes impossible is in your own thinking.",
+    "by": "Robert H. Schuller"
+  },
+  {
+    "quote": "You can’t have a positive life and a negative mind.",
+    "by": "Joyce Meyer"
+  },
+  {
+    "quote": "Your attitude, not your aptitude, will determine your altitude.",
+    "by": "Zig Ziglar"
+  },
+  {
+    "quote": "The greatest discovery of all time is that a person can change their future by merely changing their attitude.",
+    "by": "Oprah Winfrey"
+  },
+  {
+    "quote": "Positive anything is better than negative nothing.",
+    "by": "Elbert Hubbard"
+  },
+  {
+    "quote": "The struggle you’re in today is developing the strength you need tomorrow.",
+    "by": "Robert Tew"
+  },
+  {
+    "quote": "Success is the sum of small efforts, repeated day in and day out.",
+    "by": "Robert Collier"
+  },
+  {
+    "quote": "Turn your wounds into wisdom.",
+    "by": "Oprah Winfrey"
+  },
+  {
+    "quote": "The mind is everything. What you think, you become.",
+    "by": "Buddha"
+  },
+  {
+    "quote": "You were born to win, but to be a winner, you must plan to win, prepare to win, and expect to win.",
+    "by": "Zig Ziglar"
+  },
+  {
+    "quote": "The only person you are destined to become is the person you decide to be.",
+    "by": "Ralph Waldo Emerson"
+  },
+  {
+    "quote": "The difference between ordinary and extraordinary is that little extra.",
+    "by": "Jimmy Johnson"
+  },
+  {
+    "quote": "You don’t have to be great to start, but you have to start to be great.",
+    "by": "Zig Ziglar"
+  },
+  {
+    "quote": "The best way to predict the future is to create it.",
+    "by": "Peter Drucker"
+  },
+  {
+    "quote": "Optimism is the one quality more associated with success and happiness than any other.",
+    "by": "Brian Tracy"
+  },
+  {
+    "quote": "Your positive action combined with positive thinking results in success.",
+    "by": "Shiv Khera"
+  },
+  {
+    "quote": "The sun himself is weak when he first rises, and gathers strength and courage as the day gets on.",
+    "by": "Charles Dickens"
+  },
+  {
+    "quote": "The positive thinker sees the invisible, feels the intangible, and achieves the impossible.",
+    "by": "Winston Churchill"
+  },
+  {
+    "quote": "Start each day with a grateful heart.",
+    "by": "Unknown"
+  },
+  {
+    "quote": "You have within you right now, everything you need to deal with whatever the world can throw at you.",
+    "by": "Brian Tracy"
+  },
+  {
+    "quote": "The more light you allow within you, the brighter the world you live in will be.",
+    "by": "Shakti Gawain"
+  },
+  {
+    "quote": "A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty.",
+    "by": "Winston Churchill"
+  },
+  {
+    "quote": "Your life does not get better by chance, it gets better by change.",
+    "by": "Jim Rohn"
+  },
+  {
+    "quote": "If you want to live a happy life, tie it to a goal, not to people or things.",
+    "by": "Albert Einstein"
+  },
+  {
+    "quote": "The only time you fail is when you fall down and stay down.",
+    "by": "Stephen Richards"
+  },
+  {
+    "quote": "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+    "by": "Winston Churchill"
+  },
+  {
+    "quote": "You are never too old to set another goal or to dream a new dream.",
+    "by": "C.S. Lewis"
+  },
+  {
+    "quote": "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+    "by": "Nelson Mandela"
+  },
+  {
+    "quote": "The only thing standing between you and your goal is the story you keep telling yourself as to why you can’t achieve it.",
+    "by": "Jordan Belfort"
+  },
+  {
+    "quote": "The way to get started is to quit talking and begin doing.",
+    "by": "Walt Disney"
+  },
+  {
+    "quote": "If you don’t like the road you’re walking, start paving another one.",
+    "by": "Dolly Parton"
+  },
+  {
+    "quote": "Act as if what you do makes a difference. It does.",
+    "by": "William James"
+  },
+  {
+    "quote": "Happiness is not by chance, but by choice.",
+    "by": "Jim Rohn"
+  },
+  {
+    "quote": "The only way to do great work is to love what you do.",
+    "by": "Steve Jobs"
+  },
+  {
+    "quote": "You don’t have to see the whole staircase, just take the first step.",
+    "by": "Martin Luther King Jr."
+  },
+  {
+    "quote": "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle.",
+    "by": "Christian D. Larson"
+  },
+  {
+    "quote": "The best revenge is massive success.",
+    "by": "Frank Sinatra"
+  },
+  {
+    "quote": "The harder you work for something, the greater you’ll feel when you achieve it.",
+    "by": "Unknown"
+  },
+  {
+    "quote": "Don’t let yesterday take up too much of today.",
+    "by": "Will Rogers"
+  },
+  {
+    "quote": "It’s not whether you get knocked down, it’s whether you get up.",
+    "by": "Vince Lombardi"
+  },
+  {
+    "quote": "The only limit to our realization of tomorrow will be our doubts of today.",
+    "by": "Franklin D. Roosevelt"
+  },
+  {
+    "quote": "Your time is limited, don’t waste it living someone else’s life.",
+    "by": "Steve Jobs"
+  },
+  {
+    "quote": "The biggest adventure you can take is to live the life of your dreams.",
+    "by": "Oprah Winfrey"
+  },
+  {
+    "quote": "The purpose of our lives is to be happy.",
+    "by": "Dalai Lama"
+  },
+  {
+    "quote": "Life is 10% what happens to us and 90% how we react to it.",
+    "by": "Charles R. Swindoll"
+  },
+  {
+    "quote": "If you want to achieve greatness, stop asking for permission.",
+    "by": "Anonymous"
+  },
+  {
+    "quote": "Success is walking from failure to failure with no loss of enthusiasm.",
+    "by": "Winston Churchill"
+  },
+  {
+    "quote": "The only thing that overcomes hard luck is hard work.",
+    "by": "Harry Golden"
+  },
+  {
+    "quote": "You must expect great things of yourself before you can do them.",
+    "by": "Michael Jordan"
+  },
+  {
+    "quote": "The best time to plant a tree was 20 years ago. The second best time is now.",
+    "by": "Chinese Proverb"
+  },
+  {
+    "quote": "Don’t count the days, make the days count.",
+    "by": "Muhammad Ali"
+  },
+  {
+    "quote": "You are never too old to set another goal or to dream a new dream.",
+    "by": "Les Brown"
+  },
+  {
+    "quote": "The only person you should try to be better than is the person you were yesterday.",
+    "by": "Anonymous"
+  },
+  {
+    "quote": "If you can dream it, you can do it.",
+    "by": "Walt Disney"
+  },
+  {
+    "quote": "It does not matter how slowly you go as long as you do not stop.",
+    "by": "Confucius"
+  },
+  {
+    "quote": "The secret of getting ahead is getting started.",
+    "by": "Mark Twain"
+  },
+  {
+    "quote": "The only way to achieve the impossible is to believe it is possible.",
+    "by": "Charles Kingsleigh"
+  },
+  {
+    "quote": "You don’t have to be perfect to be amazing.",
+    "by": "Unknown"
+  },
+  {
+    "quote": "Your life is your message to the world. Make sure it’s inspiring.",
+    "by": "Anonymous"
   }
 ]
