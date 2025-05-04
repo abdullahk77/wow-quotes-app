@@ -1,83 +1,115 @@
 [
   {
-    "quote": "I think, therefore I am.",
-    "by": "René Descartes"
+    "quote": "Life is inherently risky. There is only one big risk you should avoid at all costs—and that is the risk of doing nothing.",
+    "by": "Denis Waitley"
   },
   {
-    "quote": "The only thing we have to fear is fear itself.",
-    "by": "Franklin D. Roosevelt"
+    "quote": "Life is a succession of lessons which must be lived to be understood.",
+    "by": "Ralph Waldo Emerson"
   },
   {
-    "quote": "Focus on being productive instead of busy.",
-    "by": "Tim Ferriss"
+    "quote": "In the long run, we shape our lives, and we shape ourselves. The process never ends until we die.",
+    "by": "Eleanor Roosevelt"
   },
   {
-    "quote": "Time management is about life management.",
-    "by": "Idowu Koyenikan"
+    "quote": "The only person you are destined to become is the person you decide to be.",
+    "by": "Ralph Waldo Emerson"
   },
   {
-    "quote": "Life is what happens when you're busy making other plans.",
-    "by": "John Lennon"
+    "quote": "Life isn’t about finding yourself. Life is about creating yourself.",
+    "by": "George Bernard Shaw"
+  },
+  {
+    "quote": "The biggest adventure you can take is to live the life of your dreams.",
+    "by": "Oprah Winfrey"
+  },
+  {
+    "quote": "It is not the strongest of the species that survive, nor the most intelligent, but the one most responsive to change.",
+    "by": "Charles Darwin"
+  },
+  {
+    "quote": "We do not remember days; we remember moments.",
+    "by": "Cesare Pavese"
+  },
+  {
+    "quote": "The best way to predict your future is to create it.",
+    "by": "Peter Drucker"
   },
   {
     "quote": "You must be the change you wish to see in the world.",
     "by": "Mahatma Gandhi"
   },
   {
-    "quote": "Well done is better than well said.",
-    "by": "Benjamin Franklin"
+    "quote": "Don’t judge each day by the harvest you reap but by the seeds that you plant.",
+    "by": "Robert Louis Stevenson"
   },
   {
-    "quote": "Coming together is a beginning. Keeping together is progress. Working together is success.",
-    "by": "Henry Ford"
+    "quote": "He who has a why to live can bear almost any how.",
+    "by": "Friedrich Nietzsche"
   },
   {
-    "quote": "The future belongs to those who believe in the beauty of their dreams.",
-    "by": "Eleanor Roosevelt"
+    "quote": "It does not matter how slowly you go so long as you do not stop.",
+    "by": "Confucius"
   },
   {
-    "quote": "In union there is strength.",
-    "by": "Aesop"
+    "quote": "When we are no longer able to change a situation, we are challenged to change ourselves.",
+    "by": "Viktor E. Frankl"
   },
   {
-    "quote": "You will face many defeats in life, but never let yourself be defeated.",
-    "by": "Maya Angelou"
+    "quote": "Don’t let yesterday take up too much of today.",
+    "by": "Will Rogers"
   },
   {
-    "quote": "You are never too old to set another goal or to dream a new dream.",
-    "by": "C.S. Lewis"
+    "quote": "The real voyage of discovery consists not in seeking new landscapes, but in having new eyes.",
+    "by": "Marcel Proust"
   },
   {
-    "quote": "If you look at what you don't have in life, you'll never have enough.",
-    "by": "Oprah Winfrey"
+    "quote": "You can’t cross the sea merely by standing and staring at the water.",
+    "by": "Rabindranath Tagore"
   },
   {
-    "quote": "The successful warrior is the average man, with laser-like focus.",
-    "by": "Bruce Lee"
+    "quote": "The only limit to our realization of tomorrow will be our doubts of today.",
+    "by": "Franklin D. Roosevelt"
   },
   {
-    "quote": "What we think, we become.",
-    "by": "Buddha"
+    "quote": "Success is not in what you have, but who you are.",
+    "by": "Bo Bennett"
   },
   {
-    "quote": "Alone we can do so little; together we can do so much.",
-    "by": "Helen Keller"
+    "quote": "Don’t watch the clock; do what it does. Keep going.",
+    "by": "Sam Levenson"
   },
   {
-    "quote": "Don't let the fear of losing be greater than the excitement of winning.",
-    "by": "Robert Kiyosaki"
+    "quote": "Everything you’ve ever wanted is on the other side of fear.",
+    "by": "George Addair"
   },
   {
-    "quote": "Lost time is never found again.",
-    "by": "Benjamin Franklin"
+    "quote": "Challenges are what make life interesting; overcoming them is what makes life meaningful.",
+    "by": "Joshua J. Marine"
   },
   {
-    "quote": "The greatest glory in living lies not in never falling, but in rising every time we fall.",
-    "by": "Nelson Mandela"
+    "quote": "Act as if what you do makes a difference. It does.",
+    "by": "William James"
   },
   {
-    "quote": "The way to get started is to quit talking and begin doing.",
-    "by": "Walt Disney"
+    "quote": "Choose a job you love, and you will never have to work a day in your life.",
+    "by": "Confucius"
+  },
+  {
+    "quote": "Happiness is not something ready made. It comes from your own actions.",
+    "by": "Dalai Lama"
+  },
+  {
+    "quote": "The only journey is the one within.",
+    "by": "Rainer Maria Rilke"
+  },
+  {
+    "quote": "Don’t count the days; make the days count.",
+    "by": "Muhammad Ali"
+  },
+  {
+    "quote": "The purpose of life is a life of purpose.",
+    "by": "Robert Byrne"
   },
   {
     "quote": "Life is 10% what happens to you and 90% how you react to it.",
@@ -108,40 +140,12 @@
     "by": "Robert Frost"
   },
   {
-    "quote": "Life is never fair, and perhaps it is a good thing for most of us that it is not.",
-    "by": "Oscar Wilde"
-  },
-  {
     "quote": "To live is the rarest thing in the world. Most people exist, that is all.",
     "by": "Oscar Wilde"
   },
   {
     "quote": "The only way out of the labyrinth of suffering is to forgive.",
     "by": "John Green"
-  },
-  {
-    "quote": "The purpose of life is to believe, to hope, and to strive.",
-    "by": "Indira Gandhi"
-  },
-  {
-    "quote": "The healthiest response to life is joy.",
-    "by": "Deepak Chopra"
-  },
-  {
-    "quote": "Life is short, and it is up to you to make it sweet.",
-    "by": "Sarah Louise Delany"
-  },
-  {
-    "quote": "Life is what we make it, always has been, always will be.",
-    "by": "Grandma Moses"
-  },
-  {
-    "quote": "Life’s tragedy is that we get old too soon and wise too late.",
-    "by": "Benjamin Franklin"
-  },
-  {
-    "quote": "Life is a dream for the wise, a game for the fool, a comedy for the rich, a tragedy for the poor.",
-    "by": "Sholom Aleichem"
   },
   {
     "quote": "Your time is limited, don’t waste it living someone else’s life.",
@@ -156,28 +160,8 @@
     "by": "William James"
   },
   {
-    "quote": "Life is a flower of which love is the honey.",
-    "by": "Victor Hugo"
-  },
-  {
-    "quote": "The best way to predict your future is to create it.",
-    "by": "Abraham Lincoln"
-  },
-  {
     "quote": "Start where you are. Use what you have. Do what you can.",
     "by": "Arthur Ashe"
-  },
-  {
-    "quote": "Act as if what you do makes a difference. It does.",
-    "by": "William James"
-  },
-  {
-    "quote": "When you have a dream, you’ve got to grab it and never let go.",
-    "by": "Carol Burnett"
-  },
-  {
-    "quote": "Don’t stop when you’re tired, stop when you’re done.",
-    "by": "David Goggins"
   },
   {
     "quote": "Our lives begin to end the day we become silent about things that matter.",
@@ -192,10 +176,6 @@
     "by": "Dolly Parton"
   },
   {
-    "quote": "You do not find the happy life. You make it.",
-    "by": "Camilla Eyring Kimball"
-  },
-  {
     "quote": "Keep your face always toward the sunshine, and shadows will fall behind you.",
     "by": "Walt Whitman"
   },
@@ -204,52 +184,16 @@
     "by": "E.E. Cummings"
   },
   {
-    "quote": "You get in life what you have the courage to ask for.",
-    "by": "Oprah Winfrey"
-  },
-  {
     "quote": "If I cannot do great things, I can do small things in a great way.",
     "by": "Martin Luther King Jr."
-  },
-  {
-    "quote": "The bad news is time flies. The good news is you’re the pilot.",
-    "by": "Michael Altshuler"
-  },
-  {
-    "quote": "You get what you give.",
-    "by": "Jennifer Lopez"
-  },
-  {
-    "quote": "It is often the small steps, not the giant leaps, that bring about the most lasting change.",
-    "by": "Queen Elizabeth II"
-  },
-  {
-    "quote": "If what you have done yesterday still looks big to you, you haven’t done much today.",
-    "by": "Mikhail Gorbachev"
-  },
-  {
-    "quote": "In the long run, you make your own luck—good, bad, or indifferent.",
-    "by": "Loretta Lynn"
   },
   {
     "quote": "Learn as if you will live forever, live like you will die tomorrow.",
     "by": "Mahatma Gandhi"
   },
   {
-    "quote": "Stay away from those people who try to disparage your ambitions.",
-    "by": "Mark Twain"
-  },
-  {
     "quote": "When you change your thoughts, remember to also change your world.",
     "by": "Norman Vincent Peale"
-  },
-  {
-    "quote": "It is only when we take chances that our lives improve.",
-    "by": "Walter Anderson"
-  },
-  {
-    "quote": "You learn more from failure than from success. Don’t let it stop you. Failure builds character.",
-    "by": "Unknown"
   },
   {
     "quote": "Experience is a hard teacher because she gives the test first, the lesson afterward.",
@@ -260,22 +204,6 @@
     "by": "Dalai Lama"
   },
   {
-    "quote": "Don't let someone else's opinion of you become your reality.",
-    "by": "Les Brown"
-  },
-  {
-    "quote": "If you're not positive energy, you're negative energy.",
-    "by": "Mark Cuban"
-  },
-  {
-    "quote": "I am not a product of my circumstances. I am a product of my decisions.",
-    "by": "Stephen R. Covey"
-  },
-  {
-    "quote": "Do the best you can. No one can do more than that.",
-    "by": "John Wooden"
-  },
-  {
     "quote": "If you can dream it, you can do it.",
     "by": "Walt Disney"
   },
@@ -284,65 +212,167 @@
     "by": "Theodore Roosevelt"
   },
   {
-    "quote": "You can get everything in life you want if you help enough other people get what they want.",
-    "by": "Zig Ziglar"
-  },
-  {
-    "quote": "Don't settle for average. Bring your best to the moment.",
-    "by": "Angela Bassett"
-  },
-  {
-    "quote": "Someone's sitting in the shade today because someone planted a tree a long time ago.",
-    "by": "Warren Buffett"
-  },
-  {
-    "quote": "True freedom is impossible without a mind made free by discipline.",
-    "by": "Mortimer J. Adler"
-  },
-  {
     "quote": "Rivers know this: there is no hurry. We shall get there someday.",
     "by": "A.A. Milne"
   },
   {
-    "quote": "The grass is greener where you water it.",
-    "by": "Neil Barringham"
-  },
-  {
     "quote": "Whatever you are, be a good one.",
     "by": "Abraham Lincoln"
+  },
+  {
+    "quote": "The past is never dead. It’s not even past.",
+    "by": "William Faulkner"
+  },
+  {
+    "quote": "The strongest of all warriors are these two—Time and Patience.",
+    "by": "Leo Tolstoy"
+  },
+  {
+    "quote": "Beware; for I am fearless, and therefore powerful.",
+    "by": "Mary Shelley"
+  },
+  {
+    "quote": "To the well-organized mind, death is but the next great adventure.",
+    "by": "J.K. Rowling"
+  },
+  {
+    "quote": "And, when you want something, all the universe conspires in helping you to achieve it.",
+    "by": "Paulo Coelho"
+  },
+  {
+    "quote": "It’s no use going back to yesterday, because I was a different person then.",
+    "by": "Lewis Carroll"
+  },
+  {
+    "quote": "Life is to be lived, not controlled; and humanity is won by continuing to play in face of certain defeat.",
+    "by": "Ralph Ellison"
+  },
+  {
+    "quote": "I know not all that may be coming, but be it what it will, I’ll go to it laughing.",
+    "by": "Herman Melville"
+  },
+  {
+    "quote": "If you tell the truth you do not need a good memory.",
+    "by": "Mark Twain"
+  },
+  {
+    "quote": "Life appears to me too short to be spent in nursing animosity or registering wrongs.",
+    "by": "Charlotte Brontë"
+  },
+  {
+    "quote": "It is only with the heart that one can see rightly; what is essential is invisible to the eye.",
+    "by": "Antoine de Saint-Exupéry"
+  },
+  {
+    "quote": "The true courage is in facing danger when you are afraid.",
+    "by": "L. Frank Baum"
+  },
+  {
+    "quote": "Today you are You, that is truer than true. There is no one alive who is Youer than You.",
+    "by": "Dr. Seuss"
+  },
+  {
+    "quote": "Never hurry and never worry!",
+    "by": "E.B. White"
+  },
+  {
+    "quote": "The thing is—fear can’t hurt you any more than a dream.",
+    "by": "William Golding"
+  },
+  {
+    "quote": "When we love, we always strive to become better than we are.",
+    "by": "Paulo Coelho"
+  },
+  {
+    "quote": "All humans make mistakes. What determines a person’s character aren’t the mistakes we make. It’s how we take those mistakes and turn them into lessons.",
+    "by": "Anonymous"
+  },
+  {
+    "quote": "The wound is the place where the light enters you.",
+    "by": "Rumi"
+  },
+  {
+    "quote": "The mind is its own place, and in itself can make a heaven of hell, a hell of heaven.",
+    "by": "John Milton"
+  },
+  {
+    "quote": "Simplicity, patience, compassion. These three are your greatest treasures.",
+    "by": "Lao Tzu"
+  },
+  {
+    "quote": "Grown-ups never understand anything by themselves, and it is tiresome for children to be always and forever explaining things to them.",
+    "by": "Antoine de Saint-Exupéry"
+  },
+  {
+    "quote": "No act of kindness, no matter how small, is ever wasted.",
+    "by": "Aesop"
+  },
+  {
+    "quote": "Wisdom cannot be imparted. Wisdom that a wise man attempts to impart always sounds like foolishness to someone else.",
+    "by": "Hermann Hesse"
+  },
+  {
+    "quote": "The truth is rarely pure and never simple.",
+    "by": "Oscar Wilde"
+  },
+  {
+    "quote": "The events in our lives happen in a sequence in time, but in their significance to ourselves they find their own order.",
+    "by": "Eudora Welty"
+  },
+  {
+    "quote": "The time is always right to do what is right.",
+    "by": "Martin Luther King Jr."
+  },
+  {
+    "quote": "The best thing to hold onto in life is each other.",
+    "by": "Audrey Hepburn"
+  },
+  {
+    "quote": "Life is not a spectator sport.",
+    "by": "Jackie Robinson"
+  },
+  {
+    "quote": "If you don't like the road you're walking, start paving another one.",
+    "by": "Dolly Parton"
+  },
+  {
+    "quote": "The two most important days in your life are the day you are born and the day you find out why.",
+    "by": "Mark Twain"
+  },
+  {
+    "quote": "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.",
+    "by": "Dr. Seuss"
+  },
+  {
+    "quote": "A life is not important except in the impact it has on other lives.",
+    "by": "Jackie Robinson"
+  },
+  {
+    "quote": "Courage doesn't always roar. Sometimes courage is the little voice at the end of the day that says I'll try again tomorrow.",
+    "by": "Mary Anne Radmacher"
+  },
+  {
+    "quote": "Everything you want is on the other side of fear.",
+    "by": "Jack Canfield"
+  },
+  {
+    "quote": "The difference between winning and losing is most often not quitting.",
+    "by": "Walt Disney"
+  },
+  {
+    "quote": "You have power over your mind—not outside events. Realize this, and you will find strength.",
+    "by": "Marcus Aurelius"
+  },
+  {
+    "quote": "It takes a deep commitment to change and an even deeper commitment to grow.",
+    "by": "Ralph Ellison"
+  },
+  {
+    "quote": "My mission in life is not merely to survive, but to thrive; and to do so with some passion, some compassion, some humor, and some style.",
+    "by": "Maya Angelou"
+  },
+  {
+    "quote": "Be a bush if you can't be a tree. If you can't be a highway, just be a trail. If you can't be a sun, be a star.",
+    "by": "Martin Luther King Jr."
   }
-  { "quote": "I think, therefore I am.", "by": "René Descartes" },
-  { "quote": "The only thing we have to fear is fear itself.", "by": "Franklin D. Roosevelt" },
-  { "quote": "Focus on being productive instead of busy.", "by": "Tim Ferriss" },
-  { "quote": "Whatever you are, be a good one.", "by": "Abraham Lincoln" },
-  { "quote": "Life is inherently risky. There is only one big risk you should avoid at all costs—and that is the risk of doing nothing.", "by": "Denis Waitley" },
-  { "quote": "Life is a succession of lessons which must be lived to be understood.", "by": "Ralph Waldo Emerson" },
-  { "quote": "In the long run, we shape our lives, and we shape ourselves. The process never ends until we die.", "by": "Eleanor Roosevelt" },
-  { "quote": "The only person you are destined to become is the person you decide to be.", "by": "Ralph Waldo Emerson" },
-  { "quote": "Life isn’t about finding yourself. Life is about creating yourself.", "by": "George Bernard Shaw" },
-  { "quote": "The biggest adventure you can take is to live the life of your dreams.", "by": "Oprah Winfrey" },
-  { "quote": "It is not the strongest of the species that survive, nor the most intelligent, but the one most responsive to change.", "by": "Charles Darwin" },
-  { "quote": "The more I want to get something done, the less I call it work.", "by": "Richard Bach" },
-  { "quote": "We do not remember days; we remember moments.", "by": "Cesare Pavese" },
-  { "quote": "The best way to predict your future is to create it.", "by": "Peter Drucker" },
-  { "quote": "You must be the change you wish to see in the world.", "by": "Mahatma Gandhi" },
-  { "quote": "Don’t judge each day by the harvest you reap but by the seeds that you plant.", "by": "Robert Louis Stevenson" },
-  { "quote": "He who has a why to live can bear almost any how.", "by": "Friedrich Nietzsche" },
-  { "quote": "It does not matter how slowly you go so long as you do not stop.", "by": "Confucius" },
-  { "quote": "When we are no longer able to change a situation, we are challenged to change ourselves.", "by": "Viktor E. Frankl" },
-  { "quote": "Don’t let yesterday take up too much of today.", "by": "Will Rogers" },
-  { "quote": "The real voyage of discovery consists not in seeking new landscapes, but in having new eyes.", "by": "Marcel Proust" },
-  { "quote": "You can’t cross the sea merely by standing and staring at the water.", "by": "Rabindranath Tagore" },
-  { "quote": "The only limit to our realization of tomorrow will be our doubts of today.", "by": "Franklin D. Roosevelt" },
-  { "quote": "Success is not in what you have, but who you are.", "by": "Bo Bennett" },
-  { "quote": "Don’t watch the clock; do what it does. Keep going.", "by": "Sam Levenson" },
-  { "quote": "Everything you’ve ever wanted is on the other side of fear.", "by": "George Addair" },
-  { "quote": "Challenges are what make life interesting; overcoming them is what makes life meaningful.", "by": "Joshua J. Marine" },
-  { "quote": "Act as if what you do makes a difference. It does.", "by": "William James" },
-  { "quote": "Choose a job you love, and you will never have to work a day in your life.", "by": "Confucius" },
-  { "quote": "Happiness is not something ready made. It comes from your own actions.", "by": "Dalai Lama" },
-  { "quote": "Set your goals high, and don’t stop till you get there.", "by": "Bo Jackson" },
-  { "quote": "The only journey is the one within.", "by": "Rainer Maria Rilke" },
-  { "quote": "Don’t count the days; make the days count.", "by": "Muhammad Ali" },
-  { "quote": "The purpose of life is a life of purpose.", "by": "Robert Byrne" }
 ]
