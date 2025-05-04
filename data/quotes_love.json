@@ -1,22 +1,374 @@
 [
   {
+    "quote": "None of you truly believes until he loves for his brother what he loves for himself.",
+    "by": "Prophet Muhammad"
+  },
+  {
+    "quote": "I am my beloved's, and my beloved is mine.",
+    "by": "Song of Songs 6:3"
+  },
+  {
+    "quote": "Love conquers all; let us also yield to love.",
+    "by": "Virgil"
+  },
+  {
     "quote": "Love all, trust a few, do wrong to none.",
     "by": "William Shakespeare"
   },
   {
-    "quote": "Where there is love there is life.",
-    "by": "Mahatma Gandhi"
+    "quote": "Whoever is touched by love becomes a poet.",
+    "by": "Plato"
   },
   {
-    "quote": "To love and be loved is to feel the sun from both sides.",
-    "by": "David Viscott"
+    "quote": "Love is the water of life. Drink it down with heart and soul!",
+    "by": "Rumi"
+  },
+  {
+    "quote": "Your task is not to seek for love, but to seek and find all the barriers within yourself that you have built against it.",
+    "by": "Rumi"
+  },
+  {
+    "quote": "I belong to no religion. My religion is love.",
+    "by": "Rumi"
+  },
+  {
+    "quote": "Let the beauty of what you love be what you do.",
+    "by": "Rumi"
+  },
+  {
+    "quote": "If their love can last for an age, why need they stay together day and night?",
+    "by": "Qin Guan"
+  },
+  {
+    "quote": "Till mountains crumble, till rivers run dry… Not till then will my love die.",
+    "by": "Anonymous (Han dynasty)"
+  },
+  {
+    "quote": "Love is patient, love is kind… It always protects, always trusts, always hopes, always perseveres.",
+    "by": "1 Corinthians 13:4-7"
   },
   {
     "quote": "Love is composed of a single soul inhabiting two bodies.",
     "by": "Aristotle"
   },
   {
+    "quote": "Whatever our souls are made of, his and mine are the same.",
+    "by": "Emily Brontë"
+  },
+  {
+    "quote": "My bounty is as boundless as the sea, my love as deep.",
+    "by": "William Shakespeare"
+  },
+  {
+    "quote": "How do I love thee? Let me count the ways.",
+    "by": "Elizabeth Barrett Browning"
+  },
+  {
+    "quote": "Love gives naught but itself and takes naught but from itself.",
+    "by": "Kahlil Gibran"
+  },
+  {
+    "quote": "Where there is love, there is life.",
+    "by": "Mahatma Gandhi"
+  },
+  {
+    "quote": "Love that moves the sun and the other stars.",
+    "by": "Dante Alighieri"
+  },
+  {
+    "quote": "Love is the joy of the good, the wonder of the wise, the amazement of the gods.",
+    "by": "Plato"
+  },
+  {
+    "quote": "O my Luve's like a red, red rose that’s newly sprung in June.",
+    "by": "Robert Burns"
+  },
+  {
+    "quote": "Love does not consist in gazing at each other, but in looking outward together in the same direction.",
+    "by": "Antoine de Saint-Exupéry"
+  },
+  {
+    "quote": "Being deeply loved by someone gives you strength, while loving someone deeply gives you courage.",
+    "by": "Lao Tzu"
+  },
+  {
+    "quote": "If I know what love is, it is because of you.",
+    "by": "Hermann Hesse"
+  },
+  {
+    "quote": "We accept the love we think we deserve.",
+    "by": "Stephen Chbosky"
+  },
+  {
+    "quote": "Life without love is like a tree without blossoms or fruit.",
+    "by": "Kahlil Gibran"
+  },
+  {
+    "quote": "To love and be loved is to feel the sun from both sides.",
+    "by": "David Viscott"
+  },
+  {
+    "quote": "Where there is great love, there are always miracles.",
+    "by": "Willa Cather"
+  },
+  {
+    "quote": "There is no remedy for love but to love more.",
+    "by": "Henry David Thoreau"
+  },
+  {
+    "quote": "It is better to have loved and lost than never to have loved at all.",
+    "by": "Alfred Lord Tennyson"
+  },
+  {
+    "quote": "The only thing we never get enough of is love; the only thing we never give enough of is love.",
+    "by": "Henry Miller"
+  },
+  {
+    "quote": "Who, being loved, is poor?",
+    "by": "Oscar Wilde"
+  },
+  {
+    "quote": "I love you without knowing how, or when, or from where.",
+    "by": "Pablo Neruda"
+  },
+  {
+    "quote": "Love understands love; it needs no talk.",
+    "by": "Francis Thompson"
+  },
+  {
+    "quote": "Love is the only force capable of transforming an enemy into a friend.",
+    "by": "Martin Luther King Jr."
+  },
+  {
+    "quote": "All you need is love.",
+    "by": "John Lennon"
+  },
+  {
+    "quote": "Love is an act of endless forgiveness.",
+    "by": "Peter Ustinov"
+  },
+  {
+    "quote": "Love is the symbol of eternity. It wipes out all sense of time.",
+    "by": "Madame de Staël"
+  },
+  {
+    "quote": "In your light I learn how to love.",
+    "by": "Rumi"
+  },
+  {
+    "quote": "You are the finest, loveliest, tenderest, and most beautiful person I have ever known.",
+    "by": "F. Scott Fitzgerald"
+  },
+  {
+    "quote": "I would rather spend one lifetime with you, than face all the ages of this world alone.",
+    "by": "J.R.R. Tolkien"
+  },
+  {
+    "quote": "The best love is the kind that awakens the soul and makes us reach for more.",
+    "by": "Nicholas Sparks"
+  },
+  {
+    "quote": "Love is a friendship set to music.",
+    "by": "Joseph Campbell"
+  },
+  {
+    "quote": "Love is the only gold.",
+    "by": "Alfred Lord Tennyson"
+  },
+  {
+    "quote": "The minute I heard my first love story I started looking for you.",
+    "by": "Rumi"
+  },
+  {
+    "quote": "True love stories never have endings.",
+    "by": "Richard Bach"
+  },
+  {
+    "quote": "To love another person is to see the face of God.",
+    "by": "Victor Hugo"
+  },
+  {
+    "quote": "Love is a promise, love is a souvenir, once given never forgotten.",
+    "by": "John Lennon"
+  },
+  {
+    "quote": "I wish you to know that you have been the last dream of my soul.",
+    "by": "Charles Dickens"
+  },
+  {
+    "quote": "Love is the poetry of the senses.",
+    "by": "Honoré de Balzac"
+  },
+  {
+    "quote": "Love is a canvas furnished by nature and embroidered by imagination.",
+    "by": "Voltaire"
+  },
+  {
+    "quote": "Love is the greatest refreshment in life.",
+    "by": "Pablo Picasso"
+  },
+  {
+    "quote": "Love is the only reality, and it is not a mere sentiment.",
+    "by": "Rabindranath Tagore"
+  },
+  {
+    "quote": "Love is when the other person's happiness is more important than your own.",
+    "by": "H. Jackson Brown Jr."
+  },
+  {
+    "quote": "Love is a better teacher than duty.",
+    "by": "Albert Einstein"
+  },
+  {
+    "quote": "Love is the magician that pulls man out of his own hat.",
+    "by": "Ben Hecht"
+  },
+  {
+    "quote": "Love is the master key that opens the gates of happiness.",
+    "by": "Oliver Wendell Holmes"
+  },
+  {
+    "quote": "Love is the beauty of the soul.",
+    "by": "Saint Augustine"
+  },
+  {
+    "quote": "He seems to me equal to gods that man who sits opposite you and listens to your sweet voice.",
+    "by": "Sappho"
+  },
+  {
+    "quote": "Love does not dominate; it cultivates.",
+    "by": "Johann Wolfgang von Goethe"
+  },
+  {
+    "quote": "There is always some madness in love. But there is also always some reason in madness.",
+    "by": "Friedrich Nietzsche"
+  },
+  {
+    "quote": "Even after all this time the sun never says to the earth, 'You owe me.' Look what happens with a love like that—it lights the whole sky.",
+    "by": "Hafiz"
+  },
+  {
+    "quote": "Love one another, but make not a bond of love: let it rather be a moving sea between the shores of your souls.",
+    "by": "Kahlil Gibran"
+  },
+  {
+    "quote": "When love beckons to you, follow it.",
+    "by": "Kahlil Gibran"
+  },
+  {
+    "quote": "For thy sweet love remembered such wealth brings That then I scorn to change my state with kings.",
+    "by": "William Shakespeare"
+  },
+  {
+    "quote": "My heart is ever at your service.",
+    "by": "William Shakespeare"
+  },
+  {
+    "quote": "Who loves, teaches.",
+    "by": "Euripides"
+  },
+  {
+    "quote": "At the touch of love everyone becomes a poet.",
+    "by": "Plato"
+  },
+  {
+    "quote": "Spread love everywhere you go. Let no one ever come to you without leaving happier.",
+    "by": "Mother Teresa"
+  },
+  {
+    "quote": "Love is like the wind, you can't see it but you can feel it.",
+    "by": "Nicholas Sparks"
+  },
+  {
+    "quote": "In love nothing exists between heart and heart.",
+    "by": "Kahlil Gibran"
+  },
+  {
+    "quote": "What the heart has once owned and had, it shall never lose.",
+    "by": "Henry Ward Beecher"
+  },
+  {
+    "quote": "Love cures people—both the ones who give it and the ones who receive it.",
+    "by": "Karl Menninger"
+  },
+  {
+    "quote": "To love is nothing. To be loved is something. But to love and be loved, that’s everything.",
+    "by": "T. Tolis"
+  },
+  {
+    "quote": "Love is not only something you feel, it is something you do.",
+    "by": "David Wilkerson"
+  },
+  {
+    "quote": "Love is the only sane and satisfactory answer to the problem of human existence.",
+    "by": "Erich Fromm"
+  },
+  {
+    "quote": "Love is the voice under all silences, the hope which has no opposite in fear.",
+    "by": "E.E. Cummings"
+  },
+  {
+    "quote": "Love is the whole thing. We are only pieces.",
+    "by": "Rumi"
+  },
+  {
     "quote": "The best thing to hold onto in life is each other.",
     "by": "Audrey Hepburn"
+  },
+  {
+    "quote": "You don’t love someone for their looks, or their clothes, or for their fancy car, but because they sing a song only you can hear.",
+    "by": "Oscar Wilde"
+  },
+  {
+    "quote": "Love is like a friendship caught on fire.",
+    "by": "Bruce Lee"
+  },
+  {
+    "quote": "The art of love is largely the art of persistence.",
+    "by": "Albert Ellis"
+  },
+  {
+    "quote": "Love is the triumph of imagination over intelligence.",
+    "by": "H.L. Mencken"
+  },
+  {
+    "quote": "We are shaped and fashioned by what we love.",
+    "by": "Johann Wolfgang von Goethe"
+  },
+  {
+    "quote": "Love is the flower of life, and blossoms unexpectedly and without law.",
+    "by": "D.H. Lawrence"
+  },
+  {
+    "quote": "Love is an endless act of faith. Be faithful.",
+    "by": "Roy Godwin"
+  },
+  {
+    "quote": "Love is the only light that can truly read the secret signature of another’s soul.",
+    "by": "John O’Donohue"
+  },
+  {
+    "quote": "Love is the emblem of eternity; it confounds all notion of time.",
+    "by": "Madame de Staël"
+  },
+  {
+    "quote": "Love is the greatest of dreams, yet the hardest to come by.",
+    "by": "Emily Dickinson"
+  },
+  {
+    "quote": "To love is to receive a glimpse of heaven.",
+    "by": "Karen Sunde"
+  },
+  {
+    "quote": "Love is the only way to grasp another human being in the innermost core of their personality.",
+    "by": "Viktor E. Frankl"
+  },
+  {
+    "quote": "Love is the master key that opens the gates of happiness.",
+    "by": "Oliver Wendell Holmes Sr."
+  },
+  {
+    "quote": "Love is the foundation of all existence.",
+    "by": "Sri Sathya Sai Baba"
   }
 ]
