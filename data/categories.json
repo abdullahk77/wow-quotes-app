@@ -38,5 +38,13 @@
   {
     "name": "Life Lessons",
     "file": "quotes_life_lessons.json"
+  },
+  {
+    "name": "Urdu Aqwal O Ashaar",
+    "file": "urdu_aqwal_ashaar.json"
+  },
+  {
+    "name": "Good Vibes",
+    "file": "good_vibes.json"
   }
 ]
