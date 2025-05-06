@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <head>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WOW Quotes - Daily Inspiration & Wisdom</title>
@@ -25,7 +24,10 @@
   <link rel="icon" type="image/png" sizes="32x32" href="https://quotes-app.wordsofwisdom.in/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://quotes-app.wordsofwisdom.in/images/favicon-16x16.png">
 
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Google Fonts: only those actually used in your fontMap -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500&family=Montserrat:wght@600&family=Roboto+Slab:wght@400&family=Lora:wght@400&family=Bree+Serif&family=Dancing+Script&family=Merriweather&family=Nunito&family=Ubuntu&family=Oswald&family=Quicksand&family=Crimson+Text&family=Josefin+Slab&family=Cabin&family=Cormorant+Garamond&family=Libre+Baskerville&family=Abel&family=Roboto&family=Spectral&family=Fira+Sans&family=EB+Garamond&family=Source+Serif+Pro&family=Raleway&family=PT+Serif&family=Open+Sans&family=Work+Sans&family=Cormorant&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -34,58 +36,61 @@
     referrerpolicy="no-referrer"
   />
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <main class="app">
+  <header>
+    <a href="/" class="home-btn" aria-label="Home"><i class="fa-solid fa-house"></i></a>
         <h1 class="title">WOW <span>Quotes</span></h1>
+    <div class="toggle-wrap">
+      <label class="theme-toggle">
+        <input type="checkbox" id="themeSwitch" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
 
-        <div class="controls">
-            <div class="select-wrapper">
-                <label for="category">Choose category</label>
-                <select id="category"></select>
-            </div>
-            <button id="generate" class="icon-btn round" aria-label="Generate New Quote">
-                <i class="fas fa-arrows-rotate"></i>
-            </button>
-            <button id="themeToggle" class="icon-btn round" aria-label="Toggle Theme">
-                <i class="fas fa-sun"></i>
-            </button>
-        </div>
+  <main>
+    <div class="quote-box neomorphic" id="quoteBox">
+      <span id="quoteMark" class="quote-mark">“</span>
+      <p id="quoteText">Click “Inspire Me” to get inspired!</p>
+      <p id="quoteAuthor" class="author"></p>
+    </div>
+    <button id="openMenuBtn" class="category-btn">
+      <i class="fa-solid fa-bars"></i> <span id="currentCategory">Inspiration</span>
+    </button>
+    <!-- Fullscreen Modal Category Menu -->
+    <div id="categoryModal" class="modal">
+      <div class="modal-content">
+        <button class="close-btn" id="closeMenuBtn" aria-label="Close Menu"><i class="fa-solid fa-xmark"></i></button>
+        <div id="categoryMenu"></div>
+      </div>
+    </div>
+    <div class="action-buttons">
+      <button id="shareBtn" class="icon-btn" title="Share">
+        <i class="fa-solid fa-share-nodes"></i>
+        <span class="btn-tooltip">Share</span>
+      </button>
+      <button id="generateBtn" class="generate-btn" title="Inspire Me">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+      </button>
+      <button id="copyBtn" class="icon-btn" title="Copy to clipboard">
+        <i class="fa-solid fa-copy"></i>
+        <span class="btn-tooltip">Copy</span>
+      </button>
+    </div>
+  </main>
 
-        <div class="quote-card" aria-live="polite">
-            <blockquote id="quote">Loading…</blockquote>
-            <figcaption id="author">—</figcaption>
-        </div>
+    <footer>
+      <small>
+        © 2025 Wow Quotes App. All rights reserved.
+        <a href="https://www.wordsofwisdom.in/" target="_blank">Words of Wisdom Media</a>
+      </small>
+    </footer>
+  </main>
 
-        <div class="share-section">
-            <p class="share-label">Share or Save this Quote:</p>
-            <div class="social-links">
-                <a href="#" id="whatsapp" class="icon-btn square" aria-label="Share on WhatsApp">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-                <a href="#" id="threads" class="icon-btn square" aria-label="Share on Threads">
-                    <i class="fab fa-threads"></i>
-                </a>
-                <a href="#" id="xshare" class="icon-btn square" aria-label="Share on X">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-                <button id="copy" class="icon-btn square" aria-label="Copy Quote">
-                    <i class="fas fa-copy"></i>
-                </button>
-            </div>
-        </div>
-
-        <footer>
-            <small>
-                © 2025 WOW Quotes App. All rights reserved.<br>
-                <a href="https://www.wordsofwisdom.in/" target="_blank">Words of Wisdom Media</a>
-            </small>
-        </footer>
-    </main>
-
-    <script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
-
 </html>
+
