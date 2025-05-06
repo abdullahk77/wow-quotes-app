@@ -1,50 +1,82 @@
 [
   {
-    "name": "Inspiration",
-    "file": "quotes_inspiration.json"
+    "id": "themesEmotions",
+    "name": "Themes & Emotions",
+    "isParent": true,
+    "children": [
+      { "id": "inspiration", "name": "Inspiration", "file": "quotes/inspiration.json" },
+      { "id": "motivation", "name": "Motivation", "file": "quotes/motivation.json" },
+      { "id": "positivethinking", "name": "Positive Thinking", "file": "quotes/positive_thinking.json" },
+      { "id": "happiness", "name": "Happiness", "file": "quotes/happiness.json" },
+      { "id": "love", "name": "Love", "file": "quotes/love.json" },
+      { "id": "gratitude", "name": "Gratitude", "file": "quotes/gratitude.json" },
+      { "id": "resilience", "name": "Resilience", "file": "quotes/resilience.json" },
+      { "id": "courage", "name": "Courage", "file": "quotes/courage.json" },
+      { "id": "change", "name": "Change", "file": "quotes/change.json" },
+      { "id": "lifelessons", "name": "Life Lessons", "file": "quotes/life_lessons.json" },
+      { "id": "dreams", "name": "Dreams", "file": "quotes/dreams.json" },
+      { "id": "kindness", "name": "Kindness", "file": "quotes/kindness.json" },
+      { "id": "beauty", "name": "Beauty", "file": "quotes/beauty.json" }
+    ]
   },
   {
-    "name": "Gratitude",
-    "file": "quotes_gratitude.json"
+    "id": "wisdomPhilosophy",
+    "name": "Wisdom & Philosophy",
+    "isParent": true,
+    "children": [
+      { "id": "wisdom", "name": "Wisdom", "file": "quotes/wisdom.json" },
+      { "id": "sufiwisdom", "name": "Sufi Wisdom", "file": "quotes/sufi_wisdom.json" },
+      { "id": "truth", "name": "Truth", "file": "quotes/truth.json" },
+      { "id": "time", "name": "Time", "file": "quotes/time.json" },
+      { "id": "mortality", "name": "Mortality & Fate", "file": "quotes/mortality.json" },
+      { "id": "freedom", "name": "Freedom", "file": "quotes/freedom.json" },
+      { "id": "society", "name": "Society & Character", "file": "quotes/society.json" },
+      { "id": "learning", "name": "Learning", "file": "quotes/learning.json" },
+      { "id": "simplicity", "name": "Simplicity", "file": "quotes/simplicity.json" }
+    ]
   },
   {
-    "name": "Love",
-    "file": "quotes_love.json"
+    "id": "wellbeingSpirituality",
+    "name": "Wellbeing & Spirituality",
+    "isParent": true,
+    "children": [
+      { "id": "selfcare", "name": "Self-Care", "file": "quotes/self_care.json" },
+      { "id": "mindfulness", "name": "Mindfulness", "file": "quotes/mindfulness.json" },
+      { "id": "selfknowledge", "name": "Self-Knowledge", "file": "quotes/self_knowledge.json" },
+      { "id": "innerpeace", "name": "Inner Peace", "file": "quotes/inner_peace.json" },
+      { "id": "spirituality", "name": "Spirituality", "file": "quotes/spirituality.json" },
+      { "id": "adversity", "name": "Overcoming Adversity", "file": "quotes/adversity.json" }
+    ]
   },
   {
-    "name": "Self-Care",
-    "file": "quotes_self_care.json"
+    "id": "specialCollections",
+    "name": "Special Collections",
+    "isParent": true,
+    "children": [
+      {
+        "id": "urdu",
+        "name": "Urdu",
+        "isParent": true,
+        "children": [
+          { "id": "urdu_aqwal", "name": "Aqwal", "file": "quotes/urdu_aqwal_ashaar.json", "filterKey": "aqwal", "dataType": "urdu" },
+          { "id": "urdu_ashaar", "name": "Ashaar", "file": "quotes/urdu_aqwal_ashaar.json", "filterKey": "ashaar", "dataType": "urdu" }
+        ]
+      },
+      {
+        "id": "goodvibes",
+        "name": "Good Vibes",
+        "isParent": true,
+        "children": [
+          { "id": "goodvibes_affirmations", "name": "Affirmations", "file": "quotes/good_vibes.json", "filterKey": "affirmations", "dataType": "message"},
+          { "id": "goodvibes_messages", "name": "Messages", "file": "quotes/good_vibes.json", "filterKey": "messages", "dataType": "message" }
+        ]
+      },
+      { "id": "oneword", "name": "One Word Inspiration", "file": "quotes/oneword.json", "dataType": "quote" }
+    ]
   },
   {
-    "name": "Mindfulness",
-    "file": "quotes_mindfulness.json"
-  },
-  {
-    "name": "Positive Thinking",
-    "file": "quotes_positive_thinking.json"
-  },
-  {
-    "name": "Sufi Wisdom",
-    "file": "quotes_sufi_wisdom.json"
-  },
-  {
-    "name": "Motivation",
-    "file": "quotes_motivation.json"
-  },
-  {
-    "name": "Resilience",
-    "file": "quotes_resilience.json"
-  },
-  {
-    "name": "Life Lessons",
-    "file": "quotes_life_lessons.json"
-  },
-  {
-    "name": "Urdu Aqwal O Ashaar",
-    "file": "urdu_aqwal_ashaar.json"
-  },
-  {
-    "name": "Good Vibes",
-    "file": "good_vibes.json"
+    "id": "authorSearchSection",
+    "name": "Search by Author",
+    "isSearch": true 
   }
 ]
