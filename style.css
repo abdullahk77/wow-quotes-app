@@ -1,276 +1,307 @@
-/* ─── THEME VARIABLES ───────────────────────────────────────────────── */
+/* 0. Reset & fonts */
+* { box-sizing: border-box; margin: 0; padding: 0; transition: .3s; font-family: Poppins, sans-serif; }
+
+/* 1. Theme vars */
 :root {
-    --clr-bg: #2f3640; /* Dark background */
-    --clr-card-bg: #3d4551; /* Darker card background */
-    --clr-text: #e4e6eb; /* Lighter text */
-    --clr-accent: #f5a623; /* Golden accent (dark theme) */
-    --clr-shadow-dark: rgba(0, 0, 0, 0.6); /* Stronger dark shadow */
-    --clr-shadow-light: rgba(255, 255, 255, 0.1); /* Subtle light highlight */
-    --clr-radius: 12px;
-    --clr-transition: 0.3s ease;
-    --clr-font-head: 'Montserrat', sans-serif;
-    --clr-font-body: 'Open Sans', sans-serif;
+  --bg: #f0f0f3;
+  --card: #f0f0f3;
+  --text: #222;
+  --light: #555;
+  --primary: #7c5df0;
+  --gold: #FFD700;
+  --glow: rgba(124,93,240,0.6);
+  --sh-light: rgba(255,255,255,0.7);
+  --sh-dark: rgba(136,165,191,0.2);
+  --menu-bg: #fff;
+  --menu-text: #222;
+  --menu-hover: #f3e5f5;
+  --toggle-bg: #e0e0e0;
+  --toggle-checked-bg: #7c5df0;
+  --toggle-knob: #fff;
+  --toggle-shadow: 0 2px 8px rgba(124,93,240,0.08);
 }
-
-:root.light {
-    --clr-bg: #e0e5ec; /* Light background */
-    --clr-card-bg: #f0f3f7; /* Lighter card background */
-    --clr-text: #2f3640; /* Darker text */
-    --clr-accent: #1e88e5; /* Royal blue accent (light theme) */
-    --clr-shadow-dark: rgba(0, 0, 0, 0.1); /* Subtle dark shadow */
-    --clr-shadow-light: rgba(255, 255, 255, 0.7); /* Stronger light highlight */
-}
-
-/* ─── BASE LAYOUT ───────────────────────────────────────────────────── */
-* {
-    box-sizing: border-box;
+body.dark {
+  --bg: #181826;
+  --card: #232336;
+  --text: #f8f8fa;
+  --light: #fff;
+  --primary: #b39ddb;
+  --sh-light: rgba(60,60,60,0.3);
+  --sh-dark: rgba(0,0,0,0.7);
+  --menu-bg: #232336;
+  --menu-text: #f8f8fa;
+  --menu-hover: #2a2450;
+  --toggle-bg: #232336;
+  --toggle-checked-bg: #ffd700;
+  --toggle-knob: #232336;
+  --toggle-shadow: 0 2px 8px rgba(255,215,0,0.13);
 }
 
 body {
-    margin: 0;
-    font-family: var(--clr-font-body);
-    background-color: var(--clr-bg);
-    color: var(--clr-text);
-    transition: background-color var(--clr-transition), color var(--clr-transition);
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Poppins, sans-serif;
+  padding-bottom: 7rem;
+  transition: background .4s, color .4s;
 }
 
-.app {
-    max-width: 700px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: var(--clr-bg); /* Match app background to body */
-    border-radius: var(--clr-radius);
-    text-align: center;
+/* 2. Header */
+header {
+  width: 100vw;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3.5rem;
+  background: var(--bg);
+  box-shadow: 0 2px 8px var(--sh-dark);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+header h1 {
+  font-family: Playfair Display, serif;
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin: 0 auto;
+  pointer-events: none;
+  user-select: none;
+}
+.home-btn {
+  position: absolute;
+  left: 1.5rem;
+  color: var(--primary);
+  font-size: 1.3rem;
+  text-decoration: none;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
 }
 
-/* ─── TITLE ─────────────────────────────────────────────────────────── */
-.title {
-    font-family: var(--clr-font-head);
-    font-size: clamp(2rem, 6vw, 2.8rem);
-    color: var(--clr-accent);
-    margin-bottom: 1.5rem;
-    transition: color var(--clr-transition);
+/* 3. Theme Toggle Switch */
+.toggle-wrap {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+.theme-toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  vertical-align: middle;
+}
+.theme-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--toggle-bg);
+  transition: background 0.4s;
+  border-radius: 34px;
+  box-shadow: var(--toggle-shadow);
+}
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background: var(--toggle-knob);
+  transition: transform 0.4s, background 0.4s;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+.theme-toggle input:checked + .slider {
+  background: var(--toggle-checked-bg);
+}
+.theme-toggle input:checked + .slider:before {
+  transform: translateX(22px);
+  background: var(--toggle-knob);
+}
+.theme-toggle input:focus + .slider {
+  box-shadow: 0 0 2px 2px var(--toggle-checked-bg);
 }
 
-.title span {
-    color: var(--clr-accent);
+/* 4. Main layout */
+main {
+  padding: 5rem 1rem 1rem; /* 5rem to clear header */
+  text-align: center;
 }
 
-/* ─── CONTROLS ──────────────────────────────────────────────────────── */
-.controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
+/* 5. Quote box */
+.neomorphic {
+  background: var(--card);
+  border-radius: 1rem;
+  box-shadow: 8px 8px 16px var(--sh-dark), -8px -8px 16px var(--sh-light);
 }
-
-.select-wrapper {
-    position: relative;
+.quote-box {
+  position: relative;
+  background: var(--card);
+  border-radius: 1.2rem;
+  box-shadow: 8px 8px 16px var(--sh-dark), -8px -8px 16px var(--sh-light);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  padding: 2.5rem 2rem 2rem;
+  text-align: center;
+  overflow: hidden;
+  transition: background .5s, box-shadow .5s;
 }
-
-.select-wrapper label {
-    /* screen‑reader only */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+.quote-box:hover {
+  background: var(--menu-hover);
+  box-shadow: 0 0 30px var(--glow), 8px 8px 16px var(--sh-dark), -8px -8px 16px var(--sh-light);
 }
-
-select {
-    appearance: none;
-    border: none;
-    padding: 0.6rem 2.5rem 0.6rem 1rem;
-    font-size: 1rem;
-    border-radius: var(--clr-radius);
-    background-color: var(--clr-card-bg);
-    color: var(--clr-text);
-    cursor: pointer;
-    transition: box-shadow var(--clr-transition), background-color var(--clr-transition), color var(--clr-transition);
-    /* Emboss Neomorphism for Select */
-    box-shadow:
-        inset 2px 2px 5px var(--clr-shadow-dark),
-        inset -2px -2px 5px var(--clr-shadow-light);
+.quote-mark {
+  font-size: 4rem;
+  color: var(--primary);
+  opacity: .18;
+  position: absolute;
+  left: 2rem;
+  top: 1.2rem;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity .3s;
 }
+#quoteText { font-size: 1.5rem; margin-bottom: 1rem; transition: all .5s; }
+.author { font-style: italic; color: var(--light); transition: all .5s; }
 
-.select-wrapper::after {
-    content: "\f078";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--clr-accent);
-    pointer-events: none;
-    transition: color var(--clr-transition);
+/* 6. Category button */
+.category-btn {
+  margin: 0 auto 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  background: var(--card);
+  border-radius: 2rem;
+  border: none;
+  box-shadow: inset 5px 5px 10px var(--sh-dark), inset -5px -5px 10px var(--sh-light);
+  padding: .8rem 1.5rem;
+  font-size: 1.1rem;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 600;
 }
+.category-btn i { color: var(--primary);}
 
-.by:empty {
+/* 7. Modal Menu */
+.modal {
   display: none;
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(40,30,70,0.14);
+  z-index: 999;
+  align-items: center; justify-content: center;
 }
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--menu-bg);
+  border-radius: 1.5rem;
+  box-shadow: 8px 8px 32px var(--sh-dark), -8px -8px 32px var(--sh-light);
+  max-width: 400px; width: 94vw; max-height: 90vh; overflow-y: auto;
+  margin: 0 auto; padding: 2rem 0; position: relative;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.close-btn {
+  position: absolute; top: 1.2rem; right: 1.2rem;
+  background: none; border: none; color: var(--primary);
+  font-size: 1.5rem; cursor: pointer;
+}
+.section { border-top: 1px solid var(--sh-dark);}
+.section-btn {
+  width: 100%; padding: 0.8rem 1.2rem; background: var(--menu-bg); border: none;
+  display: flex; align-items: center; gap: 0.85rem; cursor: pointer;
+  font-size: 1.07rem; font-weight: 500;
+  border-radius: 1rem; transition: background .2s;
+  color: var(--menu-text);
+}
+.section-btn:hover, .section.open .section-btn { background: var(--menu-hover);}
+.section-icon { font-size: 1.3em; color: var(--primary);}
+.section-list { display: none; list-style: none; padding-left: 1.2rem; background: var(--menu-bg);}
+.section.open .section-list { display: block; }
+.section-list li { margin: 0.5rem 0; }
+.section-list a, .section-list span {
+  text-decoration: none; color: var(--menu-text) !important; font-size: 1.05rem;
+  border-radius: 0.6rem; display: flex; align-items: center; gap: .7rem; padding: .38rem .7rem;
+  background: var(--menu-bg);
+}
+.section-list a:hover { background: var(--menu-hover); color: var(--primary) !important;}
+.has-children > span { display: flex; align-items: center; justify-content: space-between; cursor: pointer;}
+.has-children .nested-list { display: none; margin-left: 1.2rem; background: var(--menu-bg);}
+.has-children.open .nested-list { display: block; }
+.nested-list a i { font-size: 1.1em; color: var(--primary);}
+.section-list .fa-face-smile { color: var(--gold)!important; }
+.author-search-wrapper {
+  display: none; padding: 0.5rem 0.5rem 0.5rem 1.2rem; width: 90%;
+}
+.section.search-section.open .author-search-wrapper { display: block; }
+.author-search-wrapper input {
+  width: 90%; max-width: 220px; padding: 0.6rem 1rem; border: none; border-radius: 2rem;
+  background: var(--menu-bg); border: 1.5px solid var(--primary); color: var(--menu-text); font-size: 1rem;
+  margin-bottom: 0.5rem; text-align: left;
+}
+.suggestions-list {
+  list-style: none; margin-top: 0.5rem; max-height: 120px; overflow-y: auto;
+  background: var(--menu-bg); border: 1.5px solid var(--primary); border-radius: 1rem;
+  box-shadow: 4px 4px 12px var(--sh-dark), -4px -4px 12px var(--sh-light);
+  color: var(--menu-text);
+}
+.suggestions-list li { padding: 0.5rem 1rem; cursor: pointer; color: var(--primary); transition: background 0.2s;}
+.suggestions-list li:hover { background: rgba(124,93,240,0.15); color: #fff;}
 
-/* ─── BUTTONS ──────────────────────────────────────────────────────── */
+/* 8. Action buttons */
+.action-buttons {
+  display: flex; justify-content: center; align-items: center;
+  max-width: 480px; margin: 2.5rem auto 0; gap: 2rem;
+  position: relative; z-index: 10;
+}
 .icon-btn {
-    background-color: var(--clr-card-bg);
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s, background-color var(--clr-transition), box-shadow var(--clr-transition), color var(--clr-transition);
-    /* Raised Neomorphism for Buttons */
-    box-shadow:
-        6px 6px 12px var(--clr-shadow-dark),
-        -6px -6px 12px var(--clr-shadow-light);
-    border-radius: var(--clr-radius);
-    color: var(--clr-accent);
+  background: transparent; border: none; outline: none;
+  border-radius: 50%; width: 3.2rem; height: 3.2rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; color: var(--primary);
+  position: relative; cursor: pointer;
+  transition: background .2s, color .2s, box-shadow .2s;
+  box-shadow: none;
 }
-
-.icon-btn:hover {
-    transform: translateY(-2px);
-    box-shadow:
-        3px 3px 6px var(--clr-shadow-dark),
-        -3px -3px 6px var(--clr-shadow-light);
+.icon-btn:focus { box-shadow: 0 0 0 2px var(--primary);}
+.icon-btn .btn-tooltip {
+  opacity: 0; pointer-events: none;
+  position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%) scale(0.95);
+  background: var(--primary); color: #fff; font-size: 0.98rem; padding: 0.25rem 0.85rem;
+  border-radius: 1.2rem; white-space: nowrap;
+  box-shadow: 0 2px 8px var(--sh-dark);
+  transition: opacity .18s cubic-bezier(.4,0,.2,1), transform .18s cubic-bezier(.4,0,.2,1);
+  z-index: 2;
 }
-
-.icon-btn i {
-    font-size: 1.2rem;
+.icon-btn:hover .btn-tooltip, .icon-btn:focus .btn-tooltip {
+  opacity: 1; transform: translateX(-50%) scale(1);
 }
-
-/* round buttons */
-.icon-btn.round {
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
+.icon-btn.copied-feedback { color: #43b581; }
+.generate-btn {
+  width: 4.5rem; height: 4.5rem; background: var(--primary); color: #fff; border: none; border-radius: 50%;
+  box-shadow: 0 0 20px var(--glow); cursor: pointer; font-size: 2.1rem; display: flex; align-items: center; justify-content: center;
+  transition: box-shadow .3s, transform .1s; overflow: hidden; z-index: 100; margin: 0 2rem;
 }
-
-/* soft‑cornered square buttons */
-.icon-btn.square {
-    border-radius: var(--clr-radius);
-    width: 40px;
-    height: 40px;
+.generate-btn:active { transform: scale(0.97);}
+.generate-btn .ripple {
+  position: absolute; border-radius: 50%; transform: scale(0);
+  animation: waterRipple .8s cubic-bezier(.22,.68,.54,1.01);
+  background: radial-gradient(circle, #fff 0%, #7c5df0 80%, transparent 100%);
+  pointer-events: none; z-index: 10;
 }
+@keyframes waterRipple { to { transform: scale(2.5); opacity: 0; } }
 
-/* Remove underline from social‑share links */
-.social-links a.icon-btn,
-.social-links a.icon-btn:visited,
-.social-links a.icon-btn:hover,
-.social-links a.icon-btn:active {
-    text-decoration: none;
-}
-
-.social-links a.icon-btn i {
-    text-decoration: none;
-    display: inline-block;
-}
-
-/* ─── QUOTE CARD ───────────────────────────────────────────────────── */
-.quote-card {
-    background-color: var(--clr-card-bg);
-    border-radius: var(--clr-radius);
-    padding: 2rem;
-    margin: 2rem 0;
-    transition: opacity 0.5s, background-color var(--clr-transition), box-shadow var(--clr-transition);
-    /* Emboss Neomorphism for Quote Card */
-    box-shadow:
-        inset 5px 5px 10px var(--clr-shadow-dark),
-        inset -5px -5px 10px var(--clr-shadow-light);
-}
-
-.quote-card blockquote {
-    position: relative;
-    margin: 0;
-    padding-left: 2.5rem;
-    font-family: var(--clr-font-head);
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    line-height: 1.4;
-    font-weight: 600;
-    color: var(--clr-text);
-    transition: color var(--clr-transition);
-}
-
-.quote-card blockquote::before {
-    content: "\201C";
-    position: absolute;
-    left: 0;
-    top: -0.3rem;
-    font-size: 3rem;
-    color: var(--clr-accent);
-    transition: color var(--clr-transition);
-}
-
-.quote-card figcaption {
-    margin-top: 1rem;
-    font-style: italic;
-    opacity: 0.8;
-    color: var(--clr-text);
-    transition: color var(--clr-transition);
-}
-
-/* ─── SHARE & COPY ─────────────────────────────────────────────────── */
-.share-section {
-    margin-top: 1rem;
-}
-
-.share-label {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    color: var(--clr-text);
-    transition: color var(--clr-transition);
-}
-
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-/* ─── FOOTER ───────────────────────────────────────────────────────── */
+/* 9. Footer */
 footer {
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: var(--clr-text);
-    transition: color var(--clr-transition);
-}
-
-footer a {
-    color: var(--clr-accent);
-    text-decoration: none;
-    font-weight: 600;
-    transition: color var(--clr-transition);
-}
-
-/* ─── RESPONSIVE ───────────────────────────────────────────────────── */
-@media (max-width: 480px) {
-    .icon-btn.round {
-        width: 48px;
-        height: 48px;
-    }
-
-    .icon-btn.square {
-        width: 40px;
-        height: 40px;
-    }
-
-    select {
-        font-size: 0.9rem;
-    }
-
-    .title {
-        font-size: 2rem;
-    }
-
-    .quote-card blockquote {
-        font-size: 1.3rem;
-        padding-left: 1.8rem;
-    }
-
-    .quote-card blockquote::before {
-        font-size: 2.5rem;
-    }
+  width: 100vw;
+  position: fixed; left: 0; right: 0; bottom: 0;
+  text-align: center; padding: 1rem; color: var(--primary);
+  background: var(--card); box-shadow: 0 -1px 8px var(--sh-dark);
 }
