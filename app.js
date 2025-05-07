@@ -60,11 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Load categories and quotes dynamically ---
   async function loadCategoriesAndQuotes() {
     try {
-      // Load categories.json
       const catRes = await fetch('data/categories.json');
       categories = await catRes.json();
 
-      // Load all quote files
       const quotePromises = [];
       function collectCategories(catArray) {
         catArray.forEach(cat => {
@@ -104,10 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- Render Categories Menu (keep your existing code) ---
-
-  // --- Modal Menu Open/Close (keep your existing code) ---
-
   // --- Quote display ---
   function showQuote(item, cat) {
     let fonts = fontMap[cat];
@@ -120,18 +114,16 @@ document.addEventListener("DOMContentLoaded", () => {
     qAuth.style.fontFamily = `'${aFont}', serif, sans-serif`;
     qText.textContent = txt;
 
-    // Em dash and Unicode-safe author
     if (!by || by.toLowerCase() === "anonymous" || by.toLowerCase() === "unknown") {
       qAuth.textContent = "";
     } else {
       qAuth.innerHTML = `<span style="font-size:1.3em;vertical-align:middle;">&#8212;</span> ${by}`;
     }
 
-    // Curly quote mark, always visible except for affirmations
     if (cat === "goodvibes_affirmations") {
       quoteMark.style.opacity = 0;
     } else {
-      quoteMark.textContent = "“"; // Unicode curly quote
+      quoteMark.textContent = "“";
       quoteMark.style.opacity = 0.14;
     }
   }
@@ -149,7 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Initialization ---
   (async function(){
-    // Show loading message in the quote box
     qText.textContent = "✨ Loading Wisdom...";
     qAuth.textContent = "";
     quoteMark.textContent = "“";
@@ -158,9 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedCat = "inspiration";
 
     await loadCategoriesAndQuotes();
-    // renderMenu(); // Uncomment if you have a menu rendering function
 
-    // After loading, check if quotes for inspiration exist
     if (quotes["inspiration"] && quotes["inspiration"].length > 0) {
       showQuote(
         quotes["inspiration"][Math.floor(Math.random() * quotes["inspiration"].length)],
