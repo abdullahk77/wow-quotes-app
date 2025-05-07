@@ -23,7 +23,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="https://quotes-app.wordsofwisdom.in/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://quotes-app.wordsofwisdom.in/images/favicon-16x16.png">
 
-  <!-- Google Fonts: only those actually used in your fontMap -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500&family=Montserrat:wght@600&family=Roboto+Slab:wght@400&family=Lora:wght@400&family=Bree+Serif&family=Dancing+Script&family=Merriweather&family=Nunito&family=Ubuntu&family=Oswald&family=Quicksand&family=Crimson+Text&family=Josefin+Slab&family=Cabin&family=Cormorant+Garamond&family=Libre+Baskerville&family=Abel&family=Roboto&family=Spectral&family=Fira+Sans&family=EB+Garamond&family=Source+Serif+Pro&family=Raleway&family=PT+Serif&family=Open+Sans&family=Work+Sans&family=Cormorant&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <link rel="stylesheet"
@@ -33,45 +32,8 @@
     referrerpolicy="no-referrer"
   />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    #loading-wisdom {
-      position: fixed;
-      z-index: 2000;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(245,245,250,0.95);
-      color: #7c5df0;
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      letter-spacing: 0.04em;
-      transition: opacity .4s;
-    }
-    body.dark #loading-wisdom {
-      background: rgba(24,24,38,0.98);
-      color: #ffd700;
-    }
-    #loading-wisdom.hide {
-      opacity: 0;
-      pointer-events: none;
-    }
-    footer .wow-link, footer .author-link {
-      font-weight: bold;
-      color: var(--primary);
-      text-decoration: none;
-      margin-top: 0.5rem;
-      font-size: 1.08rem;
-      letter-spacing: 0.01em;
-    }
-    footer .author-link:hover,
-    footer .author-link:focus {
-      text-decoration: underline;
-    }
-  </style>
 </head>
 <body>
-  <div id="loading-wisdom">✨ Loading Wisdom...</div>
   <header>
     <a href="https://www.wordsofwisdom.in" class="home-btn" aria-label="Home" target="_blank" rel="noopener">
       <i class="fa-solid fa-house"></i>
@@ -87,7 +49,7 @@
   <main>
     <div class="quote-box neomorphic" id="quoteBox">
       <span id="quoteMark" class="quote-mark" aria-hidden="true">“</span>
-      <p id="quoteText">Click “Inspire Me” to get inspired!</p>
+      <p id="quoteText">✨ Loading Wisdom...</p>
       <p id="quoteAuthor" class="author"></p>
     </div>
     <button id="openMenuBtn" class="category-btn">
@@ -121,14 +83,6 @@
       <a href="https://www.wordsofwisdom.in/p/about.html" class="author-link" target="_blank" rel="noopener">Abdullah Khan</a>
     </div>
   </footer>
-  <script>
-    // Hide loading overlay after everything is loaded
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        document.getElementById('loading-wisdom').classList.add('hide');
-      }, 350); // smooth fade
-    });
-  </script>
   <script src="app.js"></script>
 </body>
 </html>
