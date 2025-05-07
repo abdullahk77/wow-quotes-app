@@ -2,81 +2,82 @@
   {
     "id": "themesEmotions",
     "name": "Themes & Emotions",
-    "isParent": true,
+    "icon": "fa-lightbulb",
     "children": [
-      { "id": "inspiration", "name": "Inspiration", "file": "quotes/inspiration.json" },
-      { "id": "motivation", "name": "Motivation", "file": "motivation.json" },
-      { "id": "positivethinking", "name": "Positive Thinking", "file": "quotes/positive_thinking.json" },
-      { "id": "happiness", "name": "Happiness", "file": "quotes/happiness.json" },
-      { "id": "love", "name": "Love", "file": "quotes/love.json" },
-      { "id": "gratitude", "name": "Gratitude", "file": "quotes/gratitude.json" },
-      { "id": "resilience", "name": "Resilience", "file": "quotes/resilience.json" },
-      { "id": "courage", "name": "Courage", "file": "quotes/courage.json" },
-      { "id": "change", "name": "Change", "file": "quotes/change.json" },
-      { "id": "lifelessons", "name": "Life Lessons", "file": "quotes/life_lessons.json" },
-      { "id": "dreams", "name": "Dreams", "file": "quotes/dreams.json" },
-      { "id": "kindness", "name": "Kindness", "file": "quotes/kindness.json" },
-      { "id": "beauty", "name": "Beauty", "file": "quotes/beauty.json" }
+      { "id": "inspiration", "name": "Inspiration", "icon": "fa-sun", "file": "data/quotes_inspiration.json" },
+      { "id": "motivation", "name": "Motivation", "icon": "fa-fire", "file": "data/quotes_motivation.json" },
+      { "id": "positivethinking", "name": "Positive Thinking", "icon": "fa-thumbs-up", "file": "data/quotes_positive_thinking.json" },
+      { "id": "happiness", "name": "Happiness", "icon": "fa-face-laugh-beam", "file": "data/quotes_happiness.json" },
+      { "id": "love", "name": "Love", "icon": "fa-heart", "file": "data/quotes_love.json" },
+      { "id": "gratitude", "name": "Gratitude", "icon": "fa-hands-praying", "file": "data/quotes_gratitude.json" },
+      { "id": "resilience", "name": "Resilience", "icon": "fa-mountain", "file": "data/quotes_resilience.json" },
+      { "id": "courage", "name": "Courage", "icon": "fa-bolt", "file": "data/quotes_courage.json" },
+      { "id": "change", "name": "Change", "icon": "fa-arrows-rotate", "file": "data/quotes_change.json" },
+      { "id": "lifelessons", "name": "Life Lessons", "icon": "fa-book-open", "file": "data/quotes_life_lessons.json" },
+      { "id": "dreams", "name": "Dreams", "icon": "fa-cloud-moon", "file": "data/quotes_dreams.json" },
+      { "id": "kindness", "name": "Kindness", "icon": "fa-hand-holding-heart", "file": "data/quotes_kindness.json" },
+      { "id": "beauty", "name": "Beauty", "icon": "fa-spa", "file": "data/quotes_beauty.json" }
     ]
   },
   {
     "id": "wisdomPhilosophy",
     "name": "Wisdom & Philosophy",
-    "isParent": true,
+    "icon": "fa-hat-wizard",
     "children": [
-      { "id": "wisdom", "name": "Wisdom", "file": "quotes/wisdom.json" },
-      { "id": "sufiwisdom", "name": "Sufi Wisdom", "file": "quotes/sufi_wisdom.json" },
-      { "id": "truth", "name": "Truth", "file": "quotes/truth.json" },
-      { "id": "time", "name": "Time", "file": "quotes/time.json" },
-      { "id": "mortality", "name": "Mortality & Fate", "file": "quotes/mortality.json" },
-      { "id": "freedom", "name": "Freedom", "file": "quotes/freedom.json" },
-      { "id": "society", "name": "Society & Character", "file": "quotes/society.json" },
-      { "id": "learning", "name": "Learning", "file": "quotes/learning.json" },
-      { "id": "simplicity", "name": "Simplicity", "file": "quotes/simplicity.json" }
+      { "id": "wisdom", "name": "Wisdom", "icon": "fa-brain", "file": "data/quotes_wisdom.json" },
+      { "id": "sufiwisdom", "name": "Sufi Wisdom", "icon": "fa-dove", "file": "data/quotes_sufi_wisdom.json" },
+      { "id": "truth", "name": "Truth", "icon": "fa-scale-balanced", "file": "data/quotes_truth.json" },
+      { "id": "time", "name": "Time", "icon": "fa-clock", "file": "data/quotes_time.json" },
+      { "id": "mortality", "name": "Mortality & Fate", "icon": "fa-skull", "file": "data/quotes_mortality.json" },
+      { "id": "freedom", "name": "Freedom", "icon": "fa-feather", "file": "data/quotes_freedom.json" },
+      { "id": "society", "name": "Society & Character", "icon": "fa-people-group", "file": "data/quotes_society.json" },
+      { "id": "learning", "name": "Learning", "icon": "fa-graduation-cap", "file": "data/quotes_learning.json" },
+      { "id": "simplicity", "name": "Simplicity", "icon": "fa-leaf", "file": "data/quotes_simplicity.json" }
     ]
   },
   {
     "id": "wellbeingSpirituality",
     "name": "Wellbeing & Spirituality",
-    "isParent": true,
+    "icon": "fa-seedling",
     "children": [
-      { "id": "selfcare", "name": "Self-Care", "file": "quotes/self_care.json" },
-      { "id": "mindfulness", "name": "Mindfulness", "file": "quotes/mindfulness.json" },
-      { "id": "selfknowledge", "name": "Self-Knowledge", "file": "quotes/self_knowledge.json" },
-      { "id": "innerpeace", "name": "Inner Peace", "file": "quotes/inner_peace.json" },
-      { "id": "spirituality", "name": "Spirituality", "file": "quotes/spirituality.json" },
-      { "id": "adversity", "name": "Overcoming Adversity", "file": "quotes/adversity.json" }
+      { "id": "selfcare", "name": "Self-Care", "icon": "fa-heart-circle-check", "file": "data/quotes_self_care.json" },
+      { "id": "mindfulness", "name": "Mindfulness", "icon": "fa-eye", "file": "data/quotes_mindfulness.json" },
+      { "id": "selfknowledge", "name": "Self-Knowledge", "icon": "fa-user-astronaut", "file": "data/quotes_self_knowledge.json" },
+      { "id": "innerpeace", "name": "Inner Peace", "icon": "fa-peace", "file": "data/quotes_innerpeace.json" },
+      { "id": "spirituality", "name": "Spirituality", "icon": "fa-star-and-crescent", "file": "data/quotes_spirituality.json" },
+      { "id": "adversity", "name": "Overcoming Adversity", "icon": "fa-person-hiking", "file": "data/quotes_adversity.json" }
     ]
   },
   {
     "id": "specialCollections",
     "name": "Special Collections",
-    "isParent": true,
+    "icon": "fa-star",
     "children": [
       {
         "id": "urdu",
         "name": "Urdu",
-        "isParent": true,
+        "icon": "fa-language",
         "children": [
-          { "id": "urdu_aqwal", "name": "Aqwal", "file": "quotes/urdu_aqwal_ashaar.json", "filterKey": "aqwal", "dataType": "urdu" },
-          { "id": "urdu_ashaar", "name": "Ashaar", "file": "quotes/urdu_ashaar.json", "filterKey": "ashaar", "dataType": "urdu" }
+          { "id": "urdu_aqwal", "name": "Aqwal", "icon": "fa-quote-left", "file": "data/quotes_urdu_aqwal.json", "filterKey": "aqwal", "dataType": "urdu" },
+          { "id": "urdu_ashaar", "name": "Ashaar", "icon": "fa-quote-right", "file": "data/quotes_ashaar.json", "filterKey": "ashaar", "dataType": "urdu" }
         ]
       },
       {
         "id": "goodvibes",
         "name": "Good Vibes",
-        "isParent": true,
+        "icon": "fa-face-smile",
         "children": [
-          { "id": "goodvibes_affirmations", "name": "Affirmations", "file": "quotes/good_vibes.json", "filterKey": "affirmations", "dataType": "message"},
-          { "id": "goodvibes_messages", "name": "Messages", "file": "quotes/good_vibes.json", "filterKey": "messages", "dataType": "message" }
+          { "id": "goodvibes_affirmations", "name": "Affirmations", "icon": "fa-sparkles", "file": "data/affirmations.json", "filterKey": "affirmations", "dataType": "message" },
+          { "id": "goodvibes_messages", "name": "Messages", "icon": "fa-message", "file": "data/good_vibes.json", "filterKey": "messages", "dataType": "message" }
         ]
       },
-      { "id": "oneword", "name": "One Word Inspiration", "file": "quotes/oneword.json", "dataType": "quote" }
+      { "id": "oneword", "name": "One Word Inspiration", "icon": "fa-font", "file": "data/words.json", "dataType": "quote" }
     ]
   },
   {
     "id": "authorSearchSection",
     "name": "Search by Author",
-    "isSearch": true 
+    "icon": "fa-user",
+    "isSearch": true
   }
 ]
