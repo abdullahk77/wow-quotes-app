@@ -37,41 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
     oneword: ['Montserrat', 'Montserrat']
   };
 
-  // --- Quotes DB (sample) ---
-  const quotes = {
-    inspiration: [
-      { quote: "You are never too old to set another goal or to dream a new dream.", by: "C.S. Lewis" },
-      { quote: "Believe you can and you're halfway there.", by: "Theodore Roosevelt" }
-    ],
-    motivation: [
-      { quote: "Act as if what you do makes a difference. It does.", by: "William James" }
-    ],
-    goodvibes_affirmations: [
-      { message: "I am worthy of love and happiness." }
-    ]
-    // Add more categories and quotes as needed...
-  };
-
-  // --- Categories (static for demo) ---
-  const categories = [
-    {
-      id: "themesEmotions", name: "Themes & Emotions", icon: "fa-lightbulb", children: [
-        { id: "inspiration", name: "Inspiration", icon: "fa-sun" },
-        { id: "motivation", name: "Motivation", icon: "fa-fire" }
-      ]
-    },
-    {
-      id: "specialCollections", name: "Special Collections", icon: "fa-star", children: [
-        {
-          id: "goodvibes", name: "Good Vibes", icon: "fa-face-smile", children: [
-            { id: "goodvibes_affirmations", name: "Affirmations", icon: "fa-sparkles" }
-          ]
-        }
-      ]
-    },
-    { id: "authorSearchSection", name: "Search by Author", icon: "fa-user", isSearch: true }
-  ];
-
   // --- DOM refs ---
   const qText = document.getElementById("quoteText"),
         qAuth = document.getElementById("quoteAuthor"),
@@ -87,51 +52,119 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCategory = document.getElementById("currentCategory"),
         categoryMenu = document.getElementById("categoryMenu");
 
+  let categories = [];
+  let quotes = {};
+  let authors = {};
   let selectedCat = "inspiration";
 
-  // --- Render Categories ---
-  function renderMenu() {
-    categoryMenu.innerHTML = "";
-    categories.forEach(cat => {
-      if (cat.isSearch) {
-        // Search by Author section
-        const sec = document.createElement("div");
-        sec.className = "section search-section";
-        sec.innerHTML = `<button class="section-btn"><i class="fa-solid fa-user section-icon"></i>Search by Author <i class="fa-solid fa-chevron-down"></i></button>
-          <div class="author-search-wrapper">
-            <input id="authorSearch" type="text" placeholder="Type author name…" />
-            <ul id="authorList" class="suggestions-list"></ul>
-          </div>`;
-        categoryMenu.appendChild(sec);
-      } else {
-        const sec = document.createElement("div");
-        sec.className = "section";
-        sec.innerHTML = `<button class="section-btn"><i class="fa-solid ${cat.icon} section-icon"></i>${cat.name} <i class="fa-solid fa-chevron-down"></i></button>
-          <ul class="section-list"></ul>`;
-        const ul = sec.querySelector(".section-list");
-        cat.children.forEach(child => {
-          if (child.children) {
-            // Subcategory
-            const li = document.createElement("li");
-            li.className = "has-children";
-            li.innerHTML = `<span><i class="fa-solid ${child.icon||'fa-angle-right'}"></i> ${child.name} <i class="fa-solid fa-caret-right"></i></span>
-              <ul class="nested-list"></ul>`;
-            const subul = li.querySelector(".nested-list");
-            child.children.forEach(sub => {
-              const subli = document.createElement("li");
-              subli.innerHTML = `<a href="#" data-cat="${sub.id}"><i class="fa-solid ${sub.icon||'fa-circle'}"></i> ${sub.name}</a>`;
-              subul.appendChild(subli);
-            });
-            ul.appendChild(li);
-          } else {
-            const li = document.createElement("li");
-            li.innerHTML = `<a href="#" data-cat="${child.id}"><i class="fa-solid ${child.icon||'fa-circle'}"></i> ${child.name}</a>`;
-            ul.appendChild(li);
+  // --- Load categories and quotes dynamically ---
+  async function loadCategoriesAndQuotes() {
+    try {
+      // Load categories.json
+      const catRes = await fetch('data/categories.json');
+      categories = await catRes.json();
+
+      // Load all quote files
+      const quotePromises = [];
+      function collectCategories(catArray) {
+        catArray.forEach(cat => {
+          if (cat.children) collectCategories(cat.children);
+          else if (cat.file) {
+            quotePromises.push(
+              fetch(cat.file)
+                .then(res => res.json())
+                .then(data => {
+                  quotes[cat.id] = data;
+                  buildAuthorIndex(data, cat.id);
+                })
+            );
           }
         });
-        categoryMenu.appendChild(sec);
+      }
+      collectCategories(categories);
+
+      await Promise.all(quotePromises);
+
+    } catch (err) {
+      console.error('Failed to load categories or quotes:', err);
+    }
+  }
+
+  function buildAuthorIndex(quoteList, categoryId) {
+    quoteList.forEach(quote => {
+      const by = quote.author || quote.by;
+      if (by) {
+        const authorKey = by.toLowerCase().trim();
+        if (!authors[authorKey]) authors[authorKey] = [];
+        authors[authorKey].push({
+          text: quote.text || quote.quote || quote.message,
+          category: categoryId
+        });
       }
     });
+  }
+
+  // --- Render Categories Menu ---
+  function renderMenu() {
+    categoryMenu.innerHTML = "";
+    function renderCategoryList(catArray, parentUl) {
+      catArray.forEach(cat => {
+        if (cat.isSearch) {
+          // Search by Author section
+          const sec = document.createElement("div");
+          sec.className = "section search-section";
+          sec.innerHTML = `<button class="section-btn"><i class="fa-solid fa-user section-icon"></i>Search by Author <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="author-search-wrapper">
+              <input id="authorSearch" type="text" placeholder="Type author name…" autocomplete="off" />
+              <ul id="authorList" class="suggestions-list"></ul>
+            </div>`;
+          categoryMenu.appendChild(sec);
+        } else {
+          const sec = document.createElement("div");
+          sec.className = "section";
+          sec.innerHTML = `<button class="section-btn">
+            ${cat.icon ? `<i class="fa-solid ${cat.icon} section-icon"></i>` : ""}
+            ${cat.name} <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <ul class="section-list"></ul>`;
+          const ul = sec.querySelector(".section-list");
+          if (cat.children) {
+            cat.children.forEach(child => {
+              if (child.children) {
+                // Subcategory
+                const li = document.createElement("li");
+                li.className = "has-children";
+                li.innerHTML = `<span>
+                  ${child.icon ? `<i class="fa-solid ${child.icon}"></i>` : ""}
+                  ${child.name} <i class="fa-solid fa-caret-right"></i>
+                </span>
+                <ul class="nested-list"></ul>`;
+                const subul = li.querySelector(".nested-list");
+                child.children.forEach(sub => {
+                  const subli = document.createElement("li");
+                  subli.innerHTML = `<a href="#" data-cat="${sub.id}">
+                    ${sub.icon ? `<i class="fa-solid ${sub.icon}"></i>` : ""}
+                    ${sub.name}
+                  </a>`;
+                  subul.appendChild(subli);
+                });
+                ul.appendChild(li);
+              } else {
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="#" data-cat="${child.id}">
+                  ${child.icon ? `<i class="fa-solid ${child.icon}"></i>` : ""}
+                  ${child.name}
+                </a>`;
+                ul.appendChild(li);
+              }
+            });
+          }
+          categoryMenu.appendChild(sec);
+        }
+      });
+    }
+    renderCategoryList(categories, categoryMenu);
+
     // Accordion
     categoryMenu.querySelectorAll('.section-btn').forEach(btn => {
       btn.addEventListener('click', function(e) {
@@ -167,31 +200,26 @@ document.addEventListener("DOMContentLoaded", () => {
       authorInput.addEventListener("input", () => {
         const q = authorInput.value.toLowerCase();
         authorList.innerHTML = "";
-        // Collect unique authors
-        const authors = new Set();
-        Object.values(quotes).forEach(arr => arr.forEach(qt => {
-          if (qt.by) authors.add(qt.by.trim());
-        }));
-        Array.from(authors).forEach(name => {
-          if (name.toLowerCase().includes(q)) {
+        if (!q) return;
+        // Collect matching authors
+        Object.keys(authors)
+          .filter(name => name.includes(q))
+          .slice(0, 10)
+          .forEach(name => {
             const li = document.createElement("li");
             li.textContent = name;
             li.addEventListener("click", () => {
-              // Find all quotes by this author
-              let found = [];
-              Object.values(quotes).forEach(arr => arr.forEach(qt => {
-                if ((qt.by || "").toLowerCase() === name.toLowerCase()) found.push(qt);
-              }));
-              if (found.length) {
-                showQuote(found[Math.floor(Math.random() * found.length)], selectedCat);
+              // Show a random quote by this author
+              const found = authors[name];
+              if (found && found.length) {
+                showQuote(found[Math.floor(Math.random() * found.length)], found[0].category);
               }
               authorInput.value = "";
               authorList.innerHTML = "";
               closeMenu();
             });
             authorList.appendChild(li);
-          }
-        });
+          });
       });
     }
   }
@@ -297,7 +325,14 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("wowDark", isDark);
   });
 
+  // --- Generate Quote Button ---
+  genBtn.addEventListener("click", displayQuote);
+
   // --- Init ---
-  displayQuote();
-  currentCategory.textContent = "Inspiration";
+  (async function(){
+    await loadCategoriesAndQuotes();
+    renderMenu();
+    displayQuote();
+    currentCategory.textContent = "Inspiration";
+  })();
 });
