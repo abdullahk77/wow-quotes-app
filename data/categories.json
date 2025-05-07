@@ -59,7 +59,7 @@
         "icon": "fa-language",
         "children": [
           { "id": "urdu_aqwal", "name": "Aqwal", "icon": "fa-quote-left", "file": "data/quotes_urdu_aqwal.json", "filterKey": "aqwal", "dataType": "urdu" },
-          { "id": "urdu_ashaar", "name": "Ashaar", "icon": "fa-quote-right", "file": "data/quotes_ashaar.json", "filterKey": "ashaar", "dataType": "urdu" }
+          { "id": "urdu_ashaar", "name": "Ashaar", "icon": "fa-quote-right", "file": "data/quotes_urdu_ashaar.json", "filterKey": "ashaar", "dataType": "urdu" }
         ]
       },
       {
