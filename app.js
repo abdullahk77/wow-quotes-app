@@ -102,6 +102,142 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // --- Render Categories Menu ---
+  function renderMenu() {
+    categoryMenu.innerHTML = "";
+    function renderCategoryList(catArray, parentUl) {
+      catArray.forEach(cat => {
+        if (cat.isSearch) {
+          // Search by Author section
+          const sec = document.createElement("div");
+          sec.className = "section search-section";
+          sec.innerHTML = `<button class="section-btn"><i class="fa-solid fa-user section-icon"></i>Search by Author <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="author-search-wrapper">
+              <input id="authorSearch" type="text" placeholder="Type author name…" autocomplete="off" />
+              <ul id="authorList" class="suggestions-list"></ul>
+            </div>`;
+          categoryMenu.appendChild(sec);
+        } else {
+          const sec = document.createElement("div");
+          sec.className = "section";
+          sec.innerHTML = `<button class="section-btn">
+            ${cat.icon ? `<i class="fa-solid ${cat.icon} section-icon"></i>` : ""}
+            ${cat.name} <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <ul class="section-list"></ul>`;
+          const ul = sec.querySelector(".section-list");
+          if (cat.children) {
+            cat.children.forEach(child => {
+              if (child.children) {
+                // Subcategory
+                const li = document.createElement("li");
+                li.className = "has-children";
+                li.innerHTML = `<span>
+                  ${child.icon ? `<i class="fa-solid ${child.icon}"></i>` : ""}
+                  ${child.name} <i class="fa-solid fa-caret-right"></i>
+                </span>
+                <ul class="nested-list"></ul>`;
+                const subul = li.querySelector(".nested-list");
+                child.children.forEach(sub => {
+                  const subli = document.createElement("li");
+                  subli.innerHTML = `<a href="#" data-cat="${sub.id}">
+                    ${sub.icon ? `<i class="fa-solid ${sub.icon}"></i>` : ""}
+                    ${sub.name}
+                  </a>`;
+                  subul.appendChild(subli);
+                });
+                ul.appendChild(li);
+              } else {
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="#" data-cat="${child.id}">
+                  ${child.icon ? `<i class="fa-solid ${child.icon}"></i>` : ""}
+                  ${child.name}
+                </a>`;
+                ul.appendChild(li);
+              }
+            });
+          }
+          categoryMenu.appendChild(sec);
+        }
+      });
+    }
+    renderCategoryList(categories, categoryMenu);
+
+    // Accordion
+    categoryMenu.querySelectorAll('.section-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        categoryMenu.querySelectorAll('.section').forEach(sec => {
+          if (sec.querySelector('.section-btn') !== btn) sec.classList.remove('open');
+        });
+        btn.closest('.section').classList.toggle('open');
+      });
+    });
+    // Subcategory toggles
+    categoryMenu.querySelectorAll('.has-children > span').forEach(span => {
+      span.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const li = span.parentElement;
+        li.classList.toggle('open');
+      });
+    });
+    // Category selection
+    categoryMenu.querySelectorAll('.section-list a, .nested-list a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        selectedCat = link.dataset.cat;
+        currentCategory.textContent = link.textContent.replace(/^[^\w]*([\w\s]+)/, '$1').trim();
+        closeMenu();
+        displayQuote();
+      });
+    });
+    // Author search logic
+    const authorInput = categoryMenu.querySelector("#authorSearch");
+    const authorList = categoryMenu.querySelector("#authorList");
+    if (authorInput && authorList) {
+      authorInput.addEventListener("input", () => {
+        const q = authorInput.value.toLowerCase();
+        authorList.innerHTML = "";
+        if (!q) return;
+        // Collect matching authors
+        Object.keys(authors)
+          .filter(name => name.includes(q))
+          .slice(0, 10)
+          .forEach(name => {
+            const li = document.createElement("li");
+            li.textContent = name;
+            li.addEventListener("click", () => {
+              // Show a random quote by this author
+              const found = authors[name];
+              if (found && found.length) {
+                showQuote(found[Math.floor(Math.random() * found.length)], found[0].category);
+              }
+              authorInput.value = "";
+              authorList.innerHTML = "";
+              closeMenu();
+            });
+            authorList.appendChild(li);
+          });
+      });
+    }
+  }
+
+  // --- Modal Menu Open/Close ---
+  function openMenu() {
+    renderMenu();
+    categoryModal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeMenu() {
+    categoryModal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  openMenuBtn.addEventListener("click", openMenu);
+  closeMenuBtn.addEventListener("click", closeMenu);
+  categoryModal.addEventListener("click", function(e) {
+    if (e.target === categoryModal) closeMenu();
+  });
+
   // --- Quote display ---
   function showQuote(item, cat) {
     let fonts = fontMap[cat];
@@ -109,48 +245,103 @@ document.addEventListener("DOMContentLoaded", () => {
     const [qFont, aFont] = fonts;
     const txt = item.text || item.quote || item.message || "Quote text missing.";
     const by = item.author || item.by || "";
-
     qText.style.fontFamily = `'${qFont}', serif, sans-serif`;
     qAuth.style.fontFamily = `'${aFont}', serif, sans-serif`;
     qText.textContent = txt;
-
     if (!by || by.toLowerCase() === "anonymous" || by.toLowerCase() === "unknown") {
       qAuth.textContent = "";
     } else {
-      // Use horizontal bar (―, U+2015)
+      // Use horizontal bar (―, U+2015) instead of dash
       qAuth.innerHTML = `<span style="font-size:1.3em;vertical-align:middle;">&#8213;</span> ${by}`;
     }
-
+    // Curly quote mark: always visible except for affirmations
     if (cat === "goodvibes_affirmations") {
       quoteMark.style.opacity = 0;
     } else {
       quoteMark.textContent = "“";
-      quoteMark.style.opacity = 0.14;
+      quoteMark.style.opacity = 0.18;
     }
   }
-
-  // --- Generate Quote Button ---
-  genBtn.addEventListener("click", () => {
+  function displayQuote() {
     const pool = quotes[selectedCat] || [];
     if (!pool.length) {
-      qText.textContent = "No quotes found for this category.";
+      qText.textContent = "Sorry, no quotes found for this category.";
       qAuth.textContent = "";
       return;
     }
     showQuote(pool[Math.floor(Math.random() * pool.length)], selectedCat);
+  }
+
+  // --- Ripple for buttons ---
+  [genBtn, shareBtn, copyBtn].forEach(btn => {
+    btn.addEventListener('click', e => {
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      const rect = btn.getBoundingClientRect();
+      ripple.style.left = (e.clientX - rect.left) + 'px';
+      ripple.style.top = (e.clientY - rect.top) + 'px';
+      btn.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 700);
+    });
   });
 
-  // --- Initialization ---
+  // --- Share/Copy logic ---
+  shareBtn.addEventListener("click", () => {
+    const textToShare = `${qText.textContent} ${qAuth.textContent}`.trim();
+    if (navigator.share) {
+      navigator.share({
+        title: 'WOW Quote',
+        text: textToShare,
+        url: window.location.href
+      }).catch(() => {
+        window.open(`https://wa.me/?text=${encodeURIComponent(textToShare)}`, "_blank");
+      });
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(textToShare)}`, "_blank");
+    }
+  });
+  copyBtn.addEventListener("click", () => {
+    const textToCopy = `${qText.textContent} ${qAuth.textContent}`.trim();
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      const originalIcon = copyBtn.querySelector("i").className;
+      copyBtn.querySelector("i").className = "fa-solid fa-check";
+      copyBtn.classList.add('copied-feedback');
+      setTimeout(() => {
+        copyBtn.querySelector("i").className = originalIcon;
+        copyBtn.classList.remove('copied-feedback');
+      }, 1200);
+    });
+  });
+
+  // --- Theme switcher ---
+  const savedTheme = localStorage.getItem("wowDark");
+  if (savedTheme === "true") {
+    themeSw.checked = true;
+    document.body.classList.add("dark");
+  }
+  themeSw.addEventListener("change", () => {
+    const isDark = themeSw.checked;
+    document.body.classList.toggle("dark", isDark);
+    localStorage.setItem("wowDark", isDark);
+  });
+
+  // --- Generate Quote Button ---
+  genBtn.addEventListener("click", displayQuote);
+
+  // --- Init ---
   (async function(){
+    // Show loading message until quotes are loaded
     qText.textContent = "✨ Loading Wisdom...";
     qAuth.textContent = "";
     quoteMark.textContent = "“";
-    quoteMark.style.opacity = 0.14;
+    quoteMark.style.opacity = 0.18;
     currentCategory.textContent = "Inspiration";
     selectedCat = "inspiration";
 
     await loadCategoriesAndQuotes();
+    renderMenu();
 
+    // After loading, show a quote from Inspiration
     if (quotes["inspiration"] && quotes["inspiration"].length > 0) {
       showQuote(
         quotes["inspiration"][Math.floor(Math.random() * quotes["inspiration"].length)],
@@ -161,6 +352,4 @@ document.addEventListener("DOMContentLoaded", () => {
       qAuth.textContent = "";
     }
   })();
-
-  // --- Add your existing code for menu, sharing, theme, etc. ---
 });
