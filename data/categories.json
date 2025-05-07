@@ -5,7 +5,7 @@
     "icon": "fa-lightbulb",
     "children": [
       { "id": "inspiration", "name": "Inspiration", "icon": "fa-sun", "file": "data/quotes_inspiration.json" },
-      { "id": "motivation", "name": "Motivation", "icon": "fa-fire", "file": "data/quotes/motivation.json" },
+      { "id": "motivation", "name": "Motivation", "icon": "fa-fire", "file": "data/quotes_motivation.json" },
       { "id": "positivethinking", "name": "Positive Thinking", "icon": "fa-thumbs-up", "file": "data/quotes_positive_thinking.json" },
       { "id": "happiness", "name": "Happiness", "icon": "fa-face-laugh-beam", "file": "data/quotes_happiness.json" },
       { "id": "love", "name": "Love", "icon": "fa-heart", "file": "data/quotes_love.json" },
