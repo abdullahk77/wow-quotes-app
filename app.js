@@ -117,7 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!by || by.toLowerCase() === "anonymous" || by.toLowerCase() === "unknown") {
       qAuth.textContent = "";
     } else {
-      qAuth.innerHTML = `<span style="font-size:1.3em;vertical-align:middle;">&#8212;</span> ${by}`;
+      // Use horizontal bar (―, U+2015)
+      qAuth.innerHTML = `<span style="font-size:1.3em;vertical-align:middle;">&#8213;</span> ${by}`;
     }
 
     if (cat === "goodvibes_affirmations") {
