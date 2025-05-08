@@ -1,0 +1,402 @@
+[
+  {
+    "quote": "Simplicity is the ultimate sophistication.",
+    "author": "Leonardo da Vinci"
+  },
+  {
+    "quote": "Life is really simple, but we insist on making it complicated.",
+    "author": "Confucius"
+  },
+  {
+    "quote": "Our life is frittered away by detail. Simplify, simplify.",
+    "author": "Henry David Thoreau"
+  },
+  {
+    "quote": "Simplicity is the keynote of all true elegance.",
+    "author": "Coco Chanel"
+  },
+  {
+    "quote": "Simplicity is not the goal. It is the by-product of a good idea and modest expectations.",
+    "author": "Paul Rand"
+  },
+  {
+    "quote": "The simplest things are often the truest.",
+    "author": "Richard Bach"
+  },
+  {
+    "quote": "Simplicity is the key to brilliance.",
+    "author": "Bruce Lee"
+  },
+  {
+    "quote": "The ability to simplify means to eliminate the unnecessary so that the necessary may speak.",
+    "author": "Hans Hofmann"
+  },
+  {
+    "quote": "Make everything as simple as possible, but not simpler.",
+    "author": "Albert Einstein"
+  },
+  {
+    "quote": "Live simply so that others may simply live.",
+    "author": "Mahatma Gandhi"
+  },
+  {
+    "quote": "Simplicity is the glory of expression.",
+    "author": "Walt Whitman"
+  },
+  {
+    "quote": "Simplicity is making the journey of this life with just baggage enough.",
+    "author": "Charles Dudley Warner"
+  },
+  {
+    "quote": "Simplicity in character, in manners, in style; in all things the supreme excellence is simplicity.",
+    "author": "Henry Wadsworth Longfellow"
+  },
+  {
+    "quote": "Simple can be harder than complex: You have to work hard to get your thinking clean to make it simple.",
+    "author": "Steve Jobs"
+  },
+  {
+    "quote": "It is the sweet, simple things of life which are the real ones after all.",
+    "author": "Laura Ingalls Wilder"
+  },
+  {
+    "quote": "Simplicity is about subtracting the obvious and adding the meaningful.",
+    "author": "John Maeda"
+  },
+  {
+    "quote": "Simple living and high thinking.",
+    "author": "Mahatma Gandhi"
+  },
+  {
+    "quote": "Simplicity is the essence of Zen.",
+    "author": "Anonymous Zen Proverb"
+  },
+  {
+    "quote": "In simplicity, there is clarity; in clarity, there is wisdom.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Good design is as little design as possible.",
+    "author": "Dieter Rams"
+  },
+  {
+    "quote": "Embrace simplicity and create space for what truly matters.",
+    "author": "Tadao Ando"
+  },
+  {
+    "quote": "Less is more.",
+    "author": "Ludwig Mies van der Rohe"
+  },
+  {
+    "quote": "Simplicity is the ultimate challenge, for in reducing the superfluous, we uncover what is essential.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "True simplicity lies in being rather than having.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity is not about deprivation. It is about a greater appreciation for what truly matters.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity is an acquired taste which must be earned through discipline and courage.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "A simple life is a beautiful life.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity in thought leads to clarity in life.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "In simplicity, there's freedom, and in freedom, true creativity blossoms.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity is the natural state of our being; clutter obscures clarity.",
+    "author": "Anonymous Zen Proverb"
+  },
+  {
+    "quote": "Elegance is achieved through simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity is the mother of art and the soul of elegance.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Complexity conceals the truth; simplicity reveals it.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity is not a style; it is an attitude.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "The beauty of life lies in its simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Keep life simple, and let the universe reveal its wonders.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity is the art of removing the unnecessary.",
+    "author": "Joshua Becker"
+  },
+  {
+    "quote": "Ownership shadows contentment; simplicity illuminates the soul.",
+    "author": "Traditional Arab Proverb"
+  },
+  {
+    "quote": "Wabi-sabi: finding beauty in simplicity and imperfection.",
+    "author": "Traditional Japanese Proverb"
+  },
+  {
+    "quote": "He who lives simply lives richly.",
+    "author": "Traditional Indian Proverb"
+  },
+  {
+    "quote": "In simplicity, the heart speaks the loudest.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity clears the clutter of the mind.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity is a journey, not a destination.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity is the bridge to everlasting peace.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "It's the simple things that make life extraordinary.",
+    "author": "Paulo Coelho"
+  },
+  {
+    "quote": "Clear away the clutter, uncover hidden treasures.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Clarity is born from simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "In a world of complexity, simplicity is revolutionary.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "It takes courage to live simply.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Choose simplicity over chaos.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplify your life, amplify your joy.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "True beauty is found in simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity sparks creativity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simple words carry profound wisdom.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Minimize to maximize life's essence.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity reveals what truly matters.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "In confusion, simplicity is your compass.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "In simplicity, our true selves emerge.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity clarifies life's purpose.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Uncover the essence of life through simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Let simplicity unveil the truth.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "The foundation of a meaningful life is simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "In complexity, return to simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity fosters focus and inner calm.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Wisdom is the art of distilling the complex into the simple.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Set your creativity free with simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Grace is found in a life lived simply.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "The soul speaks in the language of simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Nature's simplicity reveals divine truths.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Self-discovery begins with a simple life.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Every day, live simply and you leave an indelible mark.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Saying no to excess is saying yes to simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "The heart's simplicity changes the world.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Let go of the excess and embrace the simple life.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Every moment is a treasure when lived in simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Paint your life’s canvas with the brush of simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Savor life's essence through the liberating power of simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "The extraordinary hides in the ordinary when seen through simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity speaks louder than the clutter of our busy lives.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Return to basics; in simplicity, discover true freedom.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "In the noise of modern life, simplicity stands as a rebel.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Joy blooms in the garden of simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "A simple life invites peace and purpose.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Look deeply into the heart of the world with simplicity.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Breathe in the beauty of minimalism.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Every detail stripped away reveals the core of existence.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Only through simplicity do we find true complexity in understanding.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "The simple art of living paves the way for profound wisdom.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity carves paths for clarity and deeper insight.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "In the whisper of simplicity, the soul finds its voice.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "To live simply is to live abundantly in spirit.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity is the canvas upon which life paints its masterpiece.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "The unadorned truth always triumphs: simplicity endures.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Quiet the mind with simple living and listen to the truth of your heart.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Embrace the minimal to experience the maximal.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Each moment of simplicity holds infinite lessons.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "The pure elegance of life is found in the simple act of being.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Simplicity nurtures the seeds of creativity and discovery.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Every simple truth resonates with lifetimes of wisdom.",
+    "author": "Unknown"
+  },
+  {
+    "quote": "Stripped of excess, life reveals its magnificent simplicity.",
+    "author": "Unknown"
+  }
+]
