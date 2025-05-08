@@ -358,7 +358,7 @@ footer {
   word-break: break-word;
 }
 footer .wow-link, footer .author-link {
-  font-weight: bold;
+  font-weight: normal;
   color: var(--primary);
   text-decoration: none;
   margin-top: 0.5rem;
