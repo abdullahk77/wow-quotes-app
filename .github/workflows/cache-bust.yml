@@ -1,0 +1,48 @@
+name: Cache-Bust & Deploy
+
+on:
+  push:
+    branches:
+      - main   # or whichever branch you use for Pages
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out your code
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      # 2. Compute the short SHA
+      - name: Get current commit hash
+        id: vars
+        run: echo "::set-output name=HASH::$(git rev-parse --short HEAD)"
+
+      # 3. Rename & update references
+      - name: Fingerprint CSS & JS
+        run: |
+          HASH=${{ steps.vars.outputs.HASH }}
+          cp style.css style.$HASH.css
+          cp app.js   app.$HASH.js
+          # Update index.html links in-place
+          sed -i "s/style\.css/style\.$HASH\.css/g; s/app\.js/app\.$HASH\.js/g" index.html
+
+      # 4. Commit the fingerprinted files
+      - name: Commit & Push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "🔨 cache-bust build ${{ steps.vars.outputs.HASH }}" || echo "No changes to commit"
+          git push
+
+      # 5. Deploy to GitHub Pages (if using gh-pages branch)
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages   # or your Pages branch
+          publish_dir: .             # root of the repo
