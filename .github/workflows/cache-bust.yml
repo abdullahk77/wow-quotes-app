@@ -46,3 +46,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages   # or your Pages branch
           publish_dir: .             # root of the repo
+
