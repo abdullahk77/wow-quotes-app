@@ -45,7 +45,7 @@
       { "id": "selfknowledge", "name": "Self-Knowledge", "icon": "fa-user-astronaut", "file": "data/quotes_self_knowledge.json" },
       { "id": "innerpeace", "name": "Inner Peace", "icon": "fa-peace", "file": "data/quotes_innerpeace.json" },
       { "id": "spirituality", "name": "Spirituality", "icon": "fa-star-and-crescent", "file": "data/quotes_spirituality.json" },
-      { "id": "adversity", "name": "Overcoming Adversity", "icon": "fa-person-hiking", "file": "data/quotes_adversity.json" }
+      { "id": "adversity", "name": "Overcoming Adversity", "icon": "fa-person-hiking", "file": "data/quotes_perseverance.json" }
     ]
   },
   {
