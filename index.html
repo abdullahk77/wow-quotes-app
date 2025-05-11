@@ -6,35 +6,22 @@
   <title>WOW Quotes - Daily Inspiration & Wisdom</title>
   <meta name="description" content="Discover inspiring and uplifting quotes daily with Words of Wisdom. Get daily doses of wisdom, share with friends and stay positive. Explore categories like Resilience, Mindfulness, Love and Motivation. Enjoy a modern design with easy sharing and dark/light themes.">
   <meta name="keywords" content="quotes app, inspirational quotes, motivational quotes, wisdom quotes, daily quotes, shareable quotes, positive quotes, resilience quotes, mindfulness quotes, love quotes, motivation quotes, daily inspiration">
-
   <meta property="og:title" content="WOW Quotes - Daily Inspiration & Wisdom">
   <meta property="og:description" content="Get daily doses of wisdom! Discover powerful quotes across themes like Resilience, Mindfulness, Love, and Motivation – ready to inspire and uplift you. Share your favorite insights effortlessly with friends, all within a beautiful modern app that adapts to your style with dark/light themes.">
   <meta property="og:image" content="https://quotes-app.wordsofwisdom.in/images/app_logo.png">
   <meta property="og:url" content="https://quotes-app.wordsofwisdom.in">
   <meta property="og:type" content="website">
-
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="WOW Quotes - Daily Inspiration & Wisdom">
   <meta name="twitter:description" content="Discover inspiring and uplifting quotes daily with Words of Wisdom. Get daily doses of wisdom, share with friends and stay positive. Explore categories like Resilience, Mindfulness, Love and Motivation. Enjoy a modern design with easy sharing and dark/light themes.">
   <meta name="twitter:image" content="https://quotes-app.wordsofwisdom.in/images/app_logo.png">
-
   <link rel="icon" href="https://quotes-app.wordsofwisdom.in/images/favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" sizes="180x180" href="https://quotes-app.wordsofwisdom.in/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="https://quotes-app.wordsofwisdom.in/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://quotes-app.wordsofwisdom.in/images/favicon-16x16.png">
-
-  <!-- Google Fonts (all fonts used in your fontMap) -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500&family=Montserrat:wght@600&family=Roboto+Slab:wght@400&family=Lora:wght@400&family=Bree+Serif&family=Dancing+Script&family=Merriweather&family=Nunito&family=Ubuntu&family=Oswald&family=Quicksand&family=Crimson+Text&family=Josefin+Slab&family=Cabin&family=Cormorant+Garamond&family=Libre+Baskerville&family=Abel&family=Roboto&family=Spectral&family=Fira+Sans&family=EB+Garamond&family=Source+Serif+Pro&family=Raleway&family=PT+Serif&family=Open+Sans&family=Work+Sans&family=Cormorant&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome 6.5.2 (with integrity) -->
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <style>
     #loading-wisdom {
       position: fixed;
@@ -58,27 +45,44 @@
       opacity: 0;
       pointer-events: none;
     }
-    footer .wow-link, footer .author-link {
-      font-weight: normal;
-      color: var(--primary);
-      text-decoration: none;
-      margin-top: 0.5rem;
-      font-size: 1.08rem;
-      letter-spacing: 0.01em;
+    /* Styles for loading spinner */
+    .loader-spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: var(--primary); /* Or use #fff for dark mode if needed */
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: inline-block; /* Changed from none */
+        margin-left: 10px; /* Adjust as needed */
+        vertical-align: middle;
     }
-    footer .author-link:hover,
-    footer .author-link:focus {
-      text-decoration: underline;
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
     }
+
+    body.dark .loader-spinner {
+        border-left-color: var(--gold); /* Spinner color for dark mode */
+    }
+
   </style>
 </head>
 <body>
   <div id="loading-wisdom">✨ Loading Wisdom...</div>
+  <div id="specialBanner" class="special-banner" style="display:none;">
+    <span id="bannerText"></span>
+    <button id="closeBannerBtn" class="close-btn" aria-label="Close Banner">&times;</button>
+  </div>
+
   <header>
-    <a href="https://www.wordsofwisdom.in" class="home-btn" aria-label="Home" target="_blank" rel="noopener">
+    <a href="https://www.wordsofwisdom.in" class="home-btn icon-btn" aria-label="Home" target="_blank" rel="noopener">
       <i class="fa-solid fa-house"></i>
     </a>
-    <h1>WOW Quotes</h1>
+    <div class="header-center-content">
+        <h1>WOW Quotes</h1>
+        <span id="streakBadge" class="streak-badge" aria-live="polite"></span>
+    </div>
     <div class="toggle-wrap">
       <label class="theme-toggle">
         <input type="checkbox" id="themeSwitch" />
@@ -86,62 +90,154 @@
       </label>
     </div>
   </header>
+
   <main>
     <div class="quote-box neomorphic" id="quoteBox">
       <span id="quoteMark" class="quote-mark" aria-hidden="true">“</span>
       <p id="quoteText">Click “Inspire Me” to get inspired!</p>
       <p id="quoteAuthor" class="author"></p>
     </div>
+
     <button id="openMenuBtn" class="category-btn">
       <i class="fa-solid fa-bars"></i> <span id="currentCategory">Inspiration</span>
     </button>
-    <!-- Fullscreen Modal Category Menu -->
-    <div id="categoryModal" class="modal">
+
+    <div id="categoryModal" class="modal" aria-modal="true" role="dialog">
       <div class="modal-content">
         <button class="close-btn" id="closeMenuBtn" aria-label="Close Menu"><i class="fa-solid fa-xmark"></i></button>
         <div id="categoryMenu"></div>
       </div>
     </div>
+
     <div class="action-buttons">
-      <button id="shareBtn" class="icon-btn" title="Share">
+      <span id="undoBtn" class="icon-btn undo-btn" title="Previous Quote" aria-label="Previous Quote" style="display:none;">
+        <i class="fa-solid fa-rotate-left"></i>
+      </span>
+      <button id="shareBtn" class="icon-btn" title="Share" aria-label="Share">
         <i class="fa-solid fa-share-nodes"></i>
         <span class="btn-tooltip">Share</span>
       </button>
-      <button id="copyBtn" class="icon-btn" title="Copy to clipboard">
+      <button id="favBtn" class="icon-btn" title="Favorite" aria-label="Favorite">
+        <i class="fa-regular fa-heart"></i> <span class="btn-tooltip">Favorite</span>
+        <span class="saved-popup">Saved!</span>
+      </button>
+      <button id="copyBtn" class="icon-btn" title="Copy to clipboard" aria-label="Copy to clipboard">
         <i class="fa-solid fa-copy"></i>
         <span class="btn-tooltip">Copy</span>
       </button>
+      <div id="shareMenu" class="share-menu" aria-label="Share Options">
+        <button class="share-option" data-network="twitter" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fa-brands fa-x-twitter"></i>
+        </button>
+        <button class="share-option" data-network="facebook" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fa-brands fa-facebook"></i>
+        </button>
+        <button class="share-option" data-network="linkedin" title="Share on LinkedIn" aria-label="Share on LinkedIn">
+          <i class="fa-brands fa-linkedin"></i>
+        </button>
+        <button class="share-option" data-network="whatsapp" title="Share on WhatsApp" aria-label="Share on WhatsApp">
+          <i class="fa-brands fa-whatsapp"></i>
+        </button>
+        <button id="generateImageShareOption" class="share-option" title="Create Image" aria-label="Create Image of Quote">
+          <i class="fa-solid fa-image"></i>
+        </button>
+      </div>
+      <button id="generateBtn" class="generate-btn" title="Inspire Me" aria-label="Generate new quote">
+        <i class="fa-solid fa-wand-magic-sparkles magic-wand-icon"></i>
+      </button>
     </div>
-    <!-- Floating Generate Button -->
-    <button id="generateBtn" class="generate-btn" title="Inspire Me">
-      <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+    <div id="submitQuoteModal" class="modal" aria-modal="true" role="dialog">
+      <div class="modal-content">
+        <button class="close-btn" id="closeSubmitQuoteModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="margin-bottom:1rem;">Submit Your Quote</h2>
+        <form id="customQuoteForm" autocomplete="off">
+          <label for="quoteTextSubmit">Quote <span style="color:red">*</span></label>
+          <input type="text" id="quoteTextSubmit" name="entry.739419974" required maxlength="240" placeholder="Your quote...">
+          <label for="quoteAuthorSubmit">Author (optional)</label>
+          <input type="text" id="quoteAuthorSubmit" name="entry.1816264212" maxlength="80" placeholder="Author">
+          <button type="submit" id="submitCustomQuoteBtn" class="embossed-button">
+            <span class="submit-btn-text">Submit</span>
+            <span class="loader-spinner" style="display: none;"></span>
+          </button>
+          <div id="quoteFormSuccess" class="form-success-message" style="display:none;">Thank you! Your quote was submitted.</div>
+        </form>
+      </div>
+    </div>
+
+    <div id="favModal" class="modal" aria-modal="true" role="dialog">
+      <div class="modal-content fav-modal-content">
+        <button class="close-btn" id="closeFavModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+        <h2>Favorites</h2>
+        <div id="favQuotesList"></div>
+      </div>
+    </div>
+    <button id="closeFavModalLarge" class="large-close-btn-outside" aria-label="Close Favorites">
+      <i class="fa-solid fa-xmark"></i>
     </button>
+
+    <button id="feedbackBtn" class="feedback-btn" title="Send Feedback" aria-label="Send Feedback">
+      <i class="fa-regular fa-message"></i>
+    </button>
+    <div id="feedbackModal" class="modal" aria-modal="true" role="dialog">
+      <div class="modal-content feedback-modal-content">
+        <button class="close-btn" id="closeFeedbackModal" aria-label="Close Feedback"><i class="fa-solid fa-xmark"></i></button>
+        <h2>Feedback</h2>
+        <textarea id="feedbackTextarea" maxlength="400" placeholder="Your feedback..."></textarea>
+        <button id="submitFeedbackBtn" class="feedback-submit-btn embossed-button">
+            <span class="submit-btn-text">Send</span>
+            <span class="loader-spinner" style="display: none;"></span>
+        </button>
+        <div class="feedback-links">
+          <a href="https://www.wordsofwisdom.in/p/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a>
+          <a href="https://www.wordsofwisdom.in/p/terms.html" target="_blank" rel="noopener">T&amp;C</a>
+        </div>
+        <div id="feedbackSuccess" class="form-success-message" style="display:none;">Thank you for your feedback!</div>
+      </div>
+    </div>
   </main>
+
   <footer>
     <div>
-      © 2025 
-      <a href="https://www.wordsofwisdom.in/p/about.html" class="author-link" target="_blank" rel="noopener">Words of Wisdom</a>
+      © 2025 <a href="https://www.wordsofwisdom.in/p/about.html" class="author-link" target="_blank" rel="noopener">Words of Wisdom</a>
     </div>
   </footer>
+
+  <div id="quoteImagePreviewContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 3000; padding: 1rem;">
+    <div id="quoteImageWrapper">
+      <div id="quoteImageContent">
+        <p id="imageQuoteText"></p> <p id="imageQuoteAuthor"></p> <p id="imageWatermark">wordsofwisdom.in</p>
+      </div>
+      <div class="image-buttons-container">
+        <button id="downloadImageBtn" class="embossed-button" disabled>Download</button>
+        <button id="shareGeneratedImageBtn" class="embossed-button" disabled>Share</button>
+        <button id="closeImagePreviewBtn" class="embossed-button" style="background-color: #777;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="magicSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa0e4c.mp3" preload="auto"></audio>
+  <audio id="favSound" src="https://cdn.pixabay.com/audio/2021/08/04/audio_5991281a7a.mp3" preload="auto"></audio>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <script>
-    // Hide loading overlay after everything is loaded
     window.addEventListener('load', function() {
       setTimeout(function() {
         document.getElementById('loading-wisdom').classList.add('hide');
       }, 350);
     });
   </script>
-  <script src="app.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then(reg => console.log('SW registered:', reg.scope))
-        .catch(err => console.error('SW registration failed:', err));
-    });
-  }
-</script>
+  <script src="app.js" defer></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.error('SW registration failed:', err));
+      });
+    }
+  </script>
 </body>
 </html>
-
