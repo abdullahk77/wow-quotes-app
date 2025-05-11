@@ -1,4 +1,11 @@
-* { box-sizing: border-box; margin: 0; padding: 0; transition: .3s; font-family: Poppins, sans-serif; }
+/* Reset and base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: .3s;
+  font-family: 'Poppins', sans-serif;
+}
 
 :root {
   --bg: #f0f0f3;
@@ -7,6 +14,7 @@
   --light: #555;
   --primary: #7c5df0;
   --gold: #FFD700;
+  --green-accent: #43b581; 
   --glow: rgba(124,93,240,0.6);
   --sh-light: rgba(255,255,255,0.7);
   --sh-dark: rgba(136,165,191,0.2);
@@ -17,6 +25,8 @@
   --toggle-checked-bg: #7c5df0;
   --toggle-knob: #fff;
   --toggle-shadow: 0 2px 8px rgba(124,93,240,0.08);
+  --success-green: #28a745; 
+  --image-square-size: 480px; /* Define a variable for the square size */
 }
 
 body.dark {
@@ -34,17 +44,19 @@ body.dark {
   --toggle-checked-bg: #ffd700;
   --toggle-knob: #232336;
   --toggle-shadow: 0 2px 8px rgba(255,215,0,0.13);
+  --success-green: #34c759; 
 }
 
 body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: Poppins, sans-serif;
+  font-family: 'Poppins', sans-serif;
   padding-bottom: 7rem;
   transition: background .4s, color .4s;
 }
 
+/* Header */
 header {
   width: 100vw;
   position: fixed;
@@ -55,34 +67,65 @@ header {
   z-index: 100;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0;
+  justify-content: space-between; 
+  padding: 0 1rem; 
 }
+
+.header-center-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; 
+  position: absolute; 
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 header h1 {
-  font-family: Playfair Display, serif;
+  font-family: 'Playfair Display', serif;
   color: var(--primary);
   font-size: 1.5rem;
-  margin: 0 auto;
+  margin: 0; 
   pointer-events: none;
   user-select: none;
+  white-space: nowrap;
 }
+
+.streak-badge {
+  color: var(--orange);
+  font-weight: bold;
+  font-size: 0.9rem; 
+  letter-spacing: 0.01em;
+  background-color: var(--card);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.8rem;
+  box-shadow: 1px 1px 3px var(--sh-dark), -1px -1px 3px var(--sh-light);
+  white-space: nowrap;
+  display: none; 
+}
+body.dark .streak-badge {
+    box-shadow: 1px 1px 3px var(--sh-dark), -1px -1px 3px var(--sh-light);
+}
+
+
 .home-btn {
-  position: absolute;
-  left: 1.5rem;
   color: var(--primary);
   font-size: 1.3rem;
   text-decoration: none;
-  top: 50%;
-  transform: translateY(-50%);
   z-index: 2;
+  border-radius: 50% !important;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s;
 }
+.home-btn:active { background: rgba(124,93,240,0.13); }
 
-/* Theme Toggle Switch */
+/* Theme toggle */
 .toggle-wrap {
-  position: absolute;
-  right: 1.2rem;
-  top: 50%;
-  transform: translateY(-50%);
   z-index: 2;
 }
 .theme-toggle {
@@ -129,10 +172,37 @@ header h1 {
   box-shadow: 0 0 2px 2px var(--toggle-checked-bg);
 }
 
+/* Main content */
 main {
   padding: 5rem 1rem 1rem;
   text-align: center;
   position: relative;
+}
+
+/* Special banner */
+.special-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: linear-gradient(90deg, #ffd700 0%, #7c5df0 100%);
+  color: #222;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem 2.5rem 1rem 1rem;
+  font-size: 1.15rem;
+  letter-spacing: 0.03em;
+  z-index: 2001;
+  display: none;
+}
+.special-banner .close-btn {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  color: #222;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 /* Quote box */
@@ -153,7 +223,7 @@ main {
   overflow: hidden;
   transition: background .5s, box-shadow .5s;
 }
-.quote-box:hover {
+.quote-box:hover, .quote-box.glow {
   background: var(--menu-hover);
   box-shadow: 0 0 30px var(--glow), 8px 8px 16px var(--sh-dark), -8px -8px 16px var(--sh-light);
 }
@@ -179,7 +249,15 @@ main {
   line-height: 1.5;
   word-break: break-word;
   padding-left: 0.5rem;
+  opacity: 1;
+  transition: opacity 0.3s;
 }
+#quoteAuthor {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+.fade-out { opacity: 0 !important; }
+
 .author {
   display: block;
   color: var(--light);
@@ -212,7 +290,7 @@ main {
 }
 .category-btn i { color: var(--primary);}
 
-/* Modal Menu */
+/* Modal */
 .modal {
   display: none;
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -234,6 +312,8 @@ main {
   background: none; border: none; color: var(--primary);
   font-size: 1.5rem; cursor: pointer;
 }
+
+/* Sections in menu */
 .section { border-top: 1px solid var(--sh-dark);}
 .section-btn {
   width: 100%; padding: 0.8rem 1.2rem; background: var(--menu-bg); border: none;
@@ -258,6 +338,8 @@ main {
 .has-children.open .nested-list { display: block; }
 .nested-list a i { font-size: 1.1em; color: var(--primary);}
 .section-list .fa-face-smile { color: var(--gold)!important; }
+
+/* Author search */
 .author-search-wrapper {
   display: none; padding: 0.5rem 0.5rem 0.5rem 1.2rem; width: 90%;
 }
@@ -276,19 +358,101 @@ main {
 .suggestions-list li { padding: 0.5rem 1rem; cursor: pointer; color: var(--primary); transition: background 0.2s;}
 .suggestions-list li:hover { background: rgba(124,93,240,0.15); color: #fff;}
 
-/* Action buttons */
+/* Action buttons and round touch effect */
 .action-buttons {
-  display: flex; justify-content: center; align-items: center;
-  max-width: 480px; margin: 2.5rem auto 0; gap: 2rem;
-  position: relative; z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  position: relative;
 }
+.icon-btn, .generate-btn, .feedback-btn, .home-btn {
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 50% !important;
+  overflow: hidden;
+}
+.icon-btn:active,
+.generate-btn:active,
+.feedback-btn:active,
+.home-btn:active {
+  background: rgba(124,93,240,0.13);
+}
+.action-buttons .icon-btn {
+  margin: 0 2.7rem;
+}
+.action-buttons .icon-btn.undo-btn {
+  margin: 0 1.1rem 0 0;
+  font-size: 1.3rem;
+  color: #b39ddb;
+  transition: color .2s, transform .2s;
+  cursor: pointer;
+}
+.action-buttons .icon-btn.undo-btn[style*="display: none"] {
+  pointer-events: none;
+}
+.action-buttons .icon-btn.undo-btn:hover,
+.action-buttons .icon-btn.undo-btn:focus {
+  color: #43b581;
+  transform: scale(1.2) rotate(-20deg);
+}
+.action-buttons .icon-btn.undo-btn:active {
+  color: #ffd700;
+  transform: scale(1.1) rotate(-30deg);
+}
+
+/* Share Menu */
+#shareMenu {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 120%;
+  transform: translateX(-50%);
+  background: var(--card);
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px var(--sh-dark);
+  padding: 0.1rem 0.3rem;
+  gap: 0.5rem;
+  justify-content: center;
+  z-index: 4000;
+  width: max-content;
+  min-width: 120px;
+}
+#shareMenu.open { display: flex; }
+.share-option {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 1.2rem;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  padding: 0;
+  margin: 0 0.15rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.share-option:hover, .share-option:focus {
+  background: var(--green-accent);
+  color: #fff;
+  box-shadow: 0 0 0 2px var(--green-accent)aa;
+}
+body.dark .share-option:hover, body.dark .share-option:focus {
+  background: var(--gold);
+  color: #222;
+  box-shadow: 0 0 0 2px #ffd700aa;
+}
+
+/* Icon buttons */
 .icon-btn {
   background: transparent; border: none; outline: none;
   border-radius: 50%; width: 3.2rem; height: 3.2rem;
   display: flex; align-items: center; justify-content: center;
   font-size: 1.6rem; color: var(--primary);
   position: relative; cursor: pointer;
-  transition: background .2s, color .2s, box-shadow .2s;
+  transition: background .2s, color .2s, box-shadow .2s, transform 0.2s ease-out;
   box-shadow: none;
 }
 .icon-btn:focus { box-shadow: 0 0 0 2px var(--primary);}
@@ -304,9 +468,49 @@ main {
 .icon-btn:hover .btn-tooltip, .icon-btn:focus .btn-tooltip {
   opacity: 1; transform: translateX(-50%) scale(1);
 }
-.icon-btn.copied-feedback { color: #43b581; }
+.icon-btn.copied-feedback { color: var(--green-accent); }
 
-/* Generate Button - fixed above footer */
+/* Favorite button specific styles */
+#favBtn i.fa-solid.fa-heart { 
+  color: var(--gold); 
+  animation: heartBeat 0.5s ease-in-out;
+}
+#favBtn i.fa-regular.fa-heart { 
+    color: var(--primary);
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.saved-popup {
+  position: absolute;
+  bottom: 120%; 
+  left: 50%;
+  transform: translateX(-50%) translateY(10px); 
+  background-color: var(--green-accent);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+#favBtn.show-saved-popup .saved-popup {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0); 
+}
+
+
+/* Generate button */
 .generate-btn {
   position: fixed;
   left: 50%;
@@ -324,19 +528,37 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: box-shadow .3s, transform .1s;
+  transition: box-shadow .3s, transform .1s, background .18s;
   overflow: hidden;
   z-index: 200;
+  user-select: none;
 }
-@media (max-width: 600px) {
-  .generate-btn {
-    bottom: 6.5rem;
-    width: 4rem;
-    height: 4rem;
-    font-size: 1.7rem;
-  }
+.generate-btn:active, .generate-btn.touched {
+  background: var(--green-accent);
+  color: #fff;
+  box-shadow: 0 0 30px var(--green-accent), 0 0 20px var(--gold);
 }
-.generate-btn:active { transform: translateX(-50%) scale(0.97);}
+body.dark .generate-btn:active,
+body.dark .generate-btn.touched {
+  background: var(--gold);
+  color: #222;
+  box-shadow: 0 0 30px var(--gold), 0 0 20px var(--green-accent);
+}
+.magic-wand-icon {
+  transition: color 0.18s, transform 0.18s;
+}
+.magic-wand-icon.animated {
+  animation: wandspin 0.7s cubic-bezier(.22,.68,.54,1.01);
+  color: var(--green-accent);
+}
+body.dark .magic-wand-icon.animated {
+  color: var(--gold);
+}
+@keyframes wandspin {
+  0% { transform: rotate(0deg) scale(1);}
+  50% { transform: rotate(-30deg) scale(1.3);}
+  100% { transform: rotate(0deg) scale(1);}
+}
 .generate-btn .ripple {
   position: absolute; border-radius: 50%; transform: scale(0);
   animation: waterRipple .8s cubic-bezier(.22,.68,.54,1.01);
@@ -345,27 +567,498 @@ main {
 }
 @keyframes waterRipple { to { transform: scale(2.5); opacity: 0; } }
 
+/* Responsive */
+@media (max-width: 600px) {
+  header {
+    padding: 0 0.8rem; 
+  }
+  .header-center-content {
+    gap: 0.3rem;
+  }
+  header h1 {
+    font-size: 1.3rem;
+  }
+  .streak-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+  }
+  .generate-btn {
+    bottom: 6.5rem;
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.7rem;
+  }
+  .action-buttons .icon-btn { margin: 0 1.2rem; }
+  #shareMenu {
+    min-width: 160px; 
+  }
+ #shareMenu .share-option {
+    width: 2.4rem; 
+    height: 2.4rem;
+    font-size: 1.1rem; 
+  }
+  :root {
+    --image-square-size: 90vw; /* Make square size responsive for smaller screens */
+  }
+  #quoteImageContent {
+    max-width: var(--image-square-size);
+    max-height: var(--image-square-size);
+  }
+  #imageQuoteText {
+    font-size: 22px; /* Adjust font size for smaller square */
+  }
+  #imageQuoteAuthor {
+    font-size: 16px; /* Adjust font size for smaller square */
+  }
+  #imageWatermark {
+    font-size: 12px; /* Adjust font size for smaller square */
+  }
+
+}
+@media (max-width: 380px) { 
+    header h1 {
+        font-size: 1.1rem;
+    }
+    .streak-badge {
+        display: none; 
+    }
+    .home-btn {
+        width: 2.2rem;
+        height: 2.2rem;
+        font-size: 1.1rem;
+    }
+    .toggle-wrap .theme-toggle {
+        width: 40px;
+        height: 22px;
+    }
+    .toggle-wrap .slider:before {
+        height: 18px;
+        width: 18px;
+    }
+    .toggle-wrap .theme-toggle input:checked + .slider:before {
+        transform: translateX(18px);
+    }
+    #imageQuoteText {
+      font-size: 18px; 
+    }
+    #imageQuoteAuthor {
+      font-size: 14px; 
+    }
+    #imageWatermark {
+      font-size: 10px;
+      bottom: 10px;
+      right: 10px;
+    }
+}
+
+
+/* Favorites Modal */
+.fav-modal-content {
+  position: relative;
+}
+.large-close-btn-outside {
+  display: none;
+  position: fixed;
+  left: 50%;
+  bottom: 2.5rem;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 2rem;
+  box-shadow: 0 2px 12px var(--sh-dark);
+  z-index: 2001;
+  align-items: center;
+  justify-content: center;
+}
+#favModal.open ~ .large-close-btn-outside { display: flex; }
+.fav-quote {
+  background: var(--card);
+  border-radius: 1rem;
+  box-shadow: 2px 2px 8px var(--sh-dark), -2px -2px 8px var(--sh-light);
+  margin-bottom: 1.1rem;
+  padding: 1rem 1.2rem;
+  position: relative;
+  text-align: left;
+}
+.fav-quote p {
+  margin: 0 0 0.2rem 0;
+}
+.fav-quote .author {
+  font-size: 0.98rem;
+  color: var(--primary);
+  text-align: right;
+  margin-top: 0.2rem;
+}
+.fav-quote .fav-actions {
+  display: flex;
+  gap: 1.6rem;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0.2rem;
+  position: static;
+}
+.fav-quote button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s;
+  vertical-align: middle;
+}
+.fav-quote button:hover {
+  background: var(--menu-hover);
+  color: var(--gold);
+}
+
+/* Embossed Button Style */
+.embossed-button {
+  display: inline-block; 
+  margin: 0.5rem; 
+  background: var(--primary);
+  color: #fff;
+  font-size: 1.08rem;
+  font-weight: 600; 
+  border: none;
+  border-radius: 2rem;
+  padding: 0.8rem 1.2rem; 
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.3), 
+    inset -2px -2px 5px rgba(0, 0, 0, 0.2),    
+    4px 4px 8px var(--sh-dark),               
+    -4px -4px 8px var(--sh-light);            
+  cursor: pointer;
+  transition: background .2s, color .2s, box-shadow .2s, transform 0.1s;
+  outline: none;
+  position: relative;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2); 
+  min-width: 100px; 
+}
+
+.embossed-button:hover,
+.embossed-button:focus {
+  background: var(--primary-hover, #6a46e0); 
+  color: #fff;
+  box-shadow:
+    inset 1px 1px 3px rgba(255, 255, 255, 0.4),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.3),
+    2px 2px 5px var(--sh-dark),
+    -2px -2px 5px var(--sh-light);
+  transform: translateY(1px); 
+}
+
+.embossed-button:active {
+  background: var(--primary-active, #5e3cc0); 
+  box-shadow:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.3),    
+    inset -2px -2px 5px rgba(255, 255, 255, 0.2); 
+  transform: translateY(2px); 
+}
+
+
+body.dark .embossed-button {
+  background: var(--primary); 
+  color: var(--text); 
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.1),  
+    inset -2px -2px 5px rgba(0, 0, 0, 0.4),     
+    4px 4px 10px rgba(0,0,0,0.5),                
+    -4px -4px 10px rgba(255,255,255,0.05);       
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+}
+
+body.dark .embossed-button:hover,
+body.dark .embossed-button:focus {
+  background: var(--primary-hover-dark, #c7aefb); 
+  box-shadow:
+    inset 1px 1px 3px rgba(255, 255, 255, 0.15),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.5),
+    2px 2px 6px rgba(0,0,0,0.6),
+    -2px -2px 6px rgba(255,255,255,0.07);
+}
+body.dark .embossed-button:active {
+  background: var(--primary-active-dark, #d0bcfc);
+  box-shadow:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.1);
+}
+#customQuoteForm .embossed-button,
+#feedbackModal .embossed-button {
+    width: 60%; 
+    display: block; 
+    margin: 1.5rem auto 0 auto; 
+}
+
+
+/* Submit Quote Form */
+#customQuoteForm input[type="text"] {
+  background: var(--card);
+  border: 1.5px solid var(--primary);
+  border-radius: 1.2rem;
+  padding: 0.7rem 1.1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  font-size: 1.03rem;
+  box-shadow: 2px 2px 8px var(--sh-dark), -2px -2px 8px var(--sh-light);
+  transition: border .2s;
+  color: var(--text); 
+}
+#customQuoteForm input[type="text"]:focus {
+  border: 2px solid var(--primary);
+  outline: none;
+}
+
+.form-success-message { 
+  display: none; 
+  color: var(--success-green) !important; 
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 1.05rem; 
+  font-weight: 500;
+}
+
+
+body.dark #submitQuoteModal input,
+body.dark #submitQuoteModal label,
+body.dark #submitQuoteModal h2
+{
+  color: var(--text) !important; 
+  background-color: var(--card) !important; 
+  border-color: var(--primary) !important; 
+}
+body.dark #submitQuoteModal input::placeholder {
+  color: var(--light); 
+}
+
+
+/* Feedback Button & Modal */
+.feedback-btn {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 4.5rem;
+  z-index: 3000;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  width: 3.2rem;
+  height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 12px var(--sh-dark);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.feedback-btn:hover, .feedback-btn:focus {
+  background: var(--gold);
+  color: #222;
+}
+.feedback-modal-content {
+  min-width: 300px;
+  max-width: 360px;
+  padding: 2rem 1.3rem 1.5rem 1.3rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+#feedbackTextarea {
+  width: 100%;
+  min-height: 90px;
+  border-radius: 1.2rem;
+  border: 1.5px solid var(--primary);
+  padding: 0.7rem 1.1rem;
+  margin-bottom: 1rem;
+  font-size: 1.03rem;
+  box-shadow: 2px 2px 8px var(--sh-dark), -2px -2px 8px var(--sh-light);
+  resize: vertical;
+  background: var(--card);
+  color: var(--text);
+}
+.feedback-submit-btn { 
+  width: 80%;
+  margin-bottom: 1rem; 
+}
+
+.feedback-links {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+.feedback-links a {
+  color: var(--primary);
+  text-decoration: underline;
+  font-size: 0.98rem;
+  transition: color 0.2s;
+}
+.feedback-links a:hover { color: var(--gold);}
+
+
+body.dark #feedbackTextarea,
+body.dark .feedback-modal-content
+{
+  background-color: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--primary) !important;
+}
+body.dark #feedbackTextarea::placeholder {
+    color: var(--light);
+}
+
+
 /* Footer */
 footer {
   width: 100vw;
-  position: fixed; left: 0; right: 0; bottom: 0;
-  text-align: center; padding: 1rem; color: var(--primary);
-  background: var(--card); box-shadow: 0 -1px 8px var(--sh-dark);
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  text-align: center;
+  padding: 0.6rem 0 0.3rem 0;
+  background: var(--card);
+  box-shadow: 0 -1px 8px var(--sh-dark);
   z-index: 150;
-  font-size: clamp(0.85rem, 2.5vw, 1.08rem);
-  line-height: 1.3;
-  white-space: normal;
-  word-break: break-word;
+  font-size: 0.92rem;
+  color: var(--primary);
+  font-weight: normal;
+  line-height: 1.2;
 }
-footer .wow-link, footer .author-link {
+footer .author-link {
   font-weight: normal;
   color: var(--primary);
   text-decoration: none;
-  margin-top: 0.5rem;
+  margin-left: 0.2rem;
   font-size: inherit;
   letter-spacing: 0.01em;
 }
 footer .author-link:hover,
 footer .author-link:focus {
   text-decoration: underline;
+}
+
+/* Styles for Image Preview Modal */
+#quoteImagePreviewContainer {
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7); 
+  justify-content: center;
+  align-items: center;
+  z-index: 3000; 
+  padding: 1rem; 
+  overflow-y: auto; 
+}
+
+#quoteImageWrapper {
+  background: var(--card); 
+  color: var(--text);     
+  padding: 20px; 
+  border-radius: 12px;   
+  text-align: center;
+  /* max-width is removed to let content define width up to var(--image-square-size) via quoteImageContent */
+  width: auto; /* Allow width to be determined by its content (the square) */
+  min-width: calc(var(--image-square-size) + 40px); /* Ensure wrapper is at least as wide as the square + padding */
+  position: relative;     
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+  font-family: 'Poppins', sans-serif; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+}
+
+#quoteImageContent {
+  background: var(--card); 
+  color: var(--text);
+  width: var(--image-square-size); /* Fixed width for the square */
+  height: var(--image-square-size); /* Fixed height for the square */
+  padding: 25px; 
+  border-radius: 10px; 
+  text-align: center; 
+  position: relative; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center content */
+  align-items: center; /* Horizontally center content */
+  overflow: hidden; /* Hide overflow if text is too long */
+}
+
+
+body.dark #quoteImageWrapper {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4); 
+}
+body.dark #quoteImageContent {
+  background: var(--card); 
+  color: var(--text);
+}
+
+
+#imageQuoteText {
+  font-family: 'Playfair Display', serif; 
+  font-size: 28px; 
+  color: var(--text); 
+  margin-bottom: 20px; 
+  word-wrap: break-word; 
+  line-height: 1.4; /* Adjusted for better spacing in a square */
+  text-align: center; 
+  max-height: 60%; /* Limit height to prevent overflow with long quotes */
+  overflow-y: auto; /* Allow scroll for very long text if needed, though ideally font size adjusts */
+}
+
+#imageQuoteAuthor {
+  font-family: 'Poppins', sans-serif; 
+  font-size: 20px; 
+  color: var(--light); 
+  margin-top: auto; /* Pushes author towards the bottom if quote is short */
+  padding-top: 15px; /* Space between quote and author */
+  margin-bottom: 30px; /* Space before watermark if author is present */
+  font-style: italic; 
+  text-align: center; 
+  width: 100%; /* Ensure it takes full width for centering */
+}
+
+#imageWatermark {
+  font-family: 'Poppins', sans-serif; 
+  font-size: 14px; 
+  color: var(--light); 
+  opacity: 0.7; 
+  position: absolute; 
+  bottom: 15px; 
+  right: 20px; 
+  text-align: right; 
+}
+
+body.dark #imageWatermark {
+  color: var(--light); 
+  opacity: 0.5; 
+}
+
+.image-buttons-container {
+  margin-top: 20px; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%; 
+}
+
+#quoteImageWrapper .embossed-button {
+    padding: 0.6rem 1rem; 
+    font-size: 0.9rem;    
+}
+
+
+/* High contrast mode */
+@media (prefers-contrast: more) {
+  body { background: #000; color: #fff; }
+  .quote-box { background: #222; }
+  #quoteImageContent, #quoteImageWrapper { background: #111; color: #fff; }
+  #imageQuoteText, #imageQuoteAuthor, #imageWatermark { color: #fff; }
 }
