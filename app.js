@@ -1625,28 +1625,3 @@ document.addEventListener("DOMContentLoaded", () => {
     // This is handled by index.html's inline script after window.load
   })();
 });
-```
-
-**Key improvements and reminders for this `app.js`:**
-1.  **Robust `fetchJSON`**: It now correctly forms absolute URLs, which is more reliable.
-2.  **Improved `loadCategoriesAndQuotes`**: Better error handling and path management for fetching category and quote files. It now includes a fallback for `categories.json` and for individual quote files if they are not found in the `data/` subdirectory.
-3.  **Modal Management**: `openModal` and `closeModal` are more robust. The image preview modal (`quoteImagePreviewContainer`) should now correctly use these functions.
-4.  **Initialization (`initApp`)**:
-    * It waits for `loadCategoriesAndQuotes` before rendering the menu and displaying the initial quote.
-    * It checks if `categoryMenu` and other critical DOM elements exist before trying to use them.
-    * It handles the initial quote display more carefully, considering if quotes were successfully loaded.
-5.  **Error Notifications**: More specific error notifications are provided to the user if data loading fails.
-6.  **Author Search**: Improved handling for when no authors are found.
-7.  **Static Menu Items**: "View Favorites", "My Favorites Category", and "Submit a Quote" are now explicitly added after dynamic categories and have their event listeners correctly attached in `attachMenuEventListeners`.
-8.  **Image Generation**:
-    * Ensured `html2canvas` is checked for definition before use.
-    * Image generation is triggered after a short timeout to allow DOM updates.
-9.  **Global Escape Key**: The logic for closing modals with the Escape key now prioritizes the image preview modal if it's open.
-10. **VAPID Key**: The placeholder `VAPID_PUBLIC_KEY` is still there. **You must replace this with your own valid VAPID public key if you intend for push notifications to work.**
-
-**Before Deploying:**
-* **Thoroughly test** this `app.js` with your updated `index.html`, `sw.js`, and `manifest.json`.
-* **Verify all paths** in `categories.json` (for the `file` properties) and ensure they correctly point to your quote JSON files relative to the root of your deployment (e.g., `data/quotes_inspiration.json`).
-* **Check the browser console** for any errors during loading and interaction.
-
-This comprehensive `app.js` should provide a much more stable and functional experience. Remember that JavaScript can be sensitive to the order of operations and the availability of DOM elements, so careful testing is k
