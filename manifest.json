@@ -8,20 +8,31 @@
   "theme_color": "#7c5df0",
   "icons": [
     {
-      "src": "/assets/android-chrome-192x192.png", // Create this image
+      "src": "/assets/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/assets/android-chrome-512x512.png", // Create this image
+      "src": "/assets/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/assets/apple-touch-icon.png", // Re-use if suitable, or specific maskable icon
+      "src": "/assets/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/badge-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "badge"
     }
   ]
 }
