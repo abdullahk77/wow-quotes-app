@@ -8,25 +8,20 @@
   <meta name="keywords" content="quotes app, inspirational quotes, motivational quotes, wisdom quotes, daily quotes, shareable quotes, positive quotes, resilience quotes, mindfulness quotes, love quotes, motivation quotes, daily inspiration">
   <meta property="og:title" content="WOW Quotes - Daily Inspiration & Wisdom">
   <meta property="og:description" content="Get daily doses of wisdom! Discover powerful quotes across themes like Resilience, Mindfulness, Love, and Motivation – ready to inspire and uplift you. Share your favorite insights effortlessly with friends, all within a beautiful modern app that adapts to your style with dark/light themes.">
-  <meta property="og:image" content="https://quotes-app.wordsofwisdom.in/images/app_logo.png">
-  <meta property="og:url" content="https://abdullahk77.github.io/wow-quotes-app/"> {/* Update to your actual canonical URL */}
+  <meta property="og:image" content="https://quotes-app.wordsofwisdom.in/images/app_logo.png"> <meta property="og:url" content="https://quotes-app.wordsofwisdom.in/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="WOW Quotes - Daily Inspiration & Wisdom">
   <meta name="twitter:description" content="Discover inspiring and uplifting quotes daily with Words of Wisdom. Get daily doses of wisdom, share with friends and stay positive. Explore categories like Resilience, Mindfulness, Love and Motivation. Enjoy a modern design with easy sharing and dark/light themes.">
-  <meta name="twitter:image" content="https://quotes-app.wordsofwisdom.in/images/app_logo.png"> {/* External Image */}
-  
-  <link rel="icon" href="/assets/favicon.ico" type="image/x-icon"> {/* Assuming favicon is in /assets */}
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"> {/* Assuming in /assets */}
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"> {/* Assuming in /assets */}
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"> {/* Assuming in /assets */}
-  <link rel="manifest" href="/manifest.json"> <meta name="theme-color" content="#7c5df0"> <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="twitter:image" content="https://quotes-app.wordsofwisdom.in/images/app_logo.png"> <link rel="icon" href="/assets/favicon.ico" type="image/x-icon"> <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"> <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"> <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"> <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#7c5df0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="style.css" />
+
+  <link rel="stylesheet" href="/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
+
   <style>
     /* Visually Hidden Class for Accessibility */
     .visually-hidden {
@@ -88,7 +83,7 @@
 </head>
 <body>
   <div id="loading-wisdom">✨ Loading Wisdom...</div>
-  
+
   <div id="specialBanner" class="special-banner" style="display:none;">
     <span id="bannerText"></span>
     <button id="closeBannerBtn" class="close-btn" aria-label="Close Special Banner">&times;</button>
@@ -248,30 +243,29 @@
 
   <div id="appNotification" class="app-notification" role="status" aria-live="assertive"></div>
 
-  <audio id="magicSound" src="/assets/chime-gen-quote.mp3" preload="auto"></audio>
-  <audio id="favSound" src="/assets/ui-save-fav.mp3" preload="auto"></audio>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgcanvasrenderer/html2canvas.min.js" crossorigin="anonymous"></script>
+  <audio id="magicSound" src="/assets/chime-gen-quote.mp3" preload="auto"></audio> <audio id="favSound" src="/assets/ui-save-fav.mp3" preload="auto"></audio> <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgHReTDGuLNMHCeSfPABqXRft5zaSRDRYfqK8L29AFA==" crossorigin="anonymous"></script>
 
   <script>
     document.getElementById('currentYear').textContent = new Date().getFullYear();
     window.addEventListener('load', function() {
-      document.getElementById('loading-wisdom').classList.add('hide');
+      // Ensure loading wisdom is hidden only after app.js might have displayed content
+      // setTimeout(() => { // Optional: small delay if race condition occurs
+        document.getElementById('loading-wisdom').classList.add('hide');
+      // }, 100); 
     });
   </script>
-  <script src="app.js" defer></script>
-  <script>
+  <script src="/app.js" defer></script> <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker
-          .register('/sw.js') // Ensure sw.js is at the root of your deployed site
+          .register('/sw.js') // Path relative to root
           .then(reg => console.log('SW registered successfully. Scope: ', reg.scope))
           .catch(err => {
             console.error('SW registration failed: ', err);
             const notificationElement = document.getElementById('appNotification');
             if (notificationElement) {
                 notificationElement.textContent = 'Offline features might be unavailable. Service worker error.';
-                notificationElement.className = 'app-notification show error'; // Add 'error' class
+                notificationElement.className = 'app-notification show error';
                 setTimeout(() => {
                      notificationElement.classList.remove('show');
                 }, 6000);
