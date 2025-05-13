@@ -1,24 +1,29 @@
 // sw.js
-const CACHE_VERSION = 'v4-wow'; // Increment this to force updates
+const CACHE_VERSION = 'v5-wow'; // Increment this to force updates for users
 const CACHE_NAME = `wow-quotes-cache-${CACHE_VERSION}`;
 
+// IMPORTANT: Ensure all these paths are correct relative to the root of your domain.
+// Based on your screenshot, 'assets', 'data', 'images' are top-level folders.
 const PRECACHE_ASSETS = [
   '/', // Alias for index.html
   '/index.html',
   '/style.css',
   '/app.js',
-  '/manifest.json', // For PWA
-  // Core PWA Icons (assuming they are in /assets/ and referenced in manifest.json)
+  '/manifest.json',
+
+  // Core PWA Icons from /assets/ (as per your manifest and file structure)
   '/assets/android-chrome-192x192.png',
   '/assets/android-chrome-512x512.png',
   '/assets/apple-touch-icon.png',
   '/assets/favicon-32x32.png',
   '/assets/favicon-16x16.png',
   '/assets/favicon.ico',
-  // Notification related images (optional, but good for consistency)
-  '/assets/badge-72x72.png', // Example for notification badge
-  '/assets/icon-96x96.png',   // Example for notification icon if different from main
-  // Your Data files (as per your original sw.js)
+
+  // Notification related images (Ensure these exist in /assets/)
+  '/assets/badge-72x72.png',    // Example for notification badge
+  '/assets/icon-96x96.png',      // Example for notification icon
+
+  // Your Data files from /data/ (as per your categories.json and file structure)
   '/data/categories.json',
   '/data/quotes_inspiration.json',
   '/data/quotes_motivation.json',
@@ -53,39 +58,47 @@ const PRECACHE_ASSETS = [
   '/data/affirmations.json',
   '/data/good_vibes.json',
   '/data/words.json',
-  // Your Audio Assets
+
+  // Your Audio Assets from /assets/
   '/assets/chime-gen-quote.mp3',
-  '/assets/ui-save-fav.mp3'
-  // Add any other critical local assets here
+  '/assets/ui-save-fav.mp3',
+
+  // Any other critical local assets (e.g., from /images/ if used directly and critically)
+  '/images/app_logo.png' // If this is the logo used for OG tags and it's local
 ];
 
-// Install: Precache all core assets
 self.addEventListener('install', event => {
-  console.log('[SW] Install event');
+  console.log('[SW] Install event for version:', CACHE_VERSION);
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('[SW] Precaching assets:', PRECACHE_ASSETS);
-        return cache.addAll(PRECACHE_ASSETS);
+        console.log('[SW] Precaching assets:', PRECACHE_ASSETS.length, 'files');
+        // Add assets one by one to identify problematic ones if addAll fails
+        const promises = PRECACHE_ASSETS.map(assetUrl => {
+          return cache.add(assetUrl).catch(err => {
+            console.error(`[SW] Failed to cache ${assetUrl}:`, err);
+            // Optionally, throw err to make the entire install fail, or just log and skip
+          });
+        });
+        return Promise.all(promises);
       })
       .then(() => {
         console.log('[SW] Precache complete, activating new SW version.');
-        return self.skipWaiting(); // Activate the new service worker immediately
+        return self.skipWaiting();
       })
       .catch(error => {
-        console.error('[SW] Precaching failed:', error);
+        console.error('[SW] Precaching failed catastrophically:', error);
+        // If precaching fails, the SW might not install correctly.
       })
   );
 });
 
-// Activate: Clean up old caches
 self.addEventListener('activate', event => {
-  console.log('[SW] Activate event');
+  console.log('[SW] Activate event for version:', CACHE_VERSION);
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.filter(cacheName => {
-          // Delete all caches that aren't the current one
           return cacheName.startsWith('wow-quotes-cache-') && cacheName !== CACHE_NAME;
         }).map(cacheName => {
           console.log('[SW] Deleting old cache:', cacheName);
@@ -94,68 +107,85 @@ self.addEventListener('activate', event => {
       );
     }).then(() => {
       console.log('[SW] Old caches cleaned up, claiming clients.');
-      return self.clients.claim(); // Take control of all open clients
+      return self.clients.claim();
     })
   );
 });
 
-// Fetch: Handle requests
 self.addEventListener('fetch', event => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Only handle GET requests
   if (req.method !== 'GET') {
     return;
   }
 
-  // Strategy: Stale-while-revalidate for precached assets (HTML, CSS, JS, JSON, Fonts from origin)
-  // This ensures a fast response from cache while updating in the background.
-  if (PRECACHE_ASSETS.includes(url.pathname) || url.pathname.endsWith('.json')) {
+  // Strategy: Stale-while-revalidate for assets expected to be in cache.
+  if (PRECACHE_ASSETS.includes(url.pathname) || url.pathname.endsWith('.json') && url.origin === self.location.origin) {
     event.respondWith(staleWhileRevalidate(req));
     return;
   }
 
-  // Strategy: Cache-first for images from origin
-  // Serve from cache if available, otherwise fetch, cache, and return.
+  // Strategy: Cache-first for images from origin.
   if (req.destination === 'image' && url.origin === self.location.origin) {
     event.respondWith(cacheFirst(req));
     return;
   }
-
-  // Strategy: Network-first for other requests from origin (e.g., new API calls not precached)
-  // Try network, if it fails (offline), fallback to cache.
+  
+  // Strategy: Network-first for other requests from origin
   if (url.origin === self.location.origin) {
     event.respondWith(networkFirst(req));
     return;
   }
 
-  // For cross-origin requests (like CDNs, external images), just fetch (no caching by default here)
-  // You might want to add specific caching for CDNs if needed, but be careful with opaque responses.
-  event.respondWith(fetch(req).catch(() => {
-    // Generic offline fallback for failed fetches, though specific fallbacks are better.
-    // For navigation, index.html is already handled by networkFirst/staleWhileRevalidate for '/'
-    console.warn(`[SW] Fetch failed for: ${req.url}`);
-    // Consider returning a custom offline response or image if appropriate for the request type
-  }));
+  // For cross-origin requests (like CDNs), try cache then network.
+  // Be cautious with opaque responses from CDNs if you cache them without 'cors' mode.
+  event.respondWith(
+    caches.match(req).then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(req).then(networkResponse => {
+        // Optionally cache CDN assets here if needed, but ensure CORS headers allow it.
+        // if (networkResponse.ok && (url.href.includes('cdnjs.cloudflare.com') || url.href.includes('fonts.gstatic.com'))) {
+        //   const cache = await caches.open(CACHE_NAME);
+        //   cache.put(req, networkResponse.clone());
+        // }
+        return networkResponse;
+      }).catch(() => {
+         console.warn(`[SW] Cross-origin fetch failed for: ${req.url}`);
+         // No generic offline fallback here for cross-origin, browser will handle.
+      });
+    })
+  );
 });
 
 async function staleWhileRevalidate(request) {
   const cache = await caches.open(CACHE_NAME);
-  const cachedResponsePromise = await cache.match(request);
-  const networkResponsePromise = fetch(request).then(response => {
-    if (response.ok) {
-      cache.put(request, response.clone());
-    }
-    return response;
-  }).catch(err => {
-    console.warn(`[SW] Network fetch failed for SWR: ${request.url}`, err);
-    // If network fails, and we don't have a cachedResponse, this will propagate the error
-    // which is fine, or you could return a specific offline response here.
-    return cachedResponsePromise; // Fallback to cache if network fails completely
-  });
+  const cachedResponsePromise = cache.match(request);
+  const networkResponsePromise = fetch(request)
+    .then(response => {
+      if (response.ok) {
+        cache.put(request, response.clone());
+      } else if (response.status === 404) {
+        console.warn(`[SW] SWR: Resource not found (404) on network for ${request.url}. Using cache if available.`);
+      }
+      return response;
+    })
+    .catch(async (err) => { // Changed to async to allow await inside
+      console.warn(`[SW] SWR: Network fetch failed for ${request.url}:`, err);
+      const cached = await cachedResponsePromise; // Ensure we use the initially fetched cached response
+      if (cached) return cached;
+      // If both network and cache fail for a precached asset, it's a problem.
+      // For navigation, networkFirst already handles /index.html fallback.
+      // For other assets, you might return a specific placeholder or re-throw.
+      console.error(`[SW] SWR: Both network and cache failed for ${request.url}`);
+      // Return a synthetic error response or undefined to let browser handle
+      return new Response("Network error and no cache match", { status: 503, statusText: "Service Unavailable" });
+    });
 
-  return cachedResponsePromise || networkResponsePromise;
+  const cachedResponse = await cachedResponsePromise;
+  return cachedResponse || networkResponsePromise;
 }
 
 async function cacheFirst(request) {
@@ -171,10 +201,10 @@ async function cacheFirst(request) {
     }
     return networkResponse;
   } catch (error) {
-    console.warn(`[SW] Network fetch failed for CacheFirst: ${request.url}`, error);
-    // For images, you might want to return a placeholder offline image
-    // return caches.match('/assets/offline-placeholder.png');
-    throw error; // Or rethrow
+    console.warn(`[SW] CacheFirst: Network fetch failed for ${request.url}`, error);
+    // Consider returning a placeholder for images if you have one in PRECACHE_ASSETS
+    // return caches.match('/assets/offline-placeholder.png'); 
+    throw error;
   }
 }
 
@@ -184,24 +214,25 @@ async function networkFirst(request) {
     const networkResponse = await fetch(request);
     if (networkResponse.ok) {
       cache.put(request, networkResponse.clone());
+    } else if (response.status === 404) {
+        console.warn(`[SW] NetworkFirst: Resource not found (404) on network for ${request.url}. Trying cache.`);
     }
     return networkResponse;
   } catch (error) {
-    console.warn(`[SW] Network fetch failed for NetworkFirst: ${request.url}`, error);
+    console.warn(`[SW] NetworkFirst: Network fetch failed for ${request.url}`, error);
     const cachedResponse = await cache.match(request);
     if (cachedResponse) {
       return cachedResponse;
     }
-    // If it's a navigation request, fall back to the main HTML page for SPA behavior
     if (request.mode === 'navigate') {
-      return caches.match('/index.html');
+      console.log('[SW] NetworkFirst: Falling back to /index.html for navigation.');
+      return caches.match('/'); // Ensure '/' is in PRECACHE_ASSETS
     }
-    throw error; // Or return a generic offline response
+    // Return a synthetic error response or undefined
+    return new Response("Network error and no cache match for navigation", { status: 503, statusText: "Service Unavailable" });
   }
 }
 
-
-// Listen for skipWaiting message from app.js
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     console.log('[SW] SKIP_WAITING message received, skipping wait.');
@@ -209,14 +240,13 @@ self.addEventListener('message', event => {
   }
 });
 
-// Push Notification Event Listener
 self.addEventListener('push', event => {
   console.log('[SW] Push Received.');
   let pushData = {
     title: 'Words of Wisdom',
     body: 'A new insight awaits you!',
-    icon: '/assets/icon-96x96.png', // Default icon
-    badge: '/assets/badge-72x72.png', // Default badge
+    icon: '/assets/icon-96x96.png', // Default icon (ensure this exists)
+    badge: '/assets/badge-72x72.png', // Default badge (ensure this exists)
     tag: 'wow-quote-update',
     url: '/'
   };
@@ -224,10 +254,10 @@ self.addEventListener('push', event => {
   if (event.data) {
     try {
       const eventData = event.data.json();
-      pushData = { ...pushData, ...eventData }; // Merge with defaults
+      pushData = { ...pushData, ...eventData };
     } catch (e) {
       console.error('[SW] Push event data is not valid JSON:', event.data.text(), e);
-      pushData.body = event.data.text(); // Use text if not JSON
+      pushData.body = event.data.text();
     }
   }
 
@@ -235,16 +265,11 @@ self.addEventListener('push', event => {
     body: pushData.body,
     icon: pushData.icon,
     badge: pushData.badge,
-    tag: pushData.tag, // Allows new notifications to replace old ones with the same tag
-    renotify: true,    // Vibrate/sound even if replacing an existing notification with the same tag
-    data: {            // Custom data to use when notification is clicked
-      url: pushData.url // URL to open on click
+    tag: pushData.tag,
+    renotify: true,
+    data: {
+      url: pushData.url
     }
-    // Example actions:
-    // actions: [
-    //   { action: 'explore', title: 'Explore More', icon: '/assets/explore-action.png' },
-    //   { action: 'close', title: 'Close', icon: '/assets/close-action.png' },
-    // ]
   };
 
   event.waitUntil(
@@ -252,33 +277,23 @@ self.addEventListener('push', event => {
   );
 });
 
-// Notification Click Event Listener
 self.addEventListener('notificationclick', event => {
   console.log('[SW] Notification click Received.');
-  event.notification.close(); // Close the notification
+  event.notification.close();
 
-  // Example: Handle actions
-  // if (event.action === 'explore') {
-  //   clients.openWindow('/explore-page'); // Open a specific page for this action
-  // } else if (event.action === 'close') {
-  //   // Do nothing, notification is already closed
-  // } else {
-    // Default action: open the URL specified in notification data, or root
-    const urlToOpen = (event.notification.data && event.notification.data.url) ? event.notification.data.url : '/';
-    event.waitUntil(
-      clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
-        // Check if a window for this app is already open
-        for (const client of clientList) {
-          // If a window is already at the target URL or root, focus it.
-          if (client.url === self.location.origin + urlToOpen && 'focus' in client) {
-            return client.focus();
-          }
+  const urlToOpen = (event.notification.data && event.notification.data.url) ? event.notification.data.url : '/';
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
+      for (const client of clientList) {
+        const clientUrl = new URL(client.url);
+        const targetUrl = new URL(urlToOpen, self.location.origin);
+        if (clientUrl.pathname === targetUrl.pathname && 'focus' in client) {
+          return client.focus();
         }
-        // If no existing client is found or focused, open a new window/tab.
-        if (clients.openWindow) {
-          return clients.openWindow(urlToOpen);
-        }
-      })
-    );
-  // }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(urlToOpen);
+      }
+    })
+  );
 });
