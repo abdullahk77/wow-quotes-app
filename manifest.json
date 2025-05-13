@@ -1,7 +1,7 @@
 {
   "name": "WOW Quotes - Daily Inspiration & Wisdom",
   "short_name": "WOW Quotes",
-  "description": "Daily inspiring quotes, wisdom, and motivation.",
+  "description": "Daily inspiring quotes, wisdom and motivation.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#181826",
