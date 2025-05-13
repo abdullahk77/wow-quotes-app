@@ -1178,7 +1178,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+          applicationServerKey: urlBase64ToUint8Array(BBOTRj3yGFqeY_CAmjIuLbxRX6xKC5TUwAvdpaMppgz8AqSkX9mxs16CHbOVkhS6siGgqgwkEGQSjqM-tGe5A0k)
         });
         console.log('New Push Subscription: ', JSON.stringify(subscription));
         // HERE: Send the 'subscription' object to your backend server to store it.
