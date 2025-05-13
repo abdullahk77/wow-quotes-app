@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let previouslyFocusedElement; // For modal accessibility
 
   const MAX_QUOTE_HISTORY = 5;
-  const VAPID_PUBLIC_KEY = 'YOUR_GENERATED_VAPID_PUBLIC_KEY'; // REPLACE THIS!
+  const VAPID_PUBLIC_KEY = 'BBOTRj3yGFqeY_CAmjIuLbxRX6xKC5TUwAvdpaMppgz8AqSkX9mxs16CHbOVkhS6siGgqgwkEGQSjqM-tGe5A0k'; // REPLACE THIS!
 
   // Banner themes and styles (unchanged from original)
   const bannerThemes = [
@@ -1171,7 +1171,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const registration = await navigator.serviceWorker.ready;
       let subscription = await registration.pushManager.getSubscription();
       if (!subscription) {
-        if (!VAPID_PUBLIC_KEY || VAPID_PUBLIC_KEY === 'YOUR_GENERATED_VAPID_PUBLIC_KEY') {
+        if (!VAPID_PUBLIC_KEY || VAPID_PUBLIC_KEY === 'BBOTRj3yGFqeY_CAmjIuLbxRX6xKC5TUwAvdpaMppgz8AqSkX9mxs16CHbOVkhS6siGgqgwkEGQSjqM-tGe5A0k') {
             console.error('VAPID_PUBLIC_KEY is not set. Cannot subscribe to push notifications.');
             showAppNotification('Push notification setup error (admin).', 'error');
             return null;
