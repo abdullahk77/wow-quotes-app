@@ -755,20 +755,27 @@ function loadGoogleFonts(quoteFont, authorFont) {
   } else {
     console.warn("Submit quote form elements not fully available.");
   }
-
-  // --- Quote Display Logic ---
-  function showQuote(item, category, fromUndo = false) {
+// --- Quote Display Logic ---
+function showQuote(item, category, fromUndo = false) {
     if (!item || (typeof item.text === 'undefined' && typeof item.quote === 'undefined' && typeof item.message === 'undefined')) {
         const noQuoteMsg = "No quote available for this selection. Try another category or inspire me again!";
         if(qText) qText.textContent = noQuoteMsg;
         if(qAuth) qAuth.textContent = "";
-        applyFontPairing(selectedCat);
+        applyFontPairing(selectedCat); // Font pairing for "no quote" case
         showAppNotification(noQuoteMsg, 'info');
         lastQuote = null; 
         if(undoBtn) undoBtn.style.display = quoteHistory.length > 0 ? "flex" : "none";
         updateFavoriteButtonState(); 
         return;
     }
+
+    // --- Your normal quote rendering logic ---
+    let quoteText = item.text || item.quote || item.message || "";
+    let authorName = item.author || item.by || item.name || "";
+
+    if(qText) qText.textContent = quoteText;
+    if(qAuth) qAuth.textContent = authorName;
+    applyFontPairing(selectedCat); // Font pairing for normal quote display
 
     if (!fromUndo && lastQuote) {
       quoteHistory.unshift(lastQuote); 
@@ -785,7 +792,9 @@ function loadGoogleFonts(quoteFont, authorFont) {
 
       if(qText) qText.textContent = txt;
       if(qAuth) {
-        qAuth.innerHTML = (!by || by.toLowerCase() === "anonymous" || by.toLowerCase() === "unknown") ? "" : `<span style="font-size:1.3em;vertical-align:middle;">&#8213;</span> ${by}`;
+        qAuth.innerHTML = (!by || by.toLowerCase() === "anonymous" || by.toLowerCase() === "unknown")
+          ? ""
+          : `<span style="font-size:1.3em;vertical-align:middle;">&#8213;</span> ${by}`;
       }
       if(quoteMark) { 
         quoteMark.textContent = "“";
@@ -797,11 +806,14 @@ function loadGoogleFonts(quoteFont, authorFont) {
 
       lastQuote = { text: txt, author: by, category: category }; 
       updateStreak();
-      updateFavoriteButtonState(); 
-    }, 300); 
-  }
+      updateFavoriteButtonState();
 
-  function showAuthorQuote() {
+      // Font pairing after DOM updates in setTimeout
+      applyFontPairing(selectedCat);
+    }, 300); 
+}
+
+function showAuthorQuote() {
     if (!authorQuotes || authorQuotes.length === 0) {
       if(qText) qText.textContent = "No quotes found for this author.";
       if(qAuth) qAuth.textContent = "";
@@ -813,9 +825,9 @@ function loadGoogleFonts(quoteFont, authorFont) {
     const quote = authorQuotes[authorQuoteIndex % authorQuotes.length];
     showQuote(quote, quote.category); 
     authorQuoteIndex++;
-  }
+}
 
-  function displayQuote() {
+function displayQuote() {
     if (authorMode) { 
       showAuthorQuote();
       return;
@@ -862,9 +874,9 @@ function loadGoogleFonts(quoteFont, authorFont) {
 
     const randomIndex = Math.floor(Math.random() * pool.length);
     showQuote(pool[randomIndex], selectedCat); 
-  }
-  
-  if(undoBtn) {
+}
+
+if(undoBtn) {
     undoBtn.addEventListener("click", () => {
       if (quoteHistory.length > 0) {
         const prevQuoteData = quoteHistory.shift(); 
@@ -872,7 +884,7 @@ function loadGoogleFonts(quoteFont, authorFont) {
       }
       undoBtn.style.display = quoteHistory.length > 0 ? "flex" : "none";
     });
-  }
+}
 
   // --- UI Effects and Interactions ---
   function triggerGenerateEffects() {
