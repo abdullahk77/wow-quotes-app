@@ -1,3 +1,4 @@
+// app.js (Production Ready - Incorporating all fixes)
 document.addEventListener("DOMContentLoaded", () => {
   // --- DOM Elements ---
   const qText = document.getElementById("quoteText"),
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     openMenuBtn = document.getElementById("openMenuBtn"),
     categoryModal = document.getElementById("categoryModal"),
     closeMenuBtn = document.getElementById("closeMenuBtn"),
-    currentCategoryDisplay = document.getElementById("currentCategory"), // Renamed for clarity
+    currentCategoryDisplay = document.getElementById("currentCategory"),
     categoryMenu = document.getElementById("categoryMenu"),
     streakBadge = document.getElementById("streakBadge"),
     shareMenu = document.getElementById("shareMenu"),
@@ -37,11 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
     feedbackSuccess = document.getElementById('feedbackSuccess'),
     magicSound = document.getElementById('magicSound'),
     favSound = document.getElementById('favSound'),
-    appNotificationElement = document.getElementById('appNotification'); // For app-wide notifications
+    appNotificationElement = document.getElementById('appNotification');
 
   // Image Generation Modal Elements
   const quoteImagePreviewContainer = document.getElementById('quoteImagePreviewContainer'),
-    quoteImageWrapper = document.getElementById('quoteImageWrapper'),
+    quoteImageWrapper = document.getElementById('quoteImageWrapper'), // Keep if used for styling wrapper
     quoteImageContent = document.getElementById('quoteImageContent'),
     imageQuoteText = document.getElementById('imageQuoteText'),
     imageQuoteAuthor = document.getElementById('imageQuoteAuthor'),
@@ -53,23 +54,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Global State ---
   let categories = [];
-  let quotes = {};
-  let authors = {};
-  let selectedCat = "inspiration";
-  let lastQuote = null;
-  let quoteHistory = []; // Max 5 entries
-  let authorMode = false;
-  let authorQuotes = [];
-  let authorName = "";
-  let authorQuoteIndex = 0;
-  let debounceTimer = null;
-  let currentCanvas = null;
-  let previouslyFocusedElement; // For modal accessibility
+  let quotes = {}; // Stores quotes by category ID
+  let authors = {}; // Index for author search
+  let selectedCat = "inspiration"; // Default category
+  let lastQuote = null; // Stores the current quote object {text, author, category}
+  let quoteHistory = []; // Stores last 5 quotes for undo functionality
+  let authorMode = false; // True if browsing quotes by a specific author
+  let authorQuotes = []; // Array of quotes for the selected author
+  let authorName = ""; // Name of the selected author
+  let authorQuoteIndex = 0; // Current index for author's quotes
+  let debounceTimer = null; // For debouncing author search input
+  let currentCanvas = null; // Stores the generated canvas for image sharing
+  let previouslyFocusedElement; // For accessibility in modals
 
   const MAX_QUOTE_HISTORY = 5;
-  const VAPID_PUBLIC_KEY = 'BBOTRj3yGFqeY_CAmjIuLbxRX6xKC5TUwAvdpaMppgz8AqSkX9mxs16CHbOVkhS6siGgqgwkEGQSjqM-tGe5A0k'; // REPLACE THIS!
+  const VAPID_PUBLIC_KEY = 'BBOTRj3yGFqeY_CAmjIuLbxRX6xKC5TUwAvdpaMppgz8AqSkX9mxs16CHbOVkhS6siGgqgwkEGQSjqM-tGe5A0k';
 
-  // Banner themes and styles (unchanged from original)
   const bannerThemes = [
     {cat: "inspiration",    text: "Ignite fresh ideas to fuel your week."},
     {cat: "motivation",     text: "Power up your ambition and take the lead."},
@@ -131,20 +131,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let notificationTimeout;
   function showAppNotification(message, type = 'info', duration = 3000) {
-    if (!appNotificationElement) return;
+    if (!appNotificationElement) {
+        console.warn("App notification element not found. Message:", message);
+        return;
+    }
     appNotificationElement.textContent = message;
     appNotificationElement.className = 'app-notification show'; // Reset classes
     if (type === 'error') appNotificationElement.classList.add('error');
     else if (type === 'success') appNotificationElement.classList.add('success');
 
-
     clearTimeout(notificationTimeout);
     notificationTimeout = setTimeout(() => {
-      appNotificationElement.classList.remove('show');
+      if (appNotificationElement) appNotificationElement.classList.remove('show');
     }, duration);
   }
 
   async function fetchJSON(url, cacheKey) {
+    const absoluteUrl = url.startsWith('http') ? url : new URL(url, window.location.origin).href;
     try {
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
@@ -152,12 +155,12 @@ document.addEventListener("DOMContentLoaded", () => {
           return JSON.parse(cached);
         } catch (e) {
           console.warn(`Invalid JSON in localStorage for ${cacheKey}. Clearing item.`, e);
-          localStorage.removeItem(cacheKey); // Clear corrupted cache entry
+          localStorage.removeItem(cacheKey);
         }
       }
-      const res = await fetch(url);
+      const res = await fetch(absoluteUrl);
       if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status} for ${url}`);
+        throw new Error(`HTTP error! Status: ${res.status} for ${absoluteUrl}`);
       }
       const data = await res.json();
       try {
@@ -168,16 +171,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       return data;
     } catch (e) {
-      console.error(`Failed to fetch or parse ${url}:`, e.message);
-      showAppNotification(`Error loading data: ${e.message}. Please check your connection.`, 'error', 5000);
-      throw e; // Re-throw for the caller to handle if necessary
+      console.error(`Failed to fetch or parse ${absoluteUrl}:`, e.message);
+      showAppNotification(`Error loading data from ${url.split('/').pop()}. Check connection.`, 'error', 5000);
+      throw e;
     }
   }
 
   // --- Modal Management ---
   function openModal(modalElement, focusElement) {
+    if (!modalElement) {
+        console.warn("Attempted to open a null modal element.");
+        return;
+    }
     previouslyFocusedElement = document.activeElement;
-    modalElement.classList.add('open');
+    modalElement.style.display = 'flex'; 
+    setTimeout(() => {
+        modalElement.classList.add('open');
+    }, 10); 
+
     if (focusElement) {
         focusElement.focus();
     } else {
@@ -188,13 +199,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function closeModal(modalElement) {
+    if (!modalElement) {
+        console.warn("Attempted to close a null modal element.");
+        return;
+    }
     modalElement.classList.remove('open');
+    
+    // If modals are display:none by default in HTML, set it back after transition
+    // This depends on your CSS setup for .open class (opacity/transform vs display)
+    // setTimeout(() => { 
+    //    if (!modalElement.classList.contains('open')) modalElement.style.display = 'none';
+    // }, 300); // Match CSS transition duration
+
     if (previouslyFocusedElement) {
-        previouslyFocusedElement.focus();
+        try { previouslyFocusedElement.focus(); } catch (e) { /* Element might not be focusable anymore */ }
         previouslyFocusedElement = null;
     }
-    // Check if any other modal is open before re-enabling body scroll
-    const anyModalOpen = document.querySelector('.modal.open, .image-modal[style*="display: flex"]');
+    const anyModalOpen = document.querySelector('.modal.open, .image-modal.open');
     if (!anyModalOpen) {
         document.body.style.overflow = "";
     }
@@ -202,10 +223,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Banner Logic ---
   function showRotatingBanner() {
+    if (!specialBanner || !bannerText || !closeBannerBtn || !bannerThemes || bannerThemes.length === 0) {
+        console.warn("Banner elements or themes not available.");
+        return;
+    }
     const today = new Date();
-    const startDate = new Date("2025-05-05"); // Ensure this date is in the past or current for immediate effect
-    const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-    const idx = ((daysSinceStart % bannerThemes.length) + bannerThemes.length) % bannerThemes.length;
+    const startDate = new Date("2025-05-05"); 
+    const daysSinceStart = Math.max(0, Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
+    const idx = daysSinceStart % bannerThemes.length;
     const theme = bannerThemes[idx];
     const todayStr = today.toISOString().slice(0,10);
     const lastBannerDate = localStorage.getItem("wowBannerDate");
@@ -218,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
     bannerHTML += `<span>${theme.text}</span>`;
 
     bannerText.innerHTML = bannerHTML;
-    specialBanner.style.display = "block";
+    specialBanner.style.display = "block"; 
     specialBanner.style.background = style.color ? style.color : "linear-gradient(90deg, #ffd700 0%, #7c5df0 100%)";
     specialBanner.style.color = style.color && (style.color === "#ffd700" || style.color === "#aeea00") ? "#222" : "#fff";
 
@@ -238,8 +263,8 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedCat = theme.cat;
     authorMode = false;
     if(currentCategoryDisplay) currentCategoryDisplay.textContent = capitalize(theme.cat);
-    localStorage.setItem("wowBannerDate", todayStr);
-    localStorage.setItem("lastAutoSelectedCategory", theme.cat);
+    localStorage.setItem("wowBannerDate", todayStr); 
+    localStorage.setItem("lastAutoSelectedCategory", theme.cat); 
   }
 
   // --- Data Loading and Processing ---
@@ -248,84 +273,90 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         categories = await fetchJSON('data/categories.json', 'wowCategories');
       } catch (e) {
-        console.warn("Could not load categories.json from data/, trying root...");
+        console.warn("Could not load 'data/categories.json', trying 'categories.json' at root...");
         try {
             categories = await fetchJSON('categories.json', 'wowCategoriesRoot');
         } catch (finalError) {
-            showAppNotification('Critical: Could not load category definitions.', 'error', 7000);
-            if(qText) qText.textContent = "Error: Main category file could not be loaded.";
+            showAppNotification('Critical: Could not load category definitions. App may not function.', 'error', 7000);
+            if(qText) qText.textContent = "Error: Main category file (categories.json) could not be loaded.";
             if(qAuth) qAuth.textContent = "";
-            return; // Essential data missing
+            return; 
         }
       }
 
       if (!categories || categories.length === 0) {
         console.error("CRITICAL: categories.json is empty or could not be loaded.");
         showAppNotification("Error: No categories found. App may not function correctly.", 'error', 7000);
-        if(qText) qText.textContent = "Error: Category data missing.";
+        if(qText) qText.textContent = "Error: Category data missing. Please check file paths and content.";
         if(qAuth) qAuth.textContent = "";
         return;
       }
 
       const quotePromises = [];
-      function collectCategories(catArray) {
+      function collectCategoriesAndFetchQuotes(catArray) {
         catArray.forEach(cat => {
           if (cat.children) {
-            collectCategories(cat.children);
+            collectCategoriesAndFetchQuotes(cat.children); 
           } else if (cat.file) {
-            const originalPath = cat.file; // e.g., data/quotes_inspiration.json
-            let pathAttempt1 = originalPath;
-            let pathAttempt2 = null; // For fallback if originalPath starts with 'data/'
-            if (originalPath && originalPath.startsWith('data/')) {
-                pathAttempt2 = originalPath.substring(5); // e.g., quotes_inspiration.json
-            }
-
+            const primaryFilePath = cat.file; 
+            
             const fetchAndProcessQuoteFile = async (filePath, cacheKeyPrefix) => {
                 try {
                     const data = await fetchJSON(filePath, cacheKeyPrefix + cat.id);
                     if (Array.isArray(data)) {
                         quotes[cat.id] = data;
                         buildAuthorIndex(data, cat.id);
-                        return true; // Success
+                        return true; 
                     }
-                    console.warn(`Invalid data structure in ${filePath} for category ${cat.id}. Expected array. Received:`, data);
-                    return false; // Data structure error
+                    console.warn(`Invalid data structure in ${filePath} for category ${cat.id}. Expected array. Received:`, typeof data, data);
+                    return false; 
                 } catch (err) {
-                    // fetchJSON already shows a notification
-                    return false; // Fetch error
+                    return false; 
                 }
             };
-
             quotePromises.push(
-                fetchAndProcessQuoteFile(pathAttempt1, 'wowQuotes_').then(success => {
-                    if (!success && pathAttempt2) {
-                        console.warn(`Failed to load ${pathAttempt1}, trying ${pathAttempt2}`);
-                        return fetchAndProcessQuoteFile(pathAttempt2, 'wowQuotesRoot_');
+                fetchAndProcessQuoteFile(primaryFilePath, `wowQuotes_${cat.id}_`)
+                  .then(success => {
+                    if (!success && primaryFilePath && primaryFilePath.startsWith('data/')) {
+                        const fallbackFilePath = primaryFilePath.substring(5); 
+                        console.warn(`Failed to load ${primaryFilePath}, trying fallback ${fallbackFilePath}`);
+                        return fetchAndProcessQuoteFile(fallbackFilePath, `wowQuotesRoot_${cat.id}_`);
                     }
-                    return success;
-                })
+                    return success; 
+                  })
             );
           }
         });
       }
-      collectCategories(categories);
+      collectCategoriesAndFetchQuotes(categories);
 
-      if (localStorage.getItem('userQuotes')) {
+      const userQuotesRaw = localStorage.getItem('userQuotes');
+      if (userQuotesRaw) {
         try {
-            const userQuotesData = JSON.parse(localStorage.getItem('userQuotes'));
-            quotes['user'] = userQuotesData;
-            buildAuthorIndex(userQuotesData, 'user');
+            const userQuotesData = JSON.parse(userQuotesRaw);
+            if (Array.isArray(userQuotesData)) {
+                quotes['user'] = userQuotesData; 
+                buildAuthorIndex(userQuotesData, 'user');
+            }
         } catch (e) {
             console.warn("Error parsing userQuotes from localStorage", e);
-            localStorage.removeItem('userQuotes'); // Remove corrupted data
+            localStorage.removeItem('userQuotes'); 
         }
       }
-      await Promise.all(quotePromises);
+      
+      await Promise.all(quotePromises); 
 
-      if (Object.keys(quotes).length === 0 && (!localStorage.getItem('userQuotes') || JSON.parse(localStorage.getItem('userQuotes') || '[]').length === 0)) {
-          if(qText) qText.textContent = "No quote data could be loaded. Please check your connection or try again later.";
-          if(qAuth) qAuth.textContent = "";
-          showAppNotification("No quotes could be loaded. The app might be empty.", 'error', 7000);
+      let hasAnyQuotes = false;
+      for (const catId in quotes) {
+          if (quotes[catId] && quotes[catId].length > 0) {
+              hasAnyQuotes = true;
+              break;
+          }
+      }
+      if (!hasAnyQuotes) {
+        if(qText) qText.textContent = "No quote data could be loaded. Please check your connection or data files.";
+        if(qAuth) qAuth.textContent = "";
+        showAppNotification("No quotes could be loaded. The app might be empty.", 'error', 7000);
       }
     } catch (err) {
       console.error('CRITICAL FAILURE in loadCategoriesAndQuotes:', err);
@@ -336,7 +367,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function buildAuthorIndex(quoteList, categoryId) {
-    if (!Array.isArray(quoteList)) return;
+    if (!Array.isArray(quoteList)) {
+        console.warn(`Skipping author indexing for category ${categoryId}: quoteList is not an array.`);
+        return;
+    }
     quoteList.forEach(quote => {
       const by = (quote.author || quote.by || "").trim();
       if (by) {
@@ -345,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
         authors[authorKey].push({
           text: quote.text || quote.quote || quote.message,
           author: by,
-          category: categoryId
+          category: categoryId 
         });
       }
     });
@@ -353,15 +387,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Menu Rendering and Interaction ---
   function renderMenu() {
-    if (!categoryMenu) return;
-    categoryMenu.innerHTML = ""; // Clear previous menu
-    function renderCategoryList(catArray, parentUl) {
+    if (!categoryMenu) {
+        console.error("Category menu DOM element not found. Cannot render menu.");
+        return;
+    }
+    if (!categories || categories.length === 0) {
+        categoryMenu.innerHTML = "<p style='padding:1rem; text-align:center;'>Categories not loaded.</p>";
+        return;
+    }
+
+    categoryMenu.innerHTML = ""; 
+    
+    function renderCategoryList(catArray, parentUlElement) {
       catArray.forEach(cat => {
-        if (cat.isSearch) { // Author Search and other static items
+        if (cat.isSearch) { 
           const searchSectionHTML = `
             <div class="section search-section">
               <button class="section-btn" aria-expanded="false" aria-controls="authorSearchWrapper-${cat.id || 'search'}">
-                <i class="fa-solid fa-user section-icon"></i>Search by Author
+                <i class="fa-solid ${cat.icon || 'fa-user'} section-icon"></i>${cat.name || 'Search by Author'}
                 <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
               </button>
               <div id="authorSearchWrapper-${cat.id || 'search'}" class="author-search-wrapper" style="display: none;">
@@ -369,27 +412,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 <ul id="authorList" class="suggestions-list" role="listbox"></ul>
               </div>
             </div>`;
-          categoryMenu.insertAdjacentHTML('beforeend', searchSectionHTML);
-
-          const favSectionHTML = `
-            <div class="section">
-              <button class="section-btn" id="viewFavoritesBtn"><i class="fa-solid fa-heart section-icon" aria-hidden="true"></i>View Favorites</button>
-            </div>`;
-          categoryMenu.insertAdjacentHTML('beforeend', favSectionHTML);
-
-          const myFavCatHTML = `
-            <div class="section">
-              <button class="section-btn" id="myFavoritesCategoryBtn"><i class="fa-solid fa-star section-icon" aria-hidden="true"></i>Quotes from My Favorites</button>
-            </div>`;
-          categoryMenu.insertAdjacentHTML('beforeend', myFavCatHTML);
-
-          const submitSectionHTML = `
-            <div class="section">
-              <button class="section-btn" id="openSubmitQuoteModalBtn"><i class="fa-solid fa-plus section-icon" aria-hidden="true"></i>Submit a Quote</button>
-            </div>`;
-          categoryMenu.insertAdjacentHTML('beforeend', submitSectionHTML);
-
-        } else { // Regular categories with children
+          parentUlElement.insertAdjacentHTML('beforeend', searchSectionHTML);
+        } else { 
           const sectionId = `section-list-${cat.id || Math.random().toString(36).substring(2,9)}`;
           const sectionHTML = `
             <div class="section">
@@ -399,14 +423,14 @@ document.addEventListener("DOMContentLoaded", () => {
               </button>
               <ul class="section-list" id="${sectionId}" style="display: none;"></ul>
             </div>`;
-          categoryMenu.insertAdjacentHTML('beforeend', sectionHTML);
-          const currentSectionDiv = categoryMenu.lastElementChild;
-          const ul = currentSectionDiv.querySelector(".section-list");
+          parentUlElement.insertAdjacentHTML('beforeend', sectionHTML);
+          const currentSectionDiv = parentUlElement.lastElementChild;
+          const ulForChildren = currentSectionDiv.querySelector(".section-list");
 
-          if (cat.children) {
+          if (cat.children && ulForChildren) { 
             cat.children.forEach(child => {
               const li = document.createElement("li");
-              if (child.children) { // Nested sub-categories
+              if (child.children) { 
                 li.className = "has-children";
                 const subSectionId = `subsection-list-${child.id || Math.random().toString(36).substring(2,9)}`;
                 li.innerHTML = `<span role="button" tabindex="0" aria-expanded="false" aria-controls="${subSectionId}">
@@ -414,22 +438,24 @@ document.addEventListener("DOMContentLoaded", () => {
                   ${child.name} <i class="fa-solid fa-caret-right" aria-hidden="true"></i>
                 </span>
                 <ul class="nested-list" id="${subSectionId}" style="display: none;"></ul>`;
-                const subul = li.querySelector(".nested-list");
-                child.children.forEach(sub => {
-                  const subli = document.createElement("li");
-                  subli.innerHTML = `<a href="#" data-cat="${sub.id}">
-                    ${sub.icon ? `<i class="fa-solid ${sub.icon}" aria-hidden="true"></i>` : ""}
-                    ${sub.name}
-                  </a>`;
-                  subul.appendChild(subli);
-                });
-              } else { // Direct child category
+                const subUl = li.querySelector(".nested-list");
+                if (subUl) {
+                    child.children.forEach(sub => {
+                      const subLi = document.createElement("li");
+                      subLi.innerHTML = `<a href="#" data-cat="${sub.id}">
+                        ${sub.icon ? `<i class="fa-solid ${sub.icon}" aria-hidden="true"></i>` : ""}
+                        ${sub.name}
+                      </a>`;
+                      subUl.appendChild(subLi);
+                    });
+                }
+              } else { 
                 li.innerHTML = `<a href="#" data-cat="${child.id}">
                   ${child.icon ? `<i class="fa-solid ${child.icon}" aria-hidden="true"></i>` : ""}
                   ${child.name}
                 </a>`;
               }
-              ul.appendChild(li);
+              ulForChildren.appendChild(li);
             });
           }
         }
@@ -437,65 +463,119 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderCategoryList(categories, categoryMenu);
-    attachMenuEventListeners(); // Attach listeners after HTML is rendered
+
+    const favSectionHTML = `
+        <div class="section">
+            <button class="section-btn" id="viewFavoritesBtn"><i class="fa-solid fa-heart section-icon" aria-hidden="true"></i>View Favorites</button>
+        </div>`;
+    categoryMenu.insertAdjacentHTML('beforeend', favSectionHTML);
+
+    const myFavCatHTML = `
+        <div class="section">
+            <button class="section-btn" id="myFavoritesCategoryBtn"><i class="fa-solid fa-star section-icon" aria-hidden="true"></i>Quotes from My Favorites</button>
+        </div>`;
+    categoryMenu.insertAdjacentHTML('beforeend', myFavCatHTML);
+    
+    const submitSectionHTML = `
+        <div class="section">
+            <button class="section-btn" id="openSubmitQuoteModalBtn"><i class="fa-solid fa-plus section-icon" aria-hidden="true"></i>Submit a Quote</button>
+        </div>`;
+    categoryMenu.insertAdjacentHTML('beforeend', submitSectionHTML);
+
+    attachMenuEventListeners(); 
   }
 
   function attachMenuEventListeners() {
-    // Toggle for main category sections
+    if (!categoryMenu) return;
     categoryMenu.querySelectorAll('.section > .section-btn').forEach(btn => {
-      const list = btn.nextElementSibling; // Could be .author-search-wrapper or .section-list
-      if (list) { // Ensure there's a next element to control
+      const listOrWrapper = btn.nextElementSibling; 
+      
+      if (btn.id === 'viewFavoritesBtn') {
+        btn.addEventListener("click", () => {
+            if (favModal && closeFavModal) openModal(favModal, closeFavModal); else console.error("Favorites modal elements not found");
+            showFavorites();
+            if (categoryModal) closeModal(categoryModal);
+        });
+      } else if (btn.id === 'myFavoritesCategoryBtn') {
+        btn.addEventListener("click", () => {
+            selectedCat = "myfavorites"; 
+            authorMode = false;
+            if(currentCategoryDisplay) currentCategoryDisplay.textContent = "My Favorites";
+            if (categoryModal) closeModal(categoryModal);
+            displayQuote();
+        });
+      } else if (btn.id === 'openSubmitQuoteModalBtn') {
+         btn.addEventListener("click", () => {
+            if (submitQuoteModal && customQuoteForm && closeSubmitQuoteModal) {
+                openModal(submitQuoteModal, customQuoteForm.elements[0] || closeSubmitQuoteModal);
+                customQuoteForm.reset();
+                if(quoteFormSuccess) {
+                    quoteFormSuccess.style.display = "none";
+                    quoteFormSuccess.textContent = "Thank you! Your quote was submitted.";
+                }
+                const submitBtnText = submitCustomQuoteBtn ? submitCustomQuoteBtn.querySelector('.submit-btn-text') : null;
+                const submitSpinner = submitCustomQuoteBtn ? submitCustomQuoteBtn.querySelector('.loader-spinner') : null;
+                if(submitBtnText) submitBtnText.style.display = 'inline';
+                if(submitSpinner) submitSpinner.style.display = 'none';
+                if(submitCustomQuoteBtn) submitCustomQuoteBtn.disabled = false;
+            } else {
+                console.error("Submit quote modal elements not found");
+            }
+            if (categoryModal) closeModal(categoryModal);
+        });
+      } else if (listOrWrapper) { 
         btn.addEventListener('click', function() {
           const isExpanded = this.getAttribute('aria-expanded') === 'true';
-          this.setAttribute('aria-expanded', !isExpanded);
-          list.style.display = isExpanded ? 'none' : 'block';
+          this.setAttribute('aria-expanded', (!isExpanded).toString());
+          listOrWrapper.style.display = isExpanded ? 'none' : 'block';
           const icon = this.querySelector('.fa-chevron-down, .fa-chevron-up');
           if (icon) {
-            icon.classList.toggle('fa-chevron-down');
-            icon.classList.toggle('fa-chevron-up');
+            icon.classList.toggle('fa-chevron-down', isExpanded);
+            icon.classList.toggle('fa-chevron-up', !isExpanded);
           }
-          if (!isExpanded && list.id.includes('authorSearchWrapper')) {
-            list.querySelector('input#authorSearch')?.focus();
+          if (!isExpanded && listOrWrapper.id && listOrWrapper.id.includes('authorSearchWrapper')) {
+            const searchInput = listOrWrapper.querySelector('input#authorSearch');
+            if (searchInput) searchInput.focus();
           }
         });
       }
     });
 
-    // Toggle for nested lists
-    categoryMenu.querySelectorAll('.has-children > span').forEach(span => {
+    categoryMenu.querySelectorAll('.has-children > span[role="button"]').forEach(span => {
       span.addEventListener('click', function(e) {
-        e.stopPropagation();
+        e.stopPropagation(); 
         const nestedList = this.nextElementSibling;
+        if (!nestedList) return;
         const isExpanded = this.getAttribute('aria-expanded') === 'true';
-        this.setAttribute('aria-expanded', !isExpanded);
+        this.setAttribute('aria-expanded', (!isExpanded).toString());
         nestedList.style.display = isExpanded ? 'none' : 'block';
         const icon = this.querySelector('.fa-caret-right, .fa-caret-down');
         if (icon) {
-            icon.classList.toggle('fa-caret-right');
-            icon.classList.toggle('fa-caret-down');
+            icon.classList.toggle('fa-caret-right', isExpanded);
+            icon.classList.toggle('fa-caret-down', !isExpanded);
         }
       });
-      span.addEventListener('keydown', function(e) {
+      span.addEventListener('keydown', function(e) { 
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault(); this.click();
         }
       });
     });
 
-    // Category link clicks
     categoryMenu.querySelectorAll('.section-list a, .nested-list a').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        selectedCat = link.dataset.cat;
+        const catId = link.dataset.cat;
+        if (!catId) return;
+        selectedCat = catId;
         authorMode = false;
         if(currentCategoryDisplay) currentCategoryDisplay.textContent = capitalize(link.textContent.replace(/^[^\w]*([\w\s]+)/, '$1').trim());
-        closeModal(categoryModal);
+        if (categoryModal) closeModal(categoryModal);
         displayQuote();
         recordCategoryUse(selectedCat);
       });
     });
 
-    // Author search input
     const authorInput = categoryMenu.querySelector("#authorSearch");
     const authorListUL = categoryMenu.querySelector("#authorList");
     if (authorInput && authorListUL) {
@@ -503,123 +583,105 @@ document.addEventListener("DOMContentLoaded", () => {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
           const query = authorInput.value.toLowerCase().trim();
-          authorListUL.innerHTML = "";
+          authorListUL.innerHTML = ""; 
           if (!query) return;
-          Object.keys(authors)
-            .filter(name => name.includes(query))
+          
+          const matchedAuthors = Object.keys(authors)
+            .filter(nameKey => nameKey.includes(query))
             .sort()
-            .slice(0, 10) // Limit results
-            .forEach(nameKey => {
+            .slice(0, 10); 
+
+          if (matchedAuthors.length === 0) {
+            authorListUL.innerHTML = '<li style="padding: 0.5rem 1rem; color: var(--light);">No authors found.</li>';
+            return;
+          }
+
+          matchedAuthors.forEach(nameKey => {
               const li = document.createElement("li");
               li.setAttribute('role', 'option');
-              li.textContent = authors[nameKey][0].author; // Display capitalized author name
-              li.tabIndex = -1; // For keyboard navigation if implemented
+              li.textContent = authors[nameKey][0].author; 
+              li.tabIndex = -1; 
               li.addEventListener("click", () => {
                 authorMode = true;
-                authorName = nameKey;
-                authorQuotes = [...authors[nameKey]]; // Create a copy
+                authorName = nameKey; 
+                authorQuotes = [...authors[nameKey]]; 
                 authorQuoteIndex = 0;
                 if(currentCategoryDisplay) currentCategoryDisplay.textContent = "Author: " + authors[nameKey][0].author;
-                closeModal(categoryModal);
-                showAuthorQuote();
+                if (categoryModal) closeModal(categoryModal);
+                showAuthorQuote(); 
               });
               authorListUL.appendChild(li);
             });
-        }, 300);
+        }, 300); 
       });
     }
+  }
 
-    // Static menu item listeners
-    const viewFavoritesBtn = document.getElementById('viewFavoritesBtn');
-    if(viewFavoritesBtn) viewFavoritesBtn.addEventListener("click", () => {
-        openModal(favModal, closeFavModal);
-        showFavorites();
-        closeModal(categoryModal);
+  if(openMenuBtn && categoryModal) {
+    openMenuBtn.addEventListener("click", () => {
+      renderMenu(); 
+      openModal(categoryModal, closeMenuBtn); 
     });
-
-    const myFavoritesCategoryBtn = document.getElementById('myFavoritesCategoryBtn');
-    if(myFavoritesCategoryBtn) myFavoritesCategoryBtn.addEventListener("click", () => {
-        selectedCat = "myfavorites";
-        authorMode = false;
-        if(currentCategoryDisplay) currentCategoryDisplay.textContent = "My Favorites";
-        closeModal(categoryModal);
-        displayQuote();
-    });
-
-    const openSubmitQuoteModalBtn = document.getElementById('openSubmitQuoteModalBtn');
-    if(openSubmitQuoteModalBtn) openSubmitQuoteModalBtn.addEventListener("click", () => {
-        openModal(submitQuoteModal, customQuoteForm.elements[0] || closeSubmitQuoteModal);
-        if(customQuoteForm) customQuoteForm.reset();
-        if(quoteFormSuccess) {
-            quoteFormSuccess.style.display = "none";
-            quoteFormSuccess.textContent = "Thank you! Your quote was submitted.";
-        }
-        const submitBtnText = submitCustomQuoteBtn.querySelector('.submit-btn-text');
-        const submitSpinner = submitCustomQuoteBtn.querySelector('.loader-spinner');
-        if(submitBtnText) submitBtnText.style.display = 'inline';
-        if(submitSpinner) submitSpinner.style.display = 'none';
-        submitCustomQuoteBtn.disabled = false;
-        closeModal(categoryModal);
+  }
+  if(closeMenuBtn && categoryModal) {
+    closeMenuBtn.addEventListener("click", () => closeModal(categoryModal));
+  }
+  if(categoryModal) { 
+    categoryModal.addEventListener("click", (e) => {
+      if (e.target === categoryModal) closeModal(categoryModal);
     });
   }
 
-  if(openMenuBtn) openMenuBtn.addEventListener("click", () => {
-    renderMenu(); // Re-render menu each time to ensure listeners are fresh if DOM changes
-    openModal(categoryModal, closeMenuBtn);
-  });
-  if(closeMenuBtn) closeMenuBtn.addEventListener("click", () => closeModal(categoryModal));
-  if(categoryModal) categoryModal.addEventListener("click", (e) => {
-    if (e.target === categoryModal) closeModal(categoryModal);
-  });
-
-
   // --- Quote Submission ---
-  if(closeSubmitQuoteModal) closeSubmitQuoteModal.addEventListener('click', () => closeModal(submitQuoteModal));
-  if(customQuoteForm) customQuoteForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const submitBtnText = submitCustomQuoteBtn.querySelector('.submit-btn-text');
-    const spinner = submitCustomQuoteBtn.querySelector('.loader-spinner');
+  if(closeSubmitQuoteModal && submitQuoteModal) {
+    closeSubmitQuoteModal.addEventListener('click', () => closeModal(submitQuoteModal));
+  }
+  if(customQuoteForm && submitCustomQuoteBtn && quoteFormSuccess) {
+    customQuoteForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const submitBtnText = submitCustomQuoteBtn.querySelector('.submit-btn-text');
+      const spinner = submitCustomQuoteBtn.querySelector('.loader-spinner');
 
-    if(submitBtnText) submitBtnText.style.display = 'none';
-    if(spinner) spinner.style.display = 'inline-block';
-    submitCustomQuoteBtn.disabled = true;
+      if(submitBtnText) submitBtnText.style.display = 'none';
+      if(spinner) spinner.style.display = 'inline-block';
+      submitCustomQuoteBtn.disabled = true;
 
-    // Simulate submission (replace with actual submission logic if you have a backend)
-    setTimeout(() => {
-        if(quoteFormSuccess) {
-            quoteFormSuccess.textContent = "Thank you! Your quote was submitted.";
-            quoteFormSuccess.style.display = 'block';
-            showAppNotification('Quote submitted successfully!', 'success');
-        }
+      setTimeout(() => {
+          quoteFormSuccess.textContent = "Thank you! Your quote was submitted.";
+          quoteFormSuccess.style.display = 'block';
+          showAppNotification('Quote submitted successfully!', 'success');
+          
+          if(submitBtnText) submitBtnText.style.display = 'inline';
+          if(spinner) spinner.style.display = 'none';
+          submitCustomQuoteBtn.disabled = false;
+          customQuoteForm.reset();
 
-        if(submitBtnText) submitBtnText.style.display = 'inline';
-        if(spinner) spinner.style.display = 'none';
-        submitCustomQuoteBtn.disabled = false;
-        customQuoteForm.reset();
-
-        setTimeout(() => {
-          if(quoteFormSuccess) quoteFormSuccess.style.display = 'none';
-          closeModal(submitQuoteModal);
-        }, 2500);
-    }, 1500);
-  });
+          setTimeout(() => {
+            quoteFormSuccess.style.display = 'none';
+            if (submitQuoteModal) closeModal(submitQuoteModal);
+          }, 2500);
+      }, 1500);
+    });
+  } else {
+    console.warn("Submit quote form elements not fully available.");
+  }
 
   // --- Quote Display Logic ---
   function showQuote(item, category, fromUndo = false) {
     if (!item || (typeof item.text === 'undefined' && typeof item.quote === 'undefined' && typeof item.message === 'undefined')) {
-        const noQuoteMsg = "No quote available. Try another category or inspire me again!";
+        const noQuoteMsg = "No quote available for this selection. Try another category or inspire me again!";
         if(qText) qText.textContent = noQuoteMsg;
         if(qAuth) qAuth.textContent = "";
         showAppNotification(noQuoteMsg, 'info');
-        lastQuote = null;
+        lastQuote = null; 
         if(undoBtn) undoBtn.style.display = quoteHistory.length > 0 ? "flex" : "none";
-        updateFavoriteButtonState();
+        updateFavoriteButtonState(); 
         return;
     }
 
     if (!fromUndo && lastQuote) {
-      quoteHistory.unshift(lastQuote);
-      if (quoteHistory.length > MAX_QUOTE_HISTORY) quoteHistory.length = MAX_QUOTE_HISTORY;
+      quoteHistory.unshift(lastQuote); 
+      if (quoteHistory.length > MAX_QUOTE_HISTORY) quoteHistory.length = MAX_QUOTE_HISTORY; 
     }
     if(undoBtn) undoBtn.style.display = quoteHistory.length > 0 ? "flex" : "none";
 
@@ -634,7 +696,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if(qAuth) {
         qAuth.innerHTML = (!by || by.toLowerCase() === "anonymous" || by.toLowerCase() === "unknown") ? "" : `<span style="font-size:1.3em;vertical-align:middle;">&#8213;</span> ${by}`;
       }
-      if(quoteMark) {
+      if(quoteMark) { 
         quoteMark.textContent = "“";
         quoteMark.style.opacity = 0.18;
       }
@@ -642,26 +704,28 @@ document.addEventListener("DOMContentLoaded", () => {
       if(qText) qText.classList.remove('fade-out');
       if(qAuth) qAuth.classList.remove('fade-out');
 
-      lastQuote = { text: txt, author: by, category: category };
+      lastQuote = { text: txt, author: by, category: category }; 
       updateStreak();
-      updateFavoriteButtonState();
-    }, 300);
+      updateFavoriteButtonState(); 
+    }, 300); 
   }
 
   function showAuthorQuote() {
-    if (!authorQuotes.length) {
+    if (!authorQuotes || authorQuotes.length === 0) {
       if(qText) qText.textContent = "No quotes found for this author.";
       if(qAuth) qAuth.textContent = "";
       showAppNotification("No quotes found for this author.", 'info');
+      lastQuote = null;
+      updateFavoriteButtonState();
       return;
     }
     const quote = authorQuotes[authorQuoteIndex % authorQuotes.length];
-    showQuote(quote, quote.category);
+    showQuote(quote, quote.category); 
     authorQuoteIndex++;
   }
 
   function displayQuote() {
-    if (authorMode && authorQuotes.length > 0) {
+    if (authorMode) { 
       showAuthorQuote();
       return;
     }
@@ -670,53 +734,54 @@ document.addEventListener("DOMContentLoaded", () => {
     const isValidQuote = q => q && (typeof q.text !== 'undefined' || typeof q.quote !== 'undefined' || typeof q.message !== 'undefined');
 
     if (selectedCat === 'myfavorites') {
-      const favs = JSON.parse(localStorage.getItem('favQuotes') || '[]');
+      const favsRaw = localStorage.getItem('favQuotes');
+      const favs = favsRaw ? JSON.parse(favsRaw) : [];
       pool = favs.filter(isValidQuote);
       if (pool.length === 0) {
         if(qText) qText.textContent = "You have no favorite quotes yet. Add some!";
         if(qAuth) qAuth.textContent = "";
         lastQuote = null;
         updateFavoriteButtonState();
+        if(undoBtn) undoBtn.style.display = quoteHistory.length > 0 ? "flex" : "none";
         return;
       }
-    } else if (selectedCat === 'user' && Array.isArray(quotes['user'])) {
+    } else if (selectedCat === 'user' && quotes['user'] && Array.isArray(quotes['user'])) {
       pool = quotes['user'].filter(isValidQuote);
     } else if (quotes[selectedCat] && Array.isArray(quotes[selectedCat])) {
       pool = quotes[selectedCat].filter(isValidQuote);
     }
 
-    if (!pool || pool.length === 0) { // Fallback to all quotes if category is empty or invalid
-        console.warn(`No quotes in category "${selectedCat}", falling back to all quotes.`);
-        const allQuotesRaw = Object.values(quotes).flat();
-        pool = allQuotesRaw.filter(isValidQuote);
-        if (pool.length > 0 && currentCategoryDisplay && (!selectedCat || !(quotes[selectedCat] && Array.isArray(quotes[selectedCat])))) {
-            if(currentCategoryDisplay) currentCategoryDisplay.textContent = "All Quotes";
-            // Optionally, set selectedCat to a general identifier if you want to track this state
-        }
-    }
-
     if (!pool || pool.length === 0) {
-        const criticalMsg = "No valid quotes available for this selection or any category.";
+        console.warn(`No quotes in category "${selectedCat}" or category data missing. Falling back to all available quotes.`);
+        const allQuotesRaw = Object.values(quotes).flat(); 
+        pool = allQuotesRaw.filter(isValidQuote);
+    }
+    
+    if (!pool || pool.length === 0) { 
+        const criticalMsg = "No valid quotes available for this selection or any category. Please check data files.";
         if(qText) qText.textContent = criticalMsg;
         if(qAuth) qAuth.textContent = "";
         showAppNotification(criticalMsg, 'error', 5000);
         lastQuote = null;
         updateFavoriteButtonState();
+        if(undoBtn) undoBtn.style.display = quoteHistory.length > 0 ? "flex" : "none";
         console.error("CRITICAL: Pool is empty after all fallbacks. No quotes to display.");
         return;
     }
 
     const randomIndex = Math.floor(Math.random() * pool.length);
-    showQuote(pool[randomIndex], selectedCat || "all_fallback");
+    showQuote(pool[randomIndex], selectedCat); 
   }
-
-  if(undoBtn) undoBtn.addEventListener("click", () => {
-    if (quoteHistory.length > 0) {
-      const prev = quoteHistory.shift(); // Removes and returns the first element
-      showQuote(prev, prev.category, true); // Display it
-    }
-    undoBtn.style.display = quoteHistory.length > 0 ? "flex" : "none";
-  });
+  
+  if(undoBtn) {
+    undoBtn.addEventListener("click", () => {
+      if (quoteHistory.length > 0) {
+        const prevQuoteData = quoteHistory.shift(); 
+        showQuote(prevQuoteData, prevQuoteData.category, true); 
+      }
+      undoBtn.style.display = quoteHistory.length > 0 ? "flex" : "none";
+    });
+  }
 
   // --- UI Effects and Interactions ---
   function triggerGenerateEffects() {
@@ -724,8 +789,10 @@ document.addEventListener("DOMContentLoaded", () => {
       magicSound.currentTime = 0;
       magicSound.play().catch(e => console.warn("Audio play failed (magicSound):", e.name, e.message));
     }
-    if(quoteBox) quoteBox.classList.add('glow');
-    setTimeout(() => { if(quoteBox) quoteBox.classList.remove('glow'); }, 400);
+    if(quoteBox) {
+        quoteBox.classList.add('glow');
+        setTimeout(() => { if(quoteBox) quoteBox.classList.remove('glow'); }, 400);
+    }
 
     const wand = genBtn ? genBtn.querySelector('.magic-wand-icon') : null;
     if (wand) {
@@ -733,36 +800,31 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => wand.classList.remove('animated'), 700);
     }
     if(genBtn) {
-        genBtn.classList.add('touched');
+        genBtn.classList.add('touched'); 
         setTimeout(() => {if(genBtn) genBtn.classList.remove('touched');}, 400);
-
         const ripple = document.createElement('span');
         ripple.className = 'ripple';
-        // Center ripple on the button regardless of click position for this specific button
-        ripple.style.left = "50%";
-        ripple.style.top = "50%";
+        ripple.style.left = "50%"; 
+        ripple.style.top = "50%";  
         genBtn.appendChild(ripple);
         setTimeout(() => ripple.remove(), 700);
     }
   }
 
   if(genBtn) {
-    genBtn.addEventListener("click", e => {
+    genBtn.addEventListener("click", () => { 
         triggerGenerateEffects();
         displayQuote();
     });
   }
 
-  // Ripple effect for other icon buttons
   document.querySelectorAll('.icon-btn, .feedback-btn, .home-btn').forEach(btn => {
-    btn.style.webkitTapHighlightColor = "transparent"; // Remove blue tap highlight on iOS
+    if (btn.id === 'generateBtn') return; 
+    btn.style.webkitTapHighlightColor = "transparent"; 
     btn.addEventListener('click', function(e) {
-      // Don't add ripple if it's the main generate button (it has its own)
-      if (this.id === 'generateBtn') return;
-
       const rect = btn.getBoundingClientRect();
       const ripple = document.createElement('span');
-      ripple.className = 'ripple'; // Ensure this class has appropriate styles in CSS
+      ripple.className = 'ripple'; 
       ripple.style.left = (e.clientX - rect.left) + 'px';
       ripple.style.top = (e.clientY - rect.top) + 'px';
       btn.appendChild(ripple);
@@ -771,156 +833,165 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Share Menu
-  if(shareBtn) shareBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // Prevent click from immediately closing due to document listener
-    const isOpening = !shareMenu.classList.contains("open");
-    shareMenu.classList.toggle("open");
-    shareBtn.setAttribute('aria-expanded', isOpening.toString());
+  if(shareBtn && shareMenu) {
+    shareBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); 
+      const isOpening = !shareMenu.classList.contains("open");
+      shareMenu.classList.toggle("open");
+      shareMenu.style.display = isOpening ? 'flex' : 'none'; 
+      shareBtn.setAttribute('aria-expanded', isOpening.toString());
 
-    if (isOpening) {
-      // Use a timeout to ensure the click event that opened the menu doesn't immediately trigger the close
-      setTimeout(() => {
-        document.addEventListener("click", closeShareMenuOnClickOutside, { once: true });
-        document.addEventListener("keydown", closeShareMenuOnEscape, { once: true });
-      }, 0);
-    } else {
-        document.removeEventListener("click", closeShareMenuOnClickOutside);
-        document.removeEventListener("keydown", closeShareMenuOnEscape);
-    }
-  });
+      if (isOpening) {
+        setTimeout(() => { 
+          document.addEventListener("click", closeShareMenuOnClickOutside, { once: true });
+          document.addEventListener("keydown", closeShareMenuOnEscape, { once: true });
+        }, 0);
+      } else {
+          document.removeEventListener("click", closeShareMenuOnClickOutside);
+          document.removeEventListener("keydown", closeShareMenuOnEscape);
+      }
+    });
+  }
 
   function closeShareMenu() {
       if (shareMenu && shareMenu.classList.contains("open")) {
         shareMenu.classList.remove("open");
+        shareMenu.style.display = 'none';
         if(shareBtn) shareBtn.setAttribute('aria-expanded', 'false');
         document.removeEventListener("click", closeShareMenuOnClickOutside);
         document.removeEventListener("keydown", closeShareMenuOnEscape);
       }
   }
   function closeShareMenuOnClickOutside(event) {
-    if (!shareMenu.contains(event.target) && event.target !== shareBtn && !shareBtn.contains(event.target)) {
+    if (shareMenu && !shareMenu.contains(event.target) && event.target !== shareBtn && (!shareBtn || !shareBtn.contains(event.target))) {
         closeShareMenu();
-    } else { // If click was inside, re-add listener
+    } else if (shareMenu && shareMenu.classList.contains("open")) { 
         document.addEventListener("click", closeShareMenuOnClickOutside, { once: true });
     }
   }
   function closeShareMenuOnEscape(event) {
       if (event.key === "Escape") {
           closeShareMenu();
-          if(shareBtn) shareBtn.focus(); // Return focus to share button
-      } else { // If not escape, re-add listener
+          if(shareBtn) shareBtn.focus(); 
+      } else if (shareMenu && shareMenu.classList.contains("open")) { 
          document.addEventListener("keydown", closeShareMenuOnEscape, { once: true });
       }
   }
 
-  if(shareMenu) shareMenu.querySelectorAll('.share-option').forEach(btn => {
-    if (btn.id === 'generateImageShareOption') return; // Handled separately
+  if(shareMenu) {
+    shareMenu.querySelectorAll('.share-option').forEach(btn => {
+      if (btn.id === 'generateImageShareOption') return; 
 
-    btn.addEventListener('click', function() {
-      const quoteContent = qText ? qText.textContent || "" : "";
-      const cleanAuthor = lastQuote && lastQuote.author ? lastQuote.author : "";
-      const textToShare = `${quoteContent}${cleanAuthor ? ` — ${cleanAuthor}` : ''}`.trim();
-      const pageUrl = window.location.href;
-      let shareUrl = '';
+      btn.addEventListener('click', function() {
+        const quoteTextContent = qText ? qText.textContent || "" : "";
+        const authorTextContent = lastQuote && lastQuote.author ? lastQuote.author : "";
+        const textToShare = `${quoteTextContent}${authorTextContent ? ` — ${authorTextContent}` : ''}`.trim();
+        const pageUrl = window.location.href;
+        let shareUrl = '';
 
-      switch (btn.dataset.network) {
-        case 'twitter':
-          shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}&url=${encodeURIComponent(pageUrl)}`;
-          break;
-        case 'facebook':
-          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${encodeURIComponent(textToShare)}`;
-          break;
-        case 'linkedin':
-          shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(quoteContent.substring(0,100))}...&summary=${encodeURIComponent(textToShare)}`;
-          break;
-        case 'whatsapp':
-          shareUrl = `https://wa.me/?text=${encodeURIComponent(textToShare + " (via " + pageUrl + ")")}`;
-          break;
-      }
-      if (shareUrl) window.open(shareUrl, "_blank", "noopener,noreferrer");
-      closeShareMenu();
+        switch (btn.dataset.network) {
+          case 'twitter':
+            shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}&url=${encodeURIComponent(pageUrl)}`;
+            break;
+          case 'facebook':
+            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${encodeURIComponent(textToShare)}`;
+            break;
+          case 'linkedin':
+            shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(quoteTextContent.substring(0,100))}...&summary=${encodeURIComponent(textToShare)}`;
+            break;
+          case 'whatsapp':
+            shareUrl = `https://wa.me/?text=${encodeURIComponent(textToShare + " (via " + pageUrl + ")")}`;
+            break;
+        }
+        if (shareUrl) window.open(shareUrl, "_blank", "noopener,noreferrer");
+        closeShareMenu();
+      });
     });
-  });
+  }
 
   // Copy to Clipboard
-  if(copyBtn) copyBtn.addEventListener("click", () => {
-    if (!lastQuote || !lastQuote.text) {
-        showAppNotification("No quote to copy.", 'info');
-        return;
-    }
-    const quoteContent = qText.textContent || "";
-    const cleanAuthor = lastQuote.author || "";
-    const textToCopy = `${quoteContent}${cleanAuthor ? ` — ${cleanAuthor}` : ''}`.trim();
-
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      const iconElement = copyBtn.querySelector("i");
-      const originalIcon = iconElement ? iconElement.className : "";
-      if(iconElement) iconElement.className = "fa-solid fa-check";
-      copyBtn.classList.add('copied-feedback'); // Visual feedback class
-      const tooltip = copyBtn.querySelector('.btn-tooltip');
-      const originalTooltipText = tooltip ? tooltip.textContent : '';
-      if(tooltip) tooltip.textContent = "Copied!";
-      showAppNotification('Quote copied to clipboard!', 'success', 2000);
-
-      setTimeout(() => {
-        if(iconElement) iconElement.className = originalIcon;
-        copyBtn.classList.remove('copied-feedback');
-        if(tooltip) tooltip.textContent = originalTooltipText;
-      }, 1500);
-    }).catch(err => {
-      console.error('Failed to copy text: ', err);
-      showAppNotification('Failed to copy quote. Please try again.', 'error');
-      const tooltip = copyBtn.querySelector('.btn-tooltip');
-      if(tooltip) {
-          const originalTooltipText = tooltip.textContent;
-          tooltip.textContent = "Copy failed!";
-          setTimeout(() => { tooltip.textContent = originalTooltipText; }, 2000);
+  if(copyBtn) {
+    copyBtn.addEventListener("click", () => {
+      if (!lastQuote || !lastQuote.text) {
+          showAppNotification("No quote to copy.", 'info');
+          return;
       }
+      const quoteTextContent = qText ? qText.textContent || "" : ""; 
+      const authorTextContent = lastQuote.author || ""; 
+      const textToCopy = `${quoteTextContent}${authorTextContent ? ` — ${authorTextContent}` : ''}`.trim();
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const iconElement = copyBtn.querySelector("i");
+        const originalIcon = iconElement ? iconElement.className : "";
+        if(iconElement) iconElement.className = "fa-solid fa-check";
+        copyBtn.classList.add('copied-feedback');
+        const tooltip = copyBtn.querySelector('.btn-tooltip');
+        const originalTooltipText = tooltip ? tooltip.textContent : '';
+        if(tooltip) tooltip.textContent = "Copied!";
+        showAppNotification('Quote copied to clipboard!', 'success', 2000);
+
+        setTimeout(() => {
+          if(iconElement && originalIcon) iconElement.className = originalIcon;
+          copyBtn.classList.remove('copied-feedback');
+          if(tooltip && originalTooltipText) tooltip.textContent = originalTooltipText;
+        }, 1500);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+        showAppNotification('Failed to copy quote. Please try again.', 'error');
+        const tooltip = copyBtn.querySelector('.btn-tooltip');
+        if(tooltip) {
+            const originalTooltipText = tooltip.textContent; 
+            tooltip.textContent = "Copy failed!";
+            setTimeout(() => { if (originalTooltipText) tooltip.textContent = originalTooltipText; }, 2000);
+        }
+      });
     });
-  });
+  }
 
   // Favorite Button
-  if(favBtn) favBtn.addEventListener('click', () => {
-    if (!lastQuote || !lastQuote.text) {
-        showAppNotification("No quote to favorite.", 'info');
-        return;
-    }
+  if(favBtn) {
+    favBtn.addEventListener('click', () => {
+      if (!lastQuote || !lastQuote.text) {
+          showAppNotification("No quote to favorite.", 'info');
+          return;
+      }
 
-    let favs = JSON.parse(localStorage.getItem('favQuotes') || '[]');
-    const currentQuoteText = lastQuote.text;
-    const currentAuthorText = lastQuote.author;
+      let favs = JSON.parse(localStorage.getItem('favQuotes') || '[]');
+      const currentQuoteText = lastQuote.text; 
+      const currentAuthorText = lastQuote.author; 
 
-    const favIndex = favs.findIndex(q => q.text === currentQuoteText && q.author === currentAuthorText);
-    const isFavorited = favIndex !== -1;
-    const savedPopup = favBtn.querySelector('.saved-popup');
+      const favIndex = favs.findIndex(q => q.text === currentQuoteText && q.author === currentAuthorText);
+      const isFavorited = favIndex !== -1;
+      const savedPopup = favBtn.querySelector('.saved-popup');
 
-    if (isFavorited) {
-      favs.splice(favIndex, 1);
-      if(savedPopup) savedPopup.textContent = "Unsaved";
-      showAppNotification('Quote removed from favorites.', 'info', 2000);
-    } else {
-      favs.push({ text: currentQuoteText, author: currentAuthorText, category: lastQuote.category }); // Store category too
-      if(favSound) favSound.play().catch(e => console.warn("Fav sound play failed", e.name, e.message));
-      if(savedPopup) savedPopup.textContent = "Saved!";
-      showAppNotification('Quote saved to favorites!', 'success', 2000);
-    }
+      if (isFavorited) { 
+        favs.splice(favIndex, 1);
+        if(savedPopup) savedPopup.textContent = "Unsaved";
+        showAppNotification('Quote removed from favorites.', 'info', 2000);
+      } else { 
+        favs.push({ text: currentQuoteText, author: currentAuthorText, category: lastQuote.category });
+        if(favSound) favSound.play().catch(e => console.warn("Fav sound play failed", e.name, e.message));
+        if(savedPopup) savedPopup.textContent = "Saved!";
+        showAppNotification('Quote saved to favorites!', 'success', 2000);
+      }
 
-    localStorage.setItem('favQuotes', JSON.stringify(favs));
-    updateFavoriteButtonState();
+      localStorage.setItem('favQuotes', JSON.stringify(favs));
+      updateFavoriteButtonState(); 
 
-    if(favBtn) favBtn.classList.add('show-saved-popup');
-    setTimeout(() => {
-        if(favBtn) favBtn.classList.remove('show-saved-popup');
-    }, 1200);
-  });
+      if(favBtn) favBtn.classList.add('show-saved-popup');
+      setTimeout(() => {
+          if(favBtn) favBtn.classList.remove('show-saved-popup');
+      }, 1200);
+    });
+  }
 
   function updateFavoriteButtonState() {
     if (!favBtn) return;
     const favIcon = favBtn.querySelector("i");
     if (!favIcon) return;
 
-    if (!lastQuote || !lastQuote.text) {
-        favIcon.className = "fa-regular fa-heart";
+    if (!lastQuote || !lastQuote.text) { 
+        favIcon.className = "fa-regular fa-heart"; 
         favBtn.setAttribute('aria-pressed', 'false');
         return;
     }
@@ -936,11 +1007,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if(themeSw) {
     const savedTheme = localStorage.getItem("wowDark");
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    // Set initial theme based on saved preference, or OS preference, or default to light.
     if (savedTheme === "true" || (!savedTheme && prefersDark)) {
         themeSw.checked = true;
         document.body.classList.add("dark");
     } else {
+        themeSw.checked = false; 
         document.body.classList.remove("dark");
     }
     themeSw.addEventListener("change", () => {
@@ -954,8 +1025,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateStreak() {
     const today = new Date().toISOString().slice(0,10);
     let streak = JSON.parse(localStorage.getItem('wowStreak')) || { last: '', count: 0 };
-    if (streak.last !== today) {
-      streak.count = (streak.last === getYesterday()) ? streak.count + 1 : 1;
+    if (streak.last !== today) { 
+      streak.count = (streak.last === getYesterday()) ? streak.count + 1 : 1; 
       streak.last = today;
       localStorage.setItem('wowStreak', JSON.stringify(streak));
     }
@@ -966,68 +1037,72 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!streakBadge) return;
     if (count > 1) {
         streakBadge.innerHTML = `🔥 <span class="streak-count">${count}</span> day streak!`;
-        streakBadge.style.display = 'inline-flex';
+        streakBadge.style.display = 'inline-flex'; 
     } else {
-        streakBadge.textContent = '';
-        streakBadge.style.display = 'none';
+        streakBadge.textContent = ''; 
+        streakBadge.style.display = 'none'; 
     }
   }
 
   // --- Feedback Modal ---
-  if(feedbackBtn) feedbackBtn.addEventListener('click', () => {
-    openModal(feedbackModal, feedbackTextarea);
-    if(feedbackTextarea) feedbackTextarea.value = '';
-    if(feedbackSuccess) {
-        feedbackSuccess.style.display = 'none';
-        feedbackSuccess.textContent = "Thank you for your feedback!";
-    }
-    const feedbackSubmitBtnText = submitFeedbackBtn.querySelector('.submit-btn-text');
-    const feedbackSpinner = submitFeedbackBtn.querySelector('.loader-spinner');
-    if(feedbackSubmitBtnText) feedbackSubmitBtnText.style.display = 'inline';
-    if(feedbackSpinner) feedbackSpinner.style.display = 'none';
-    submitFeedbackBtn.disabled = false;
-  });
-  if(closeFeedbackModal) closeFeedbackModal.addEventListener('click', () => closeModal(feedbackModal));
+  if(feedbackBtn && feedbackModal && feedbackTextarea && submitFeedbackBtn && closeFeedbackModal && feedbackSuccess) {
+    feedbackBtn.addEventListener('click', () => {
+      openModal(feedbackModal, feedbackTextarea);
+      feedbackTextarea.value = '';
+      feedbackSuccess.style.display = 'none';
+      feedbackSuccess.textContent = "Thank you for your feedback!"; 
+      
+      const feedbackSubmitBtnText = submitFeedbackBtn.querySelector('.submit-btn-text');
+      const feedbackSpinner = submitFeedbackBtn.querySelector('.loader-spinner');
+      if(feedbackSubmitBtnText) feedbackSubmitBtnText.style.display = 'inline';
+      if(feedbackSpinner) feedbackSpinner.style.display = 'none';
+      submitFeedbackBtn.disabled = false;
+    });
+    closeFeedbackModal.addEventListener('click', () => closeModal(feedbackModal));
 
-  if(submitFeedbackBtn) submitFeedbackBtn.addEventListener('click', async () => {
-    const feedback = feedbackTextarea ? feedbackTextarea.value.trim() : "";
-    if (!feedback) {
-        if(feedbackTextarea) feedbackTextarea.placeholder = "Please enter your feedback first!";
-        showAppNotification('Please enter your feedback before submitting.', 'info');
-        setTimeout(() => { if(feedbackTextarea) feedbackTextarea.placeholder = "Your feedback...";}, 2000);
-        return;
-    }
+    submitFeedbackBtn.addEventListener('click', async () => {
+      const feedback = feedbackTextarea.value.trim();
+      if (!feedback) {
+          feedbackTextarea.placeholder = "Please enter your feedback first!";
+          showAppNotification('Please enter your feedback before submitting.', 'info');
+          setTimeout(() => { feedbackTextarea.placeholder = "Your feedback...";}, 2000);
+          return;
+      }
 
-    const submitBtnText = submitFeedbackBtn.querySelector('.submit-btn-text');
-    const spinner = submitFeedbackBtn.querySelector('.loader-spinner');
-    if(submitBtnText) submitBtnText.style.display = 'none';
-    if(spinner) spinner.style.display = 'inline-block';
-    submitFeedbackBtn.disabled = true;
+      const submitBtnText = submitFeedbackBtn.querySelector('.submit-btn-text');
+      const spinner = submitFeedbackBtn.querySelector('.loader-spinner');
+      if(submitBtnText) submitBtnText.style.display = 'none';
+      if(spinner) spinner.style.display = 'inline-block';
+      submitFeedbackBtn.disabled = true;
 
-    // Simulate submission
-    setTimeout(async () => {
-            if(feedbackSuccess) {
-                feedbackSuccess.textContent = "Thank you for your feedback!";
-                feedbackSuccess.style.display = 'block';
-                showAppNotification('Feedback submitted. Thank you!', 'success');
-            }
-            if(feedbackTextarea) feedbackTextarea.value = '';
-            if(submitBtnText) submitBtnText.style.display = 'inline';
-            if(spinner) spinner.style.display = 'none';
-            submitFeedbackBtn.disabled = false;
-            setTimeout(() => {
-                if(feedbackSuccess) feedbackSuccess.style.display = 'none';
-                closeModal(feedbackModal);
-            }, 2500);
-    }, 1500);
-  });
+      setTimeout(async () => {
+              feedbackSuccess.textContent = "Thank you for your feedback!";
+              feedbackSuccess.style.display = 'block';
+              showAppNotification('Feedback submitted. Thank you!', 'success');
+              
+              feedbackTextarea.value = '';
+              if(submitBtnText) submitBtnText.style.display = 'inline';
+              if(spinner) spinner.style.display = 'none';
+              submitFeedbackBtn.disabled = false;
+              setTimeout(() => {
+                  feedbackSuccess.style.display = 'none';
+                  closeModal(feedbackModal);
+              }, 2500);
+      }, 1500);
+    });
+  } else {
+    console.warn("Feedback modal elements not fully available.");
+  }
 
   // --- Favorites Modal ---
-  if(closeFavModal) closeFavModal.addEventListener('click', () => closeModal(favModal));
-  if (closeFavModalLarge) closeFavModalLarge.addEventListener('click', () => closeModal(favModal));
+  if(closeFavModal && favModal) closeFavModal.addEventListener('click', () => closeModal(favModal));
+  if (closeFavModalLarge && favModal) closeFavModalLarge.addEventListener('click', () => closeModal(favModal));
 
   function showFavorites() {
-    if (!favQuotesList) return;
+    if (!favQuotesList) {
+        console.warn("Favorites list element not found.");
+        return;
+    }
     const favs = JSON.parse(localStorage.getItem('favQuotes') || '[]');
     favQuotesList.innerHTML = favs.length
       ? favs.map((q, idx) => `
@@ -1041,7 +1116,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
       `).join('')
-      : "<p>No favorites yet. Click the heart icon on a quote to save it!</p>";
+      : "<p style='padding: 1rem; text-align:center;'>No favorites yet. Click the heart icon on a quote to save it!</p>";
 
       favQuotesList.querySelectorAll('.remove-fav-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -1073,18 +1148,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  window.removeFavorite = function(idx) { // Exposed to global for inline HTML, better to delegate if possible
+  window.removeFavorite = function(idx) {
     let favs = JSON.parse(localStorage.getItem('favQuotes') || '[]');
     favs.splice(idx, 1);
     localStorage.setItem('favQuotes', JSON.stringify(favs));
-    showFavorites(); // Re-render list
-    updateFavoriteButtonState(); // Update main heart icon if current quote was removed
+    showFavorites(); 
+    updateFavoriteButtonState(); 
     showAppNotification('Favorite removed.', 'info', 2000);
   };
   window.copyFavorite = function(text, cleanAuthor, buttonElement) {
     const textToCopy = `${text}${cleanAuthor ? ` — ${cleanAuthor}` : ''}`.trim();
     navigator.clipboard.writeText(textToCopy).then(() => {
-        if(buttonElement){
+        if(buttonElement){ 
             const originalIconHTML = buttonElement.innerHTML;
             buttonElement.innerHTML = '<i class="fa-solid fa-check" style="color: var(--green-accent);"></i>';
             setTimeout(() => { buttonElement.innerHTML = originalIconHTML; }, 1200);
@@ -1101,12 +1176,12 @@ document.addEventListener("DOMContentLoaded", () => {
       navigator.share({ title: `Quote by ${cleanAuthor || 'Words of Wisdom'}`, text: shareText, url: window.location.href })
         .then(() => showAppNotification('Favorite shared!', 'success', 2000))
         .catch(err => {
-            if (err.name !== 'AbortError') { // Don't show error if user cancels share
+            if (err.name !== 'AbortError') { 
                 console.error("Sharing favorite failed:", err);
                 showAppNotification('Could not share favorite.', 'error');
             }
         });
-    } else { // Fallback for browsers without Web Share API
+    } else { 
       navigator.clipboard.writeText(shareText).then(() => {
             showAppNotification("Quote copied! You can now paste it to share.", 'info', 3000);
         }).catch(() => {
@@ -1118,22 +1193,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Global Keydown Listener for Escape ---
   document.addEventListener('keydown', function(e) {
     if (e.key === "Escape") {
-      const openModals = document.querySelectorAll('.modal.open, .image-modal[style*="display: flex"]');
-      if (openModals.length > 0) {
-        const topModal = openModals[openModals.length - 1]; // Close topmost modal
-        if (topModal.id === 'quoteImagePreviewContainer') {
-            closeImagePreview();
-        } else {
-            closeModal(topModal); // Use the generic closeModal function
-        }
-      } else if (shareMenu && shareMenu.classList.contains("open")) {
-          closeShareMenu();
-          if(shareBtn) shareBtn.focus();
+      if (quoteImagePreviewContainer && quoteImagePreviewContainer.classList.contains('open')) {
+          closeImagePreview();
+      } else { 
+          const openModals = document.querySelectorAll('.modal.open');
+          if (openModals.length > 0) {
+              const topModal = openModals[openModals.length - 1]; 
+              closeModal(topModal);
+          } else if (shareMenu && shareMenu.classList.contains("open")) { 
+              closeShareMenu();
+              if(shareBtn) shareBtn.focus(); 
+          }
       }
     }
   });
 
-  // --- Usage Tracking and Notifications (Basic Stubs) ---
+  // --- Usage Tracking (Basic) ---
   function recordCategoryUse(cat) {
     if (!cat) return;
     let usage = JSON.parse(localStorage.getItem('catUsage') || '{}');
@@ -1142,11 +1217,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   function getMostUsedCategory() {
     let usage = JSON.parse(localStorage.getItem('catUsage') || '{}');
-    if (Object.keys(usage).length === 0) return null;
+    if (Object.keys(usage).length === 0) return null; 
     const sortedUsage = Object.entries(usage).sort(([,a],[,b]) => b-a);
-    return sortedUsage[0][0];
+    return sortedUsage[0][0]; 
   }
 
+  // --- Push Notifications (Helper and Subscription Logic) ---
   function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
@@ -1168,69 +1244,82 @@ document.addEventListener("DOMContentLoaded", () => {
         return null;
       }
 
-      const registration = await navigator.serviceWorker.ready;
+      const registration = await navigator.serviceWorker.ready; 
       let subscription = await registration.pushManager.getSubscription();
       if (!subscription) {
-        if (!VAPID_PUBLIC_KEY || VAPID_PUBLIC_KEY === 'BBOTRj3yGFqeY_CAmjIuLbxRX6xKC5TUwAvdpaMppgz8AqSkX9mxs16CHbOVkhS6siGgqgwkEGQSjqM-tGe5A0k') {
-            console.error('VAPID_PUBLIC_KEY is not set. Cannot subscribe to push notifications.');
-            showAppNotification('Push notification setup error (admin).', 'error');
+        if (!VAPID_PUBLIC_KEY || VAPID_PUBLIC_KEY === 'YOUR_VAPID_PUBLIC_KEY_HERE' || VAPID_PUBLIC_KEY === 'BBOTRj3yGFqeY_CAmjIuLbxRX6xKC5TUwAvdpaMppgz8AqSkX9mxs16CHbOVkhS6siGgqgwkEGQSjqM-tGe5A0k') { // Check against placeholder or actual default
+            console.error('VAPID_PUBLIC_KEY is not set or is the default placeholder. Cannot subscribe to push notifications.');
+            showAppNotification('Push notification setup error (Admin: VAPID key missing).', 'error');
             return null;
         }
         subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(BBOTRj3yGFqeY_CAmjIuLbxRX6xKC5TUwAvdpaMppgz8AqSkX9mxs16CHbOVkhS6siGgqgwkEGQSjqM-tGe5A0k)
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
         });
         console.log('New Push Subscription: ', JSON.stringify(subscription));
-        // HERE: Send the 'subscription' object to your backend server to store it.
-        // Example: sendSubscriptionToServer(subscription);
         showAppNotification('Subscribed to daily quote notifications!', 'success');
       } else {
         console.log('Existing Push Subscription found.');
-        // You might want to re-send to server to ensure it's up-to-date.
       }
       return subscription;
     } catch (error) {
       console.error('Error during push notification subscription:', error);
-      showAppNotification(`Failed to subscribe: ${error.message}`, 'error');
+      showAppNotification(`Failed to subscribe to notifications: ${error.message}`, 'error');
       return null;
     }
   }
-  // function sendSubscriptionToServer(subscription) { /* ... AJAX call to your backend ... */ }
-  // Example: Call requestAndSubscribePushNotifications() when a user clicks a "Subscribe to Daily Quotes" button/toggle
+  
+  // --- Image Generation Feature ---
+  // Helper function to get computed CSS variable value
+  function getCssVariableValue(variableName) {
+    // Ensure the variable name starts with --
+    const varName = variableName.startsWith('--') ? variableName : `--${variableName}`;
+    // Get the computed style from the root element (where CSS variables are typically defined)
+    return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+  }
 
-
-  // --- Image Generation Feature (adjustTextToFit is only called here) ---
   function adjustTextToFit({ textElement, containerElement, authorElement, initialFontSize = 64, minQuoteFontSize = 28, maxFontSize = 90 }) {
+      if(!textElement || !containerElement) return;
+
       textElement.style.fontSize = initialFontSize + 'px';
-      textElement.style.lineHeight = '1.3';
+      textElement.style.lineHeight = '1.3'; 
+
       const containerStyle = getComputedStyle(containerElement);
       const containerPaddingTop = parseFloat(containerStyle.paddingTop) || 0;
       const containerPaddingBottom = parseFloat(containerStyle.paddingBottom) || 0;
       const containerPaddingLeft = parseFloat(containerStyle.paddingLeft) || 0;
       const containerPaddingRight = parseFloat(containerStyle.paddingRight) || 0;
+      
       const targetWidth = containerElement.clientWidth - containerPaddingLeft - containerPaddingRight;
+      
       let authorActualHeight = 0;
-      let authorFontSize = 18;
+      let authorFontSize = 18; 
       if (authorElement && getComputedStyle(authorElement).display !== 'none') {
           const authorStyle = getComputedStyle(authorElement);
-          authorActualHeight = authorElement.offsetHeight + parseFloat(authorStyle.marginTop) + parseFloat(authorStyle.marginBottom);
+          authorActualHeight = authorElement.offsetHeight + (parseFloat(authorStyle.marginTop) || 0) + (parseFloat(authorStyle.marginBottom) || 0);
           authorFontSize = parseFloat(authorStyle.fontSize) || 18;
       }
+      
       const effectiveMinQuoteFontSize = Math.max(minQuoteFontSize, authorFontSize + 6);
       const textMarginBottom = parseFloat(getComputedStyle(textElement).marginBottom) || 0;
       const targetHeight = containerElement.clientHeight - containerPaddingTop - containerPaddingBottom - authorActualHeight - textMarginBottom;
+
       let currentFontSize = initialFontSize;
+
       const checkOverflow = () => {
           textElement.style.fontSize = currentFontSize + 'px';
           return textElement.scrollHeight > targetHeight || textElement.scrollWidth > targetWidth;
       };
+
       while (checkOverflow() && currentFontSize > effectiveMinQuoteFontSize) {
           currentFontSize--;
       }
       textElement.style.fontSize = currentFontSize + 'px';
+
       if (currentFontSize === effectiveMinQuoteFontSize && checkOverflow()) {
           console.warn(`Text might be cut off. Min font size enforced: ${effectiveMinQuoteFontSize}px. Content: "${textElement.textContent.substring(0, 50)}..."`);
       }
+
       const quoteLength = textElement.textContent.length;
       if (quoteLength < 120 && currentFontSize < maxFontSize) {
           let testSize = currentFontSize;
@@ -1238,19 +1327,19 @@ document.addEventListener("DOMContentLoaded", () => {
               testSize++;
               textElement.style.fontSize = testSize + 'px';
               if (textElement.scrollHeight > targetHeight || textElement.scrollWidth > targetWidth) {
-                  testSize--;
+                  testSize--; 
                   textElement.style.fontSize = testSize + 'px';
                   break;
               }
           }
-          currentFontSize = Math.max(testSize, effectiveMinQuoteFontSize);
+          currentFontSize = Math.max(testSize, effectiveMinQuoteFontSize); 
       }
-      textElement.style.fontSize = currentFontSize + 'px';
+      textElement.style.fontSize = currentFontSize + 'px'; 
   }
 
-  if (generateImageShareOption) {
+  if (generateImageShareOption && quoteImagePreviewContainer && imageQuoteText && imageQuoteAuthor && quoteImageContent && imageWatermark && downloadImageBtn && shareGeneratedImageBtn && closeImagePreviewBtn && qText && qAuth) {
     generateImageShareOption.addEventListener('click', () => {
-      closeShareMenu(); // Close the share popover first
+      closeShareMenu(); 
       if (!lastQuote || !lastQuote.text) {
         showAppNotification("Please generate a quote first to create an image.", 'info');
         return;
@@ -1259,67 +1348,85 @@ document.addEventListener("DOMContentLoaded", () => {
       const isDarkMode = document.body.classList.contains('dark');
       imageQuoteText.textContent = lastQuote.text;
       imageQuoteAuthor.textContent = lastQuote.author ? `— ${lastQuote.author}` : '';
-      imageQuoteAuthor.style.display = lastQuote.author ? 'block' : 'none';
+      imageQuoteAuthor.style.display = lastQuote.author ? 'block' : 'none'; 
 
       const mainQuoteStyle = window.getComputedStyle(qText);
       const mainAuthorStyle = window.getComputedStyle(qAuth);
       imageQuoteText.style.fontFamily = mainQuoteStyle.fontFamily;
-      imageQuoteText.style.fontStyle = mainQuoteStyle.fontStyle;
+      imageQuoteText.style.fontStyle = mainQuoteStyle.fontStyle; 
       if (imageQuoteAuthor.style.display !== 'none') {
         imageQuoteAuthor.style.fontFamily = mainAuthorStyle.fontFamily;
         imageQuoteAuthor.style.fontStyle = mainAuthorStyle.fontStyle;
       }
+      
+      // ** MODIFIED SECTION TO FIX html2canvas var() ERROR **
+      let bgColor, textColor, authorColor, watermarkColorValue;
 
       if (isDarkMode) {
-        quoteImageContent.style.backgroundColor = 'var(--image-bg-dark, #232336)';
-        imageQuoteText.style.color = 'var(--image-text-dark, #f0f0f8)';
-        if (imageQuoteAuthor.style.display !== 'none') imageQuoteAuthor.style.color = 'var(--image-author-dark, #b0b0c0)';
-        imageWatermark.style.color = 'var(--image-author-dark, #b0b0c0)';
+        bgColor = getCssVariableValue('--image-bg-dark') || '#232336';
+        textColor = getCssVariableValue('--image-text-dark') || '#f0f0f8';
+        authorColor = getCssVariableValue('--image-author-dark') || '#b0b0c0';
+        watermarkColorValue = getCssVariableValue('--image-watermark-dark') || '#707080'; 
       } else {
-        quoteImageContent.style.backgroundColor = 'var(--image-bg-light, #f0f0f3)';
-        imageQuoteText.style.color = 'var(--image-text-light, #000000)';
-        if (imageQuoteAuthor.style.display !== 'none') imageQuoteAuthor.style.color = 'var(--image-author-text-light, #000000)';
-        imageWatermark.style.color = 'var(--image-watermark-light, #555555)';
+        bgColor = getCssVariableValue('--image-bg-light') || '#f0f0f3';
+        textColor = getCssVariableValue('--image-text-light') || '#000000';
+        authorColor = getCssVariableValue('--image-author-text-light') || '#333333';
+        watermarkColorValue = getCssVariableValue('--image-watermark-light') || '#555555';
       }
 
-      adjustTextToFit({ // This is the only place adjustTextToFit is called
+      // Apply resolved colors directly to the elements
+      quoteImageContent.style.backgroundColor = bgColor;
+      imageQuoteText.style.color = textColor;
+      if (imageQuoteAuthor.style.display !== 'none') {
+        imageQuoteAuthor.style.color = authorColor;
+      }
+      imageWatermark.style.color = watermarkColorValue;
+      // ** END OF MODIFIED SECTION **
+      
+      adjustTextToFit({
           textElement: imageQuoteText,
           containerElement: quoteImageContent,
           authorElement: imageQuoteAuthor.style.display !== 'none' ? imageQuoteAuthor : null
       });
-
-      if (quoteImagePreviewContainer) {
-          quoteImagePreviewContainer.style.display = 'flex';
-          openModal(quoteImagePreviewContainer, closeImagePreviewBtn); // Use modal helper for consistency
-      }
-      document.body.style.overflow = 'hidden';
-      downloadImageBtn.disabled = true;
+      
+      openModal(quoteImagePreviewContainer, closeImagePreviewBtn); 
+      
+      downloadImageBtn.disabled = true; 
       shareGeneratedImageBtn.disabled = true;
 
       setTimeout(() => {
+          if (typeof html2canvas === 'undefined') {
+              showAppNotification("Image generation library (html2canvas) not loaded.", 'error');
+              console.error("html2canvas is not defined. Ensure the script is loaded correctly.");
+              closeImagePreview();
+              return;
+          }
           html2canvas(quoteImageContent, {
-              allowTaint: true, useCORS: true,
-              backgroundColor: quoteImageContent.style.backgroundColor,
-              scale: 2, logging: false
+              allowTaint: true, 
+              useCORS: true,    
+              backgroundColor: bgColor, // Pass the RESOLVED background color here
+              scale: 2,         
+              logging: false    
           }).then(canvas => {
-              currentCanvas = canvas;
+              currentCanvas = canvas; 
               downloadImageBtn.disabled = false;
               shareGeneratedImageBtn.disabled = false;
           }).catch(err => {
               console.error("Error generating image with html2canvas:", err);
               showAppNotification("Sorry, couldn't generate the image. Please try again.", 'error');
-              closeImagePreview();
+              closeImagePreview(); 
           });
-      }, 250); // Ensure DOM updates
+      }, 250); 
     });
+  } else {
+    console.warn("Some image generation elements are not available.");
   }
 
   function closeImagePreview() {
     if (quoteImagePreviewContainer) {
-        quoteImagePreviewContainer.style.display = 'none'; // Hide it first
-        closeModal(quoteImagePreviewContainer); // Then call generic closeModal
+        closeModal(quoteImagePreviewContainer); 
     }
-    currentCanvas = null;
+    currentCanvas = null; 
   }
 
   if (closeImagePreviewBtn) closeImagePreviewBtn.addEventListener('click', closeImagePreview);
@@ -1327,14 +1434,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (downloadImageBtn) {
     downloadImageBtn.addEventListener('click', () => {
       if (!currentCanvas) {
-          showAppNotification("Image not generated yet.", 'info');
+          showAppNotification("Image not generated yet or failed.", 'info');
           return;
       }
       const imageURL = currentCanvas.toDataURL('image/png');
       const a = document.createElement('a');
       a.href = imageURL;
-      const authorNameForFile = lastQuote.author ? lastQuote.author.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'Unknown';
-      const quoteStartForFile = lastQuote.text.substring(0,20).replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      const authorNameForFile = lastQuote && lastQuote.author ? lastQuote.author.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'Unknown';
+      const quoteStartForFile = lastQuote && lastQuote.text ? lastQuote.text.substring(0,20).replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'Quote';
       a.download = `WOW_Quote_${quoteStartForFile}_${authorNameForFile}.png`;
       document.body.appendChild(a);
       a.click();
@@ -1346,27 +1453,36 @@ document.addEventListener("DOMContentLoaded", () => {
   if (shareGeneratedImageBtn) {
     shareGeneratedImageBtn.addEventListener('click', async () => {
       if (!currentCanvas) {
-          showAppNotification("Image not generated yet.", 'info');
+          showAppNotification("Image not generated yet or failed.", 'info');
           return;
       }
-      if (navigator.share && navigator.canShare) {
+      if (navigator.share && navigator.canShare) { 
         currentCanvas.toBlob(async (blob) => {
           if (!blob) {
               showAppNotification("Error creating image blob for sharing.", 'error');
               return;
           }
-          const authorName = lastQuote.author || 'Words of Wisdom';
-          const filesArray = [ new File([blob], `WOW_Quote_${(lastQuote.author || 'Unknown').replace(/[^a-z0-9]/gi, '_')}.png`, { type: 'image/png', lastModified: new Date().getTime() }) ];
-          const shareData = { files: filesArray, title: `Quote by ${authorName}`, text: `"${lastQuote.text}" — ${lastQuote.author || ''}\nShared via wordsofwisdom.in` };
+          const authorName = (lastQuote && lastQuote.author) ? lastQuote.author : 'Words of Wisdom';
+          const fileName = `WOW_Quote_${((lastQuote && lastQuote.author) || 'Unknown').replace(/[^a-z0-9]/gi, '_')}.png`;
+          const filesArray = [ new File([blob], fileName, { type: 'image/png', lastModified: new Date().getTime() }) ];
+          
+          const shareData = { 
+            files: filesArray, 
+            title: `Quote by ${authorName}`, 
+            text: `"${(lastQuote && lastQuote.text) ? lastQuote.text : ''}" — ${authorName}\nShared via wordsofwisdom.in` 
+          };
+
           try {
-            if (navigator.canShare({ files: filesArray })) { // Check if files can be shared
+            if (navigator.canShare({ files: filesArray })) { 
                 await navigator.share(shareData);
-            } else { // Fallback for browsers that support Web Share but not files
+                showAppNotification('Image shared!', 'success');
+            } else { 
+                console.warn("File sharing not supported, falling back to text/URL share.");
                 await navigator.share({ title: shareData.title, text: shareData.text, url: window.location.href });
+                showAppNotification('Shared quote link!', 'success');
             }
-            showAppNotification('Image shared!', 'success');
           } catch (err) {
-            if (err.name !== 'AbortError') {
+            if (err.name !== 'AbortError') { 
                 console.error('Error sharing image:', err);
                 showAppNotification('Sharing failed. You can try downloading the image.', 'error');
             }
@@ -1384,44 +1500,54 @@ document.addEventListener("DOMContentLoaded", () => {
     if(qAuth) qAuth.textContent = "";
     if(quoteMark) { quoteMark.textContent = "“"; quoteMark.style.opacity = 0.18; }
 
-    await loadCategoriesAndQuotes();
-    renderMenu(); // Initial menu render
+    await loadCategoriesAndQuotes(); 
+    
+    if (categoryMenu) { 
+        renderMenu(); 
+    } else {
+        console.error("Category menu element not found, cannot render menu on init.");
+    }
 
-    let initialCategory = "inspiration";
+    let initialCategory = "inspiration"; 
     const lastAutoCat = localStorage.getItem("lastAutoSelectedCategory");
     const todayStrInit = new Date().toISOString().slice(0,10);
     const lastBannerDateInit = localStorage.getItem("wowBannerDate");
 
-    if (lastBannerDateInit === todayStrInit && lastAutoCat && categories.some(c => c.id === lastAutoCat || c.children?.some(ch => ch.id === lastAutoCat))) {
-        initialCategory = lastAutoCat;
-    } else {
-        const mostUsed = getMostUsedCategory();
-        if (mostUsed && categories.some(c => c.id === mostUsed || c.children?.some(ch => ch.id === mostUsed))) {
-            initialCategory = mostUsed;
+    if (categories && categories.length > 0) { 
+        if (lastBannerDateInit === todayStrInit && lastAutoCat && categories.some(c => c.id === lastAutoCat || (c.children && c.children.some(ch => ch.id === lastAutoCat)))) {
+            initialCategory = lastAutoCat;
+        } else {
+            const mostUsed = getMostUsedCategory();
+            if (mostUsed && categories.some(c => c.id === mostUsed || (c.children && c.children.some(ch => ch.id === mostUsed)))) {
+                initialCategory = mostUsed;
+            }
         }
     }
     selectedCat = initialCategory;
     if (currentCategoryDisplay) currentCategoryDisplay.textContent = capitalize(selectedCat);
 
-    showRotatingBanner(); // This might change selectedCat
+    showRotatingBanner(); 
 
-    // Ensure a quote is displayed, respecting banner's potential category change
-    if (!lastQuote || !lastQuote.text || (lastQuote && lastQuote.category !== selectedCat && selectedCat !== bannerThemes.find(b => b.text === bannerText.textContent)?.cat) ) {
-        displayQuote();
-    }
+    const quotesAvailable = Object.keys(quotes).length > 0 || (localStorage.getItem('userQuotes') && JSON.parse(localStorage.getItem('userQuotes') || '[]').length > 0);
 
-    if ((!lastQuote || !lastQuote.text) && qText && qText.textContent.includes("Loading Wisdom")) {
-        const noQuotesMsg = "Sorry, we couldn't load any quotes right now. Please try again later.";
+    if (quotesAvailable) {
+        const bannerThemeInfo = bannerThemes.find(b => bannerText && b.text === bannerText.textContent);
+        const bannerCat = bannerThemeInfo ? bannerThemeInfo.cat : null;
+
+        if (!lastQuote || !lastQuote.text || (lastQuote.category !== selectedCat && selectedCat !== bannerCat) ) {
+            displayQuote();
+        } else if (!lastQuote && qText && qText.textContent.includes("Loading Wisdom")) {
+            displayQuote();
+        }
+    } else if (qText && qText.textContent.includes("Loading Wisdom")) {
+        const noQuotesMsg = "Sorry, we couldn't load any quotes right now. Please check your connection or try again later.";
         qText.textContent = noQuotesMsg;
         if(qAuth) qAuth.textContent = "";
         showAppNotification(noQuotesMsg, 'error', 6000);
     }
 
     let streak = JSON.parse(localStorage.getItem('wowStreak')) || { last: '', count: 0 };
-    showStreak(streak.count);
-    updateFavoriteButtonState();
-
-    // Example of how you might prompt for notifications, perhaps after a few visits or specific actions
-    // setTimeout(requestAndSubscribePushNotifications, 15000); // Auto-prompt after 15s (consider UX)
+    showStreak(streak.count); 
+    updateFavoriteButtonState(); 
   })();
 });
