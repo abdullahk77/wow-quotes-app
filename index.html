@@ -15,9 +15,11 @@
   <meta name="twitter:description" content="Discover inspiring and uplifting quotes daily with Words of Wisdom. Get daily doses of wisdom, share with friends and stay positive. Explore categories like Resilience, Mindfulness, Love and Motivation. Enjoy a modern design with easy sharing and dark/light themes.">
   <meta name="twitter:image" content="https://quotes-app.wordsofwisdom.in/images/app_logo.png"> <link rel="icon" href="/assets/favicon.ico" type="image/x-icon"> <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"> <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"> <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"> <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#7c5df0">
+  
+  <!-- Google Fonts: Preload default fallback fonts for quotes and authors -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -79,6 +81,16 @@
     .app-notification.success { background-color: var(--green-accent); color: white; border:none;}
     body.dark .app-notification.error { background-color: #c0392b; }
     body.dark .app-notification.success { background-color: #27ae60; }
+
+    /* Default fallback fonts for quote text and author */
+#quoteText {
+  font-family: 'Playfair Display', 'Open Sans', serif;
+  font-weight: 700;
+}
+#quoteAuthor {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-weight: 400;
+}
   </style>
 </head>
 <body>
