@@ -66,47 +66,47 @@ if (closeImagePreviewBtn) {
   });
 }
 
-// --- Font Pairings by Category ---
+// --- Font Pairings by Category ---// 
 const fontPairings = {
-  inspiration:        { quote: "Playfair Display", author: "Open Sans" },
-  motivation:         { quote: "Oswald", author: "Roboto" },
-  positivethinking:   { quote: "Nunito", author: "Merriweather" },
-  happiness:          { quote: "Pacifico", author: "Open Sans" },
-  love:               { quote: "Great Vibes", author: "Lato" },
-  gratitude:          { quote: "Dancing Script", author: "Roboto" },
-  resilience:         { quote: "Arvo", author: "Lato" },
-  courage:            { quote: "Anton", author: "Open Sans" },
-  change:             { quote: "Montserrat", author: "Cardo" },
-  lifelessons:        { quote: "Libre Baskerville", author: "Open Sans" },
-  dreams:             { quote: "Satisfy", author: "Quicksand" },
-  kindness:           { quote: "Comfortaa", author: "Merriweather" },
-  beauty:             { quote: "Cinzel", author: "Raleway" },
-  wisdom:             { quote: "Cormorant Garamond", author: "Montserrat" },
-  sufiwisdom:         { quote: "Rouge Script", author: "Cardo" },
-  truth:              { quote: "Merriweather", author: "Ubuntu" },
-  time:               { quote: "EB Garamond", author: "Open Sans" },
-  mortality:          { quote: "Alegreya", author: "Lato" },
-  freedom:            { quote: "Raleway", author: "Lato" },
-  society:            { quote: "Merriweather", author: "Open Sans" },
-  learning:           { quote: "Source Sans Pro", author: "Lora" },
-  simplicity:         { quote: "Noto Sans", author: "Noto Serif" },
-  selfcare:           { quote: "Dosis", author: "Work Sans" },
-  mindfulness:        { quote: "Exo 2", author: "Open Sans" },
-  selfknowledge:      { quote: "Lora", author: "Raleway" },
-  innerpeace:         { quote: "Mukta", author: "Merriweather" },
-  spirituality:       { quote: "Kalam", author: "Nunito" },
-  adversity:          { quote: "Roboto Slab", author: "Lato" },
-  urdu:               { quote: "Noto Nastaliq Urdu", author: "Noto Naskh Arabic" },
-  goodvibes:          { quote: "Fredoka One", author: "Merriweather" },
-  oneword:            { quote: "Bebas Neue", author: "Open Sans" },
-  favorites:          { quote: "Ubuntu", author: "Lato" },
-  authorsearch:       { quote: "Roboto", author: "Lato" }
+  inspiration:        { quote: "Playfair Display", by: "Open Sans" },
+  motivation:         { quote: "Oswald", by: "Roboto" },
+  positivethinking:   { quote: "Nunito", by: "Merriweather" },
+  happiness:          { quote: "Pacifico", by: "Open Sans" },
+  love:               { quote: "Great Vibes", by: "Lato" },
+  gratitude:          { quote: "Dancing Script", by: "Roboto" },
+  resilience:         { quote: "Arvo", by: "Lato" },
+  courage:            { quote: "Anton", by: "Open Sans" },
+  change:             { quote: "Montserrat", by: "Cardo" },
+  lifelessons:        { quote: "Libre Baskerville", by: "Open Sans" },
+  dreams:             { quote: "Satisfy", by: "Quicksand" },
+  kindness:           { quote: "Comfortaa", by: "Merriweather" },
+  beauty:             { quote: "Cinzel", by: "Raleway" },
+  wisdom:             { quote: "Cormorant Garamond", by: "Montserrat" },
+  sufiwisdom:         { quote: "Rouge Script", by: "Cardo" },
+  truth:              { quote: "Merriweather", by: "Ubuntu" },
+  time:               { quote: "EB Garamond", by: "Open Sans" },
+  mortality:          { quote: "Alegreya", by: "Lato" },
+  freedom:            { quote: "Raleway", by: "Lato" },
+  society:            { quote: "Merriweather", by: "Open Sans" },
+  learning:           { quote: "Source Sans Pro", by: "Lora" },
+  simplicity:         { quote: "Noto Sans", by: "Noto Serif" },
+  selfcare:           { quote: "Dosis", by: "Work Sans" },
+  mindfulness:        { quote: "Exo 2", by: "Open Sans" },
+  selfknowledge:      { quote: "Lora", by: "Raleway" },
+  innerpeace:         { quote: "Mukta", by: "Merriweather" },
+  spirituality:       { quote: "Kalam", by: "Nunito" },
+  adversity:          { quote: "Roboto Slab", by: "Lato" },
+  urdu:               { quote: "Noto Nastaliq Urdu", by: "Noto Naskh Arabic" },
+  goodvibes:          { quote: "Fredoka One", by: "Merriweather" },
+  oneword:            { quote: "Bebas Neue", by: "Open Sans" },
+  favorites:          { quote: "Ubuntu", by: "Lato" },
+  bysearch:           { quote: "Roboto", by: "Lato" }
 };
 const DEFAULT_QUOTE_FONT = "Playfair Display";
 const DEFAULT_AUTHOR_FONT = "Open Sans";
 
 // --- Dynamic Google Fonts Loader ---
-function loadGoogleFonts(quoteFont, authorFont) {
+function loadGoogleFonts(quoteFont, byFont) {
   const existing = document.getElementById('dynamic-font-link');
   if (existing) existing.parentNode.removeChild(existing);
 
@@ -130,7 +130,7 @@ function loadGoogleFonts(quoteFont, authorFont) {
 // --- Set Font Pairing Based on Category ---
   function applyFontPairing(categoryId) {
     const pairing = fontPairings[categoryId] || { quote: DEFAULT_QUOTE_FONT, author: DEFAULT_AUTHOR_FONT };
-    loadGoogleFonts(pairing.quote, pairing.author);
+    loadGoogleFonts(pairing.quote, pairing.by);
     if (qText) {
       qText.style.fontFamily = `'${pairing.quote}', '${DEFAULT_QUOTE_FONT}', 'Open Sans', serif`;
       qText.style.fontWeight = pairing.quote === "Playfair Display" ? "700" : "400";
