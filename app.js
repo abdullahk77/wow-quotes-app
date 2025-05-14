@@ -1,4 +1,4 @@
-// app.js (Production Ready - Incorporating all fixes)
+// app.js 
 document.addEventListener("DOMContentLoaded", () => {
   // --- DOM Elements ---
   const qText = document.getElementById("quoteText"),
@@ -66,6 +66,82 @@ if (closeImagePreviewBtn) {
   });
 }
 
+// --- Font Pairings by Category ---
+const fontPairings = {
+  inspiration:        { quote: "Playfair Display", author: "Open Sans" },
+  motivation:         { quote: "Oswald", author: "Roboto" },
+  positivethinking:   { quote: "Nunito", author: "Merriweather" },
+  happiness:          { quote: "Pacifico", author: "Open Sans" },
+  love:               { quote: "Great Vibes", author: "Lato" },
+  gratitude:          { quote: "Dancing Script", author: "Roboto" },
+  resilience:         { quote: "Arvo", author: "Lato" },
+  courage:            { quote: "Anton", author: "Open Sans" },
+  change:             { quote: "Montserrat", author: "Cardo" },
+  lifelessons:        { quote: "Libre Baskerville", author: "Open Sans" },
+  dreams:             { quote: "Satisfy", author: "Quicksand" },
+  kindness:           { quote: "Comfortaa", author: "Merriweather" },
+  beauty:             { quote: "Cinzel", author: "Raleway" },
+  wisdom:             { quote: "Cormorant Garamond", author: "Montserrat" },
+  sufiwisdom:         { quote: "Rouge Script", author: "Cardo" },
+  truth:              { quote: "Merriweather", author: "Ubuntu" },
+  time:               { quote: "EB Garamond", author: "Open Sans" },
+  mortality:          { quote: "Alegreya", author: "Lato" },
+  freedom:            { quote: "Raleway", author: "Lato" },
+  society:            { quote: "Merriweather", author: "Open Sans" },
+  learning:           { quote: "Source Sans Pro", author: "Lora" },
+  simplicity:         { quote: "Noto Sans", author: "Noto Serif" },
+  selfcare:           { quote: "Dosis", author: "Work Sans" },
+  mindfulness:        { quote: "Exo 2", author: "Open Sans" },
+  selfknowledge:      { quote: "Lora", author: "Raleway" },
+  innerpeace:         { quote: "Mukta", author: "Merriweather" },
+  spirituality:       { quote: "Kalam", author: "Nunito" },
+  adversity:          { quote: "Roboto Slab", author: "Lato" },
+  urdu:               { quote: "Noto Nastaliq Urdu", author: "Noto Naskh Arabic" },
+  goodvibes:          { quote: "Fredoka One", author: "Merriweather" },
+  oneword:            { quote: "Bebas Neue", author: "Open Sans" },
+  favorites:          { quote: "Ubuntu", author: "Lato" },
+  authorsearch:       { quote: "Roboto", author: "Lato" }
+};
+const DEFAULT_QUOTE_FONT = "Playfair Display";
+const DEFAULT_AUTHOR_FONT = "Open Sans";
+
+// --- Dynamic Google Fonts Loader ---
+function loadGoogleFonts(quoteFont, authorFont) {
+  const existing = document.getElementById('dynamic-font-link');
+  if (existing) existing.parentNode.removeChild(existing);
+
+  // Always include fallback fonts in the URL
+  const fonts = [quoteFont, authorFont, DEFAULT_QUOTE_FONT, DEFAULT_AUTHOR_FONT]
+    .filter((f, i, arr) => !!f && arr.indexOf(f) === i)
+    .map(f => {
+      if (f === "Playfair Display") return "Playfair+Display:wght@700";
+      if (f === "Open Sans") return "Open+Sans:wght@400;700";
+      return f.replace(/ /g, '+') + ':wght@400;700';
+    })
+    .join('&family=');
+
+  const link = document.createElement('link');
+  link.id = 'dynamic-font-link';
+  link.rel = 'stylesheet';
+  link.href = `https://fonts.googleapis.com/css2?family=${fonts}&display=swap`;
+  document.head.appendChild(link);
+}
+
+// --- Set Font Pairing Based on Category ---
+  function applyFontPairing(categoryId) {
+    const pairing = fontPairings[categoryId] || { quote: DEFAULT_QUOTE_FONT, author: DEFAULT_AUTHOR_FONT };
+    loadGoogleFonts(pairing.quote, pairing.author);
+    if (qText) {
+      qText.style.fontFamily = `'${pairing.quote}', '${DEFAULT_QUOTE_FONT}', 'Open Sans', serif`;
+      qText.style.fontWeight = pairing.quote === "Playfair Display" ? "700" : "400";
+    }
+    if (qAuth) {
+      qAuth.style.fontFamily = `'${pairing.author}', '${DEFAULT_AUTHOR_FONT}', Arial, sans-serif`;
+      qAuth.style.fontWeight = "400";
+    }
+  }
+  // --- END FONT PAIRING ENHANCEMENT ---
+ 
   // --- Global State ---
   let categories = [];
   let quotes = {}; // Stores quotes by category ID
@@ -686,6 +762,7 @@ if (closeImagePreviewBtn) {
         const noQuoteMsg = "No quote available for this selection. Try another category or inspire me again!";
         if(qText) qText.textContent = noQuoteMsg;
         if(qAuth) qAuth.textContent = "";
+        applyFontPairing(selectedCat);
         showAppNotification(noQuoteMsg, 'info');
         lastQuote = null; 
         if(undoBtn) undoBtn.style.display = quoteHistory.length > 0 ? "flex" : "none";
