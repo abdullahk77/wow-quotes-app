@@ -94,7 +94,7 @@ if (closeImagePreviewBtn) {
     {cat: "resilience",     text: "Stand strong-your strength shines through."},
     {cat: "courage",        text: "Step forward with unwavering bravery."},
     {cat: "change",         text: "Welcome new paths with open arms."},
-    {cat: "lifelessons",    text: "Learn, grow, and carry wisdom onward."},
+    {cat: "lifelessons",    text: "Let every lesson light your next step."},
     {cat: "dreams",         text: "Chase bold visions beyond the horizon."},
     {cat: "kindness",       text: "Extend a gesture that brightens someone’s day."},
     {cat: "beauty",         text: "Discover the elegance in simplicity."},
