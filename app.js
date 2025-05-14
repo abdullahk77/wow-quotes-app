@@ -52,6 +52,20 @@ document.addEventListener("DOMContentLoaded", () => {
     closeImagePreviewBtn = document.getElementById('closeImagePreviewBtn'),
     generateImageShareOption = document.getElementById('generateImageShareOption');
 
+if (closeImagePreviewBtn) {
+  closeImagePreviewBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (quoteImagePreviewContainer) {
+      quoteImagePreviewContainer.classList.remove('open');
+      document.body.style.overflow = "";
+      // Force reset after transition completes
+      setTimeout(() => {
+        if (quoteImagePreviewContainer) quoteImagePreviewContainer.style.display = 'none';
+      }, 300);
+    }
+  });
+}
+
   // --- Global State ---
   let categories = [];
   let quotes = {}; // Stores quotes by category ID
