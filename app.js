@@ -1,4 +1,4 @@
-// app.js (Production Ready - Incorporating all fixes)
+// app.js 
 document.addEventListener("DOMContentLoaded", () => {
   // --- DOM Elements ---
   const qText = document.getElementById("quoteText"),
