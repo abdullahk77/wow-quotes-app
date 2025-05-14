@@ -61,7 +61,7 @@ if (closeImagePreviewBtn) {
       // Force reset after transition completes
       setTimeout(() => {
         if (quoteImagePreviewContainer) quoteImagePreviewContainer.style.display = 'none';
-      }, 300);
+      }, 100);
     }
   });
 }
